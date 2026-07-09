@@ -5,104 +5,80 @@ weight: 2
 chapter: false
 pre: " <b> 2. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
 
-Tại phần này, bạn cần tóm tắt các nội dung trong workshop mà bạn **dự tính** sẽ làm.
+## Báo cáo workshop
 
-# IoT Weather Platform for Lab Research  
-## Giải pháp AWS Serverless hợp nhất cho giám sát thời tiết thời gian thực  
+### 2.3. Proposal (Đề xuất dự án)
 
-### 1. Tóm tắt điều hành  
-IoT Weather Platform được thiết kế dành cho nhóm *ITea Lab* tại TP. Hồ Chí Minh nhằm nâng cao khả năng thu thập và phân tích dữ liệu thời tiết. Nền tảng hỗ trợ tối đa 5 trạm thời tiết, có khả năng mở rộng lên 10–15 trạm, sử dụng thiết bị biên Raspberry Pi kết hợp cảm biến ESP32 để truyền dữ liệu qua MQTT. Nền tảng tận dụng các dịch vụ AWS Serverless để cung cấp giám sát thời gian thực, phân tích dự đoán và tiết kiệm chi phí, với quyền truy cập giới hạn cho 5 thành viên phòng lab thông qua Amazon Cognito.  
+**Serverless AI Inference Platform**
+_Giải pháp Cloud Native tự động hóa phân tích và chẩn đoán hình ảnh AI_
 
-### 2. Tuyên bố vấn đề  
-*Vấn đề hiện tại*  
-Các trạm thời tiết hiện tại yêu cầu thu thập dữ liệu thủ công, khó quản lý khi có nhiều trạm. Không có hệ thống tập trung cho dữ liệu hoặc phân tích thời gian thực, và các nền tảng bên thứ ba thường tốn kém và quá phức tạp.  
+**1. Tóm tắt điều hành**
 
-*Giải pháp*  
-Nền tảng sử dụng AWS IoT Core để tiếp nhận dữ liệu MQTT, AWS Lambda và API Gateway để xử lý, Amazon S3 để lưu trữ (bao gồm data lake), và AWS Glue Crawlers cùng các tác vụ ETL để trích xuất, chuyển đổi, tải dữ liệu từ S3 data lake sang một S3 bucket khác để phân tích. AWS Amplify với Next.js cung cấp giao diện web, và Amazon Cognito đảm bảo quyền truy cập an toàn. Tương tự như Thingsboard và CoreIoT, người dùng có thể đăng ký thiết bị mới và quản lý kết nối, nhưng nền tảng này hoạt động ở quy mô nhỏ hơn và phục vụ mục đích sử dụng nội bộ. Các tính năng chính bao gồm bảng điều khiển thời gian thực, phân tích xu hướng và chi phí vận hành thấp.  
+Serverless AI Inference Platform được thiết kế nhằm cung cấp một hạ tầng đám mây mạnh mẽ, có khả năng mở rộng tự động để chạy các mô hình Trí tuệ Nhân tạo (Computer Vision) hạng nặng. Thay vì phải duy trì các máy chủ GPU đắt đỏ 24/7, nền tảng này ứng dụng kiến trúc Serverless Event-Driven trên AWS. Người dùng cuối có thể tải hình ảnh lên một cách bảo mật, sau đó hệ thống sẽ tự động đưa vào hàng đợi và kích hoạt AI phân tích, trả về kết quả chẩn đoán gần như theo thời gian thực với chi phí vận hành được tối ưu hóa ở mức tối đa.
 
-*Lợi ích và hoàn vốn đầu tư (ROI)*  
-Giải pháp tạo nền tảng cơ bản để các thành viên phòng lab phát triển một nền tảng IoT lớn hơn, đồng thời cung cấp nguồn dữ liệu cho những người nghiên cứu AI phục vụ huấn luyện mô hình hoặc phân tích. Nền tảng giảm bớt báo cáo thủ công cho từng trạm thông qua hệ thống tập trung, đơn giản hóa quản lý và bảo trì, đồng thời cải thiện độ tin cậy dữ liệu. Chi phí hàng tháng ước tính 0,66 USD (theo AWS Pricing Calculator), tổng cộng 7,92 USD cho 12 tháng. Tất cả thiết bị IoT đã được trang bị từ hệ thống trạm thời tiết hiện tại, không phát sinh chi phí phát triển thêm. Thời gian hoàn vốn 6–12 tháng nhờ tiết kiệm đáng kể thời gian thao tác thủ công.  
+**2. Tuyên bố vấn đề**
 
-### 3. Kiến trúc giải pháp  
-Nền tảng áp dụng kiến trúc AWS Serverless để quản lý dữ liệu từ 5 trạm dựa trên Raspberry Pi, có thể mở rộng lên 15 trạm. Dữ liệu được tiếp nhận qua AWS IoT Core, lưu trữ trong S3 data lake và xử lý bởi AWS Glue Crawlers và ETL jobs để chuyển đổi và tải vào một S3 bucket khác cho mục đích phân tích. Lambda và API Gateway xử lý bổ sung, trong khi Amplify với Next.js cung cấp bảng điều khiển được bảo mật bởi Cognito.  
+- **Vấn đề hiện tại:** Việc triển khai các mô hình AI (như YOLO, PyTorch) lên môi trường thực tế (Production) thường gặp khó khăn do dung lượng mô hình lớn và yêu cầu tài nguyên phần cứng (RAM/CPU) cao. Quá trình người dùng tải ảnh độ phân giải cao lên server truyền thống thường gây nghẽn mạng (bottleneck) và chi phí duy trì server (EC2) khi không có lượng truy cập là rất lãng phí.
+- **Giải pháp:** Nền tảng giải quyết bài toán tải file nặng bằng cách sử dụng **S3 Pre-signed URL** qua API Gateway và Lambda, cho phép Client đẩy ảnh trực tiếp lên Amazon S3. Sự kiện ảnh mới sẽ kích hoạt **Amazon SQS** làm bộ đệm (buffer), từ đó trigger **AWS Lambda** (chạy bằng Container Image lưu trên **Amazon ECR**) để thực hiện AI Inference. Kết quả text được lưu siêu tốc vào **DynamoDB**, trong khi ảnh đã xử lý được lưu vào một bucket S3 khác. Hệ thống tích hợp sẵn Amazon Cognito để bảo mật API.
+- **Lợi ích và hoàn vốn đầu tư (ROI):**
+- _Kỹ thuật:_ Loại bỏ hoàn toàn giới hạn payload 10MB của API Gateway và giới hạn 250MB dung lượng code của Lambda. Hệ thống tự động scale (co giãn) mượt mà khi có hàng ngàn user tải ảnh cùng lúc nhờ cơ chế decoupling bằng SQS.
+- _Tài chính:_ Chuyển đổi 100% sang mô hình Pay-as-you-go (chỉ trả tiền khi AI thực sự phân tích ảnh). Sử dụng tính năng **S3 Lifecycle Policy** tự động đẩy ảnh cũ sang lớp lưu trữ Archive (Glacier), giúp tiết kiệm đến 80% chi phí lưu trữ dài hạn so với hệ thống cũ.
 
-![IoT Weather Station Architecture](/images/2-Proposal/edge_architecture.jpeg)
+**3. Kiến trúc giải pháp**
 
-![IoT Weather Platform Architecture](/images/2-Proposal/platform_architecture.jpeg)
+Nền tảng áp dụng kiến trúc Event-Driven Serverless, đảm bảo tính Decoupled (phân tách độc lập) giữa luồng tiếp nhận file và luồng xử lý AI. (Tham khảo sơ đồ kiến trúc _aws1.drawio_4.png_).
 
-*Dịch vụ AWS sử dụng*  
-- *AWS IoT Core*: Tiếp nhận dữ liệu MQTT từ 5 trạm, mở rộng lên 15.  
-- *AWS Lambda*: Xử lý dữ liệu và kích hoạt Glue jobs (2 hàm).  
-- *Amazon API Gateway*: Giao tiếp với ứng dụng web.  
-- *Amazon S3*: Lưu trữ dữ liệu thô (data lake) và dữ liệu đã xử lý (2 bucket).  
-- *AWS Glue*: Crawlers lập chỉ mục dữ liệu, ETL jobs chuyển đổi và tải dữ liệu.  
-- *AWS Amplify*: Lưu trữ giao diện web Next.js.  
-- *Amazon Cognito*: Quản lý quyền truy cập cho người dùng phòng lab.  
+- **Dịch vụ AWS sử dụng:**
+- **Amazon Cognito:** Xác thực người dùng, cấp phát JWT token.
+- **Amazon API Gateway & WAF:** Bảo vệ API khỏi các cuộc tấn công và điều phối request xin cấp quyền upload.
+- **AWS Lambda (2 functions):**
+- _Presign Lambda:_ Khởi tạo S3 Pre-signed URL cấp quyền upload tạm thời.
+- _Inference Lambda:_ Tải model từ ECR, thực thi phân tích ảnh và xuất kết quả.
+- **Amazon S3 (2 Buckets):** Lưu trữ ảnh gốc (`Raw`) và ảnh đã nhận diện (`Processed`).
+- **Amazon SQS:** Hàng đợi tin nhắn nhận sự kiện từ S3, điều phối luồng chạy của AI Lambda để chống quá tải.
+- **Amazon ECR:** Đóng gói thư viện AI và Model Weights thành Docker Image (giúp vượt rào cản dung lượng của Lambda).
+- **Amazon DynamoDB:** Cơ sở dữ liệu NoSQL lưu trữ thông số kết quả chẩn đoán với độ trễ mili-giây.
+- **CloudWatch & SNS:** Giám sát hiệu suất (thời gian chạy AI, lỗi) và tự động gửi email cảnh báo khi có sự cố.
 
-*Thiết kế thành phần*  
-- *Thiết bị biên*: Raspberry Pi thu thập và lọc dữ liệu cảm biến, gửi tới IoT Core.  
-- *Tiếp nhận dữ liệu*: AWS IoT Core nhận tin nhắn MQTT từ thiết bị biên.  
-- *Lưu trữ dữ liệu*: Dữ liệu thô lưu trong S3 data lake; dữ liệu đã xử lý lưu ở một S3 bucket khác.  
-- *Xử lý dữ liệu*: AWS Glue Crawlers lập chỉ mục dữ liệu; ETL jobs chuyển đổi để phân tích.  
-- *Giao diện web*: AWS Amplify lưu trữ ứng dụng Next.js cho bảng điều khiển và phân tích thời gian thực.  
-- *Quản lý người dùng*: Amazon Cognito giới hạn 5 tài khoản hoạt động.  
+**4. Triển khai kỹ thuật**
 
-### 4. Triển khai kỹ thuật  
-*Các giai đoạn triển khai*  
-Dự án gồm 2 phần — thiết lập trạm thời tiết biên và xây dựng nền tảng thời tiết — mỗi phần trải qua 4 giai đoạn:  
-1. *Nghiên cứu và vẽ kiến trúc*: Nghiên cứu Raspberry Pi với cảm biến ESP32 và thiết kế kiến trúc AWS Serverless (1 tháng trước kỳ thực tập).  
-2. *Tính toán chi phí và kiểm tra tính khả thi*: Sử dụng AWS Pricing Calculator để ước tính và điều chỉnh (Tháng 1).  
-3. *Điều chỉnh kiến trúc để tối ưu chi phí/giải pháp*: Tinh chỉnh (ví dụ tối ưu Lambda với Next.js) để đảm bảo hiệu quả (Tháng 2).  
-4. *Phát triển, kiểm thử, triển khai*: Lập trình Raspberry Pi, AWS services với CDK/SDK và ứng dụng Next.js, sau đó kiểm thử và đưa vào vận hành (Tháng 2–3).  
+- **Giai đoạn 1 (Tuần 1-3): Xây dựng luồng bảo mật & Upload.**
+- Cấu hình Cognito User Pool.
+- Viết code Python Boto3 cho Presign Lambda.
+- Thiết lập API Gateway tích hợp Cognito Authorizer và kiểm thử luồng Client đẩy ảnh trực tiếp vào S3 Raw.
+- **Giai đoạn 2 (Tuần 4-6): Đóng gói AI & Event-driven Pipeline.**
+- Viết Dockerfile đóng gói code PyTorch/YOLO cùng model weights. Push lên ECR.
+- Thiết lập hàng đợi SQS. Cấu hình S3 Event Notification tự động bắn message vào SQS khi có ảnh mới.
+- Tạo Inference Lambda (dựa trên Container Image), thiết lập SQS làm Trigger.
+- **Giai đoạn 3 (Tuần 7-9): Database & Tối ưu chi phí.**
+- Tạo bảng DynamoDB lưu kết quả.
+- Áp dụng S3 Lifecycle Policy cho bucket Raw để tự động Archive data sau 30 ngày.
+- **Giai đoạn 4 (Tuần 10-12): Giám sát & Hoàn thiện.**
+- Tạo CloudWatch Alarms theo dõi `Errors` và `Duration` của Lambda. Liên kết với SNS để cảnh báo qua Email. Xóa các tài nguyên thừa.
 
-*Yêu cầu kỹ thuật*  
-- *Trạm thời tiết biên*: Cảm biến (nhiệt độ, độ ẩm, lượng mưa, tốc độ gió), vi điều khiển ESP32, Raspberry Pi làm thiết bị biên. Raspberry Pi chạy Raspbian, sử dụng Docker để lọc dữ liệu và gửi 1 MB/ngày/trạm qua MQTT qua Wi-Fi.  
-- *Nền tảng thời tiết*: Kiến thức thực tế về AWS Amplify (lưu trữ Next.js), Lambda (giảm thiểu do Next.js xử lý), AWS Glue (ETL), S3 (2 bucket), IoT Core (gateway và rules), và Cognito (5 người dùng). Sử dụng AWS CDK/SDK để lập trình (ví dụ IoT Core rules tới S3). Next.js giúp giảm tải Lambda cho ứng dụng web fullstack.  
+**5. Lộ trình & Mốc triển khai**
 
-### 5. Lộ trình & Mốc triển khai  
-- *Trước thực tập (Tháng 0)*: 1 tháng lên kế hoạch và đánh giá trạm cũ.  
-- *Thực tập (Tháng 1–3)*:  
-    - Tháng 1: Học AWS và nâng cấp phần cứng.  
-    - Tháng 2: Thiết kế và điều chỉnh kiến trúc.  
-    - Tháng 3: Triển khai, kiểm thử, đưa vào sử dụng.  
-- *Sau triển khai*: Nghiên cứu thêm trong vòng 1 năm.  
+- **Tháng 1:** Hoàn thiện hạ tầng Auth (Cognito), Storage (S3, DynamoDB) và luồng API cấp phát URL.
+- **Tháng 2:** Tập trung giải quyết bài toán Core AI: Container hóa mô hình bằng ECR, tích hợp SQS và cấp quyền IAM Role chuẩn xác cho Lambda.
+- **Tháng 3:** Kiểm thử toàn trình (End-to-End Test), tối ưu hóa thời gian Cold-start của Lambda, thiết lập hệ thống cảnh báo CloudWatch và dọn dẹp (Clean-up).
 
-### 6. Ước tính ngân sách  
-Có thể xem chi phí trên [AWS Pricing Calculator](https://calculator.aws/#/estimate?id=621f38b12a1ef026842ba2ddfe46ff936ed4ab01)  
-Hoặc tải [tệp ước tính ngân sách](../attachments/budget_estimation.pdf).  
+**6. Ngân sách (Chi phí vận hành dự kiến)**
 
-*Chi phí hạ tầng*  
-- AWS Lambda: 0,00 USD/tháng (1.000 request, 512 MB lưu trữ).  
-- S3 Standard: 0,15 USD/tháng (6 GB, 2.100 request, 1 GB quét).  
-- Truyền dữ liệu: 0,02 USD/tháng (1 GB vào, 1 GB ra).  
-- AWS Amplify: 0,35 USD/tháng (256 MB, request 500 ms).  
-- Amazon API Gateway: 0,01 USD/tháng (2.000 request).  
-- AWS Glue ETL Jobs: 0,02 USD/tháng (2 DPU).  
-- AWS Glue Crawlers: 0,07 USD/tháng (1 crawler).  
-- MQTT (IoT Core): 0,08 USD/tháng (5 thiết bị, 45.000 tin nhắn).  
+_Ước tính cho 1.000 lượt phân tích ảnh/tháng (Free Tier & Pay-as-you-go)_
 
-*Tổng*: 0,7 USD/tháng, 8,40 USD/12 tháng  
-- *Phần cứng*: 265 USD một lần (Raspberry Pi 5 và cảm biến).  
+- **Amazon S3:** ~ 0.05 USD (Lưu trữ ảnh và Lifecycle xuống Glacier).
+- **API Gateway + Cognito:** ~ 0.00 USD (Nằm trong Free Tier).
+- **AWS Lambda (Inference):** ~ 0.50 USD (Cấu hình 3GB RAM, chạy ~3 giây/ảnh).
+- **Amazon ECR & SQS:** ~ 0.10 USD (Phí lưu trữ image và chuyển tiếp message).
+- **Amazon DynamoDB:** ~ 0.00 USD (Nằm trong Free Tier).
+- **Tổng chi phí ước tính:** Chưa tới **1.00 USD/tháng**, một mức phí cực kỳ ấn tượng để vận hành một hệ thống AI hạng nặng so với việc thuê VPS/EC2 cố định.
 
-### 7. Đánh giá rủi ro  
-*Ma trận rủi ro*  
-- Mất mạng: Ảnh hưởng trung bình, xác suất trung bình.  
-- Hỏng cảm biến: Ảnh hưởng cao, xác suất thấp.  
-- Vượt ngân sách: Ảnh hưởng trung bình, xác suất thấp.  
+**7. Đánh giá rủi ro**
 
-*Chiến lược giảm thiểu*  
-- Mạng: Lưu trữ cục bộ trên Raspberry Pi với Docker.  
-- Cảm biến: Kiểm tra định kỳ, dự phòng linh kiện.  
-- Chi phí: Cảnh báo ngân sách AWS, tối ưu dịch vụ.  
-
-*Kế hoạch dự phòng*  
-- Quay lại thu thập thủ công nếu AWS gặp sự cố.  
-- Sử dụng CloudFormation để khôi phục cấu hình liên quan đến chi phí.  
-
-### 8. Kết quả kỳ vọng  
-*Cải tiến kỹ thuật*: Dữ liệu và phân tích thời gian thực thay thế quy trình thủ công. Có thể mở rộng tới 10–15 trạm.  
-*Giá trị dài hạn*: Nền tảng dữ liệu 1 năm cho nghiên cứu AI, có thể tái sử dụng cho các dự án tương lai.
+- **Rủi ro 1: Lambda Cold-start Timeout.** Mô hình AI lớn mất nhiều thời gian tải vào RAM ở lần chạy đầu tiên khiến Lambda bị timeout.
+- _Giảm thiểu:_ Tối ưu hóa dung lượng Base Image trong Docker, tăng cấu hình RAM và Timeout của Lambda lên mức 5 phút, hoặc sử dụng Provisioned Concurrency nếu cần thiết.
+- **Rủi ro 2: Chi phí lưu trữ S3 phình to theo thời gian.**
+- _Giảm thiểu:_ Đã áp dụng sẵn tính năng thiết lập S3 Lifecycle Policy, tự động dọn dẹp các ảnh cũ sang vùng lưu trữ sâu (Deep Archive).
+- **Rủi ro 3: Throttling khi lượng ảnh đẩy lên ồ ạt.**
+- _Giảm thiểu:_ Kiến trúc đã sử dụng SQS (Message Queue) đứng trước Lambda để làm bộ đệm, đảm bảo AI xử lý tuần tự, không bị rớt request.

@@ -6,120 +6,169 @@ chapter: false
 pre: " <b> 4.2. </b> "
 ---
 
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
+# First Cloud Journey (FCAJ) Technical Meetup
 
-# Bài thu hoạch “GenAI-powered App-DB Modernization workshop”
+- **Tên sự kiện:** First Cloud Journey (FCAJ) Technical Meetup
+- **Thời gian:** 09:00 AM - 12:00 PM, Thứ Bảy, ngày 06/06/2026
+- **Địa điểm:** Bitexco Financial Tower, TP. Hồ Chí Minh
 
-### Mục Đích Của Sự Kiện
+## 1. Tổng quan
 
-- Chia sẻ best practices trong thiết kế ứng dụng hiện đại
-- Giới thiệu phương pháp DDD và event-driven architecture
-- Hướng dẫn lựa chọn compute services phù hợp
-- Giới thiệu công cụ AI hỗ trợ development lifecycle
+### 1.1 Giới thiệu
 
-### Danh Sách Diễn Giả
+Bản thu hoạch này tổng hợp các nội dung nổi bật về giao điểm giữa cloud, an ninh mạng và phát triển ứng dụng. Các chủ đề tập trung vào cách xây dựng hệ thống an toàn, hiệu quả và có khả năng mở rộng trên AWS.
 
-- **Jignesh Shah** - Director, Open Source Databases
-- **Erica Liu** - Sr. GTM Specialist, AppMod
-- **Fabrianne Effendi** - Assc. Specialist SA, Serverless Amazon Web Services
+### 1.2 Cấu trúc báo cáo
 
-### Nội Dung Nổi Bật
+```mermaid
+graph TD
+    A["Cloud Security & ML NIDS"] --> B["WebSockets for Multiplayer Games"]
+    B --> C["GraphRAG for Knowledge Applications"]
+    C --> D["Containerization with Docker"]
+    D --> E["Career Growth in IT"]
+    E --> F["Teamwork Efficiency"]
+```
 
-#### Đưa ra các ảnh hưởng tiêu cực của kiến trúc ứng dụng cũ
+## 2. Tang cuong phat hien tan cong voi AWS WAF va ML-NIDS
 
-- Thời gian release sản phẩm lâu → Mất doanh thu/bỏ lỡ cơ hội
-- Hoạt động kém hiệu quả → Mất năng suất, tốn kém chi phí
-- Không tuân thủ các quy định về bảo mật → Mất an ninh, uy tín
+### 2.1 AWS WAF: Lớp phòng thủ đầu tiên
 
-#### Chuyển đổi sang kiến trúc ứng dụng mới - Microservice Architecture
+AWS WAF bảo vệ website, API và ứng dụng khỏi các mối đe dọa phổ biến như SQL injection, XSS và bot traffic độc hại, đồng thời hỗ trợ rate limiting và tích hợp monitoring.
 
-Chuyển đổi thành hệ thống modular – từng chức năng là một **dịch vụ độc lập** giao tiếp với nhau qua **sự kiện** với 3 trụ cột cốt lõi:
+### 2.2 Hạn chế của WAF truyền thống
 
-- **Queue Management**: Xử lý tác vụ bất đồng bộ
-- **Caching Strategy:** Tối ưu performance
-- **Message Handling:** Giao tiếp linh hoạt giữa services
+WAF dựa trên rule hoạt động tốt với mẫu tấn công đã biết nhưng khó phát hiện zero-day, spoofing và hành vi bất thường mới.
 
-#### Domain-Driven Design (DDD)
+### 2.3 NIDS là gì
 
-- **Phương pháp 4 bước**: Xác định domain events → sắp xếp timeline → identify actors → xác định bounded contexts
-- **Case study bookstore**: Minh họa cách áp dụng DDD thực tế
-- **Context mapping**: 7 patterns tích hợp bounded contexts
+NIDS giám sát lưu lượng mạng, phân tích hành vi, cảnh báo theo thời gian thực và lưu log để điều tra sự cố.
 
-#### Event-Driven Architecture
+### 2.4 Machine Learning cho phát hiện nâng cao
 
-- **3 patterns tích hợp**: Publish/Subscribe, Point-to-point, Streaming
-- **Lợi ích**: Loose coupling, scalability, resilience
-- **So sánh sync vs async**: Hiểu rõ trade-offs (sự đánh đổi)
+ML-NIDS học từ dữ liệu thực tế để phát hiện các mẫu tấn công mới và thích nghi theo thời gian.
 
-#### Compute Evolution
+### 2.5 Quy trình xây dựng ML-NIDS
 
-- **Shared Responsibility Model**: Từ EC2 → ECS → Fargate → Lambda
-- **Serverless benefits**: No server management, auto-scaling, pay-for-value
-- **Functions vs Containers**: Criteria lựa chọn phù hợp
+Quy trình bao gồm chọn dataset, xử lý dữ liệu, huấn luyện mô hình, đánh giá và tối ưu. Bộ CSE-CIC-IDS2018 là nguồn dữ liệu tham khảo quan trọng.
 
-#### Amazon Q Developer
+### 2.6 Tiền xử lý dữ liệu
 
-- **SDLC automation**: Từ planning đến maintenance
-- **Code transformation**: Java upgrade, .NET modernization
-- **AWS Transform agents**: VMware, Mainframe, .NET migration
+Các bước cốt lõi gồm làm sạch dữ liệu, xử lý missing/invalid values, cân bằng lớp, loại bỏ cột không cần thiết và kiểm tra chất lượng dữ liệu.
 
-### Những Gì Học Được
+### 2.7 Kiến trúc hệ thống và triển khai AWS
 
-#### Tư Duy Thiết Kế
+Kiến trúc tham chiếu sử dụng VPC, EC2, ALB, WAF, S3, Kinesis Data Firehose, Lambda, Security Hub, GuardDuty, CloudWatch và SNS.
 
-- **Business-first approach**: Luôn bắt đầu từ business domain, không phải technology
-- **Ubiquitous language**: Importance của common vocabulary giữa business và tech teams
-- **Bounded contexts**: Cách identify và manage complexity trong large systems
+### 2.8 Công cụ phát triển
 
-#### Kiến Trúc Kỹ Thuật
+VS Code, Jupyter Notebook, Python (scikit-learn, pandas, NumPy), GitHub và hạ tầng AWS.
 
-- **Event storming technique**: Phương pháp thực tế để mô hình hóa quy trình kinh doanh
-- Sử dụng **Event-driven communication** thay vì synchronous calls
-- **Integration patterns**: Hiểu khi nào dùng sync, async, pub/sub, streaming
-- **Compute spectrum**: Criteria chọn từ VM → containers → serverless
+### 2.9 Kết quả và hướng cải tiến
 
-#### Chiến Lược Hiện Đại Hóa
+Dự án cải thiện hiệu năng mô hình, xử lý tốt hơn bài toán mất cân bằng dữ liệu và chuẩn hóa hạ tầng cloud. Hướng tới tích hợp dữ liệu thời gian thực, GenAI với Bedrock và tự động phản ứng sự cố.
 
-- **Phased approach**: Không rush, phải có roadmap rõ ràng
-- **7Rs framework**: Nhiều con đường khác nhau tùy thuộc vào đặc điểm của mỗi ứng dụng
-- **ROI measurement**: Cost reduction + business agility
+### 2.10 Bài học rút ra
 
-### Ứng Dụng Vào Công Việc
+Chất lượng dữ liệu quyết định hiệu quả mô hình. Bảo mật dựa chữ ký là chưa đủ. ML-NIDS bổ trợ tốt cho AWS WAF, còn triển khai cloud-native giúp mở rộng và vận hành hiệu quả hơn.
 
-- **Áp dụng DDD** cho project hiện tại: Event storming sessions với business team
-- **Refactor microservices**: Sử dụng bounded contexts để identify service boundaries
-- **Implement event-driven patterns**: Thay thế một số sync calls bằng async messaging
-- **Serverless adoption**: Pilot AWS Lambda cho một số use cases phù hợp
-- **Try Amazon Q Developer**: Integrate vào development workflow để boost productivity
+## 3. Ket noi Godot voi AWS WebSockets cho game multiplayer
 
-### Trải nghiệm trong event
+### 3.1 Nền tảng networking multiplayer
 
-Tham gia workshop **“GenAI-powered App-DB Modernization”** là một trải nghiệm rất bổ ích, giúp tôi có cái nhìn toàn diện về cách hiện đại hóa ứng dụng và cơ sở dữ liệu bằng các phương pháp và công cụ hiện đại. Một số trải nghiệm nổi bật:
+Multiplayer cần đồng bộ trạng thái giữa nhiều người chơi trong cùng một phiên game.
 
-#### Học hỏi từ các diễn giả có chuyên môn cao
-- Các diễn giả đến từ AWS và các tổ chức công nghệ lớn đã chia sẻ **best practices** trong thiết kế ứng dụng hiện đại.
-- Qua các case study thực tế, tôi hiểu rõ hơn cách áp dụng **Domain-Driven Design (DDD)** và **Event-Driven Architecture** vào các project lớn.
+### 3.2 Chọn kiến trúc cloud
 
-#### Trải nghiệm kỹ thuật thực tế
-- Tham gia các phiên trình bày về **event storming** giúp tôi hình dung cách **mô hình hóa quy trình kinh doanh** thành các domain events.
-- Học cách **phân tách microservices** và xác định **bounded contexts** để quản lý sự phức tạp của hệ thống lớn.
-- Hiểu rõ trade-offs giữa **synchronous và asynchronous communication** cũng như các pattern tích hợp như **pub/sub, point-to-point, streaming**.
+AWS cung cấp các dịch vụ phù hợp cho game backend thời gian thực và khả năng mở rộng.
 
-#### Ứng dụng công cụ hiện đại
-- Trực tiếp tìm hiểu về **Amazon Q Developer**, công cụ AI hỗ trợ SDLC từ lập kế hoạch đến maintenance.
-- Học cách **tự động hóa code transformation** và pilot serverless với **AWS Lambda**, từ đó nâng cao năng suất phát triển.
+### 3.3 API Gateway route key và DynamoDB schema
 
-#### Kết nối và trao đổi
-- Workshop tạo cơ hội trao đổi trực tiếp với các chuyên gia, đồng nghiệp và team business, giúp **nâng cao ngôn ngữ chung (ubiquitous language)** giữa business và tech.
-- Qua các ví dụ thực tế, tôi nhận ra tầm quan trọng của **business-first approach**, luôn bắt đầu từ nhu cầu kinh doanh thay vì chỉ tập trung vào công nghệ.
+Route key `$request.body.action` cho phép định tuyến động; DynamoDB lưu trạng thái kết nối và trận đấu.
 
-#### Bài học rút ra
-- Việc áp dụng DDD và event-driven patterns giúp giảm **coupling**, tăng **scalability** và **resilience** cho hệ thống.
-- Chiến lược hiện đại hóa cần **phased approach** và đo lường **ROI**, không nên vội vàng chuyển đổi toàn bộ hệ thống.
-- Các công cụ AI như Amazon Q Developer có thể **boost productivity** nếu được tích hợp vào workflow phát triển hiện tại.
+### 3.4 Lambda xử lý game state
 
-#### Một số hình ảnh khi tham gia sự kiện
-* Thêm các hình ảnh của các bạn tại đây
-> Tổng thể, sự kiện không chỉ cung cấp kiến thức kỹ thuật mà còn giúp tôi thay đổi cách tư duy về thiết kế ứng dụng, hiện đại hóa hệ thống và phối hợp hiệu quả hơn giữa các team.
+Lambda thực hiện matchmaking, cập nhật trạng thái và trả kết quả thắng/thua/hòa cho người chơi.
+
+### 3.5 Godot client thiết lập kết nối
+
+Godot dùng `WebSocketPeer` và `connect_to_url()` để mở kết nối và poll sự kiện liên tục.
+
+### 3.6 Godot client gửi/nhận message
+
+Dữ liệu được gửi dưới dạng JSON; client cập nhật UI theo các trạng thái từ server.
+
+### 3.7 Thách thức thực tế
+
+Các vấn đề điển hình gồm stale connection, chi phí scan DynamoDB và giới hạn stateless của Lambda.
+
+### 3.8 Hướng mở rộng: GameLift hay WebSocket + Lambda
+
+WebSocket + Lambda phù hợp prototype nhanh; GameLift mạnh ở quản lý session game và matchmaking chuyên dụng.
+
+## 4. Xay dung GraphRAG voi Amazon Bedrock va Neptune
+
+### 4.1 RAG là gì
+
+RAG bổ sung tri thức ngoài vào prompt lúc runtime, giúp câu trả lời có căn cứ và giảm hallucination.
+
+### 4.2 GraphRAG là gì
+
+GraphRAG mô hình hóa tri thức theo đồ thị, hỗ trợ suy luận nhiều bước qua quan hệ giữa các thực thể.
+
+### 4.3 Hướng managed với Bedrock và Neptune Analytics
+
+Bedrock Knowledge Bases hỗ trợ pipeline trích xuất/embedding; Neptune Analytics đảm nhiệm lưu trữ và truy vấn quan hệ đồ thị.
+
+### 4.4 Hướng custom với LlamaIndex và Neptune
+
+Custom pipeline cho phép kiểm soát sâu quá trình dựng graph, truy vấn Cypher và tối ưu chiến lược truy hồi.
+
+## 5. Containerization voi Docker
+
+### 5.1 Virtualization vs Containerization
+
+VM nặng hơn do mang theo cả OS; container nhẹ hơn vì chia sẻ kernel host.
+
+### 5.2 Lợi ích container
+
+- Dễ di chuyển giữa các môi trường.
+- Chạy nhất quán nhờ đóng gói dependency.
+- Tối ưu tài nguyên.
+
+### 5.3 Docker là gì
+
+Docker hiện thực hóa mô hình build once, run anywhere cho ứng dụng hiện đại.
+
+### 5.4 Docker Image và Dockerfile
+
+Dockerfile định nghĩa các layer image; cơ chế cache giúp tăng tốc quá trình build.
+
+### 5.5 Use cases
+
+CI/CD, microservices, dev/test parity, cloud-native apps, và hiện đại hóa hệ thống legacy.
+
+## 6. Career Growth va Teamwork trong IT
+
+### 6.1 Từ IT Helpdesk đến Senior SysAdmin
+
+Lộ trình phát triển cần nền tảng troubleshooting, giao tiếp và tư duy hệ thống.
+
+### 6.2 Công việc SysAdmin
+
+Bao gồm quản trị hệ thống, mạng, patching, monitoring và capacity planning.
+
+### 6.3 Chuyển dịch sang Cloud và DevOps
+
+Trọng tâm là IaC, automation, CI/CD và cộng tác chặt giữa dev-ops.
+
+### 6.4 Chuẩn bị phỏng vấn
+
+Ưu tiên dự án thực tế, khả năng giải quyết sự cố và hiểu bối cảnh doanh nghiệp.
+
+### 6.5 Bài học nghề nghiệp
+
+Học sâu một số năng lực cốt lõi trước, làm dự án thực chiến, liên tục phản tư và cải tiến.
+
+### 6.6 Nghệ thuật teamwork
+
+Các công cụ như Trello, ClickUp, Google Workspace, Slack và Discord giúp tối ưu phối hợp nhóm.

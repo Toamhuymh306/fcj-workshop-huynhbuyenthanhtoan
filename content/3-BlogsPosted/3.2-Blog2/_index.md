@@ -5,27 +5,63 @@ weight: 1
 chapter: false
 pre: " <b> 3.2. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Note:** The information below is for reference purposes only. Please **do not copy verbatim** for your report, including this warning.
-{{% /notice %}}
 
-# SESSION POLICIES IN AMAZON EKS POD IDENTITY
+# HOW TO TRAIN A SMART AI AGENT WITHOUT GETTING OUTSMARTED
 
-Amazon EKS Pod Identity has recently added the session policies feature, allowing you to narrow IAM permissions flexibly and precisely for each pod without needing to create many separate IAM roles. This is an important step forward that helps apply the principle of least privilege more effectively in large-scale Kubernetes environments.
+AI Agents are becoming a central topic in modern AI systems. Unlike single-turn chatbots, real agents can plan, call tools, read outcomes, self-correct, and solve multi-step tasks over multiple turns.
 
-Key points to know:
+Training these agents with Multi-turn Reinforcement Learning is challenging. This blog focuses on three practical lessons.
 
-* A session policy is an inline IAM policy specified when creating or updating a Pod Identity association.
-* Effective permissions = intersection between the IAM role permissions and the session policy → the session policy can only narrow permissions, not expand them.
-* Helps avoid over-permissioning when reusing a single IAM role for multiple workloads with different needs.
-* Supports both same-account and cross-account (via IAM role chaining).
-* Significantly reduces the number of IAM roles that need to be managed, helping avoid hitting IAM quota limits in large clusters.
-* Easily configured through the AWS Management Console, AWS CLI, or AWS SDK when creating an association between a Kubernetes ServiceAccount and an IAM role.
+## 1. Build an isolated Sandbox environment
 
-This feature is especially useful when you have many applications running on the same IAM role but need different permission restrictions (for example: one pod only reads a specific S3 bucket, another pod only calls certain APIs).
+When an agent learns by trial and error across many turns, running directly in production is unsafe. A learning agent can trigger harmful actions such as bad refunds, data deletion, or incorrect workflow execution.
 
-...Image...
+Recommended approach:
 
-...Link...
+- Use a fully isolated Sandbox.
+- For read-only tools: replay mocked and deterministic responses.
+- For state-changing tools: isolate memory by episode and tear down at the end.
 
-...Guide...
+## 2. Prevent Reward Hacking
+
+Agents optimize what is explicitly encoded in reward functions, not what humans implicitly expect.
+
+Examples:
+
+- If turn count is over-penalized, the agent may stop early with low-quality answers.
+- If tool calls are rewarded directly, the agent may spam tools without solving the task.
+
+Recommended approach:
+
+- Use Dense Reward instead of only final binary scoring.
+- Add independent external evaluation separate from training reward.
+- If reward rises but task success drops, reward hacking is likely happening.
+
+## 3. Control trajectory and Turn Budget
+
+Multi-turn trajectories increase context size and token consumption quickly. Set clear limits for:
+
+- max_turns: maximum number of turns per task.
+- sampling_max_tokens: token cap per turn.
+
+A useful baseline is to start around 1.5 times the average human turn count and refine using telemetry.
+
+## Conclusion
+
+Multi-turn agent training is not just a model problem. It is primarily a systems design problem: environment isolation, reward design, and operational guardrails.
+
+## Practical guide
+
+1. Define a concrete multi-turn task and build a sandbox with all required tools.
+2. Design reward with intermediate milestones, not only final pass/fail.
+3. Build an independent evaluator and track task success rate beside reward score.
+4. Set max_turns and sampling_max_tokens early; tune using real trajectory logs.
+5. Run A/B testing between old and new policies on a fixed validation set before production.
+
+## Article link
+
+- [Read Blog 2 on AWS](https://aws.amazon.com/vi/blogs/machine-learning/best-practices-for-multi-turn-reinforcement-learning-in-amazon-sagemaker-ai/?content_source=fb&fb_content_id=Q9-wBQEJUL5h_O8ySkuTEnaHjxaW2smXbC9wKJyqsMGcQlBKtBYimWtpyl_G3FcymQ&channel_type=fb)
+
+## Blog image
+
+![Blog 2 image](/images/3-BlogsPosted/blog2.jpg)

@@ -5,27 +5,49 @@ weight: 1
 chapter: false
 pre: " <b> 3.3. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
 
-# SESSION POLICIES TRONG AMAZON EKS POD IDENTITY
+# XAY DUNG HA TANG MULTI-TURN RL CHO AI AGENT VOI AMAZON SAGEMAKER HYPERPOD
 
-Amazon EKS Pod Identity vừa bổ sung tính năng session policies, cho phép bạn thu hẹp quyền IAM một cách linh hoạt và chính xác cho từng pod mà không cần tạo thêm nhiều IAM roles riêng biệt. Đây là bước tiến quan trọng giúp áp dụng nguyên tắc least privilege hiệu quả hơn trong môi trường Kubernetes quy mô lớn.
+Khi AI Agent phải xử lý các tác vụ nhiều bước, Reinforcement Learning truyền thống không còn đủ. Đây là cách AWS xây dựng hạ tầng Multi-turn RL trên Amazon SageMaker HyperPod.
 
-Các điểm chính cần nắm:
+Khi bạn xây dựng AI Agent để xử lý quy trình nhiều bước như gọi API, truy vấn cơ sở dữ liệu và xử lý lỗi hệ thống, các phương pháp huấn luyện truyền thống thường tối ưu từng phản hồi riêng lẻ sẽ bộc lộ giới hạn. Chất lượng của một bước đi phụ thuộc vào kết quả của nhiều bước sau đó.
 
-* Session policy là một IAM policy inline được chỉ định khi tạo hoặc cập nhật Pod Identity association.
-* Quyền hiệu quả = intersection (giao) giữa permissions của IAM role và session policy → session policy chỉ có thể thu hẹp, không thể mở rộng quyền.
-* Giúp tránh tình trạng over-permissioning khi reuse chung một IAM role cho nhiều workloads có nhu cầu khác nhau.
-* Hỗ trợ cả same-account và cross-account (qua IAM role chaining).
-* Giảm đáng kể số lượng IAM roles cần quản lý, tránh chạm giới hạn quota IAM trong cluster lớn.
-* Cấu hình dễ dàng qua AWS Management Console, AWS CLI hoặc AWS SDK khi tạo association giữa Kubernetes ServiceAccount và IAM role.
+Để giải quyết bài toán này, AWS giới thiệu kiến trúc Multi-turn Reinforcement Learning cho mô hình Amazon Nova chạy trên Amazon SageMaker HyperPod.
 
-Tính năng này đặc biệt hữu ích khi bạn có nhiều ứng dụng chạy trên cùng một IAM role nhưng cần giới hạn quyền khác nhau (ví dụ: một pod chỉ đọc S3 bucket cụ thể, pod khác chỉ gọi một số API nhất định).
+## Giai phap hoat dong nhu the nao
 
-...Hình ảnh...
+Hệ thống được thiết kế theo mô hình event-driven pipeline với 3 lớp xử lý cốt lõi:
 
-...Link...
+- Amazon SageMaker HyperPod (trên EKS) để sinh phản hồi và cập nhật trọng số mô hình.
+- AWS Fargate làm Reward Environment để chấm điểm quỹ đạo.
+- Amazon Nova Forge SDK để điều phối toàn bộ pipeline.
 
-...Hướng dẫn...
+## Diem cot loi, mo hinh trien khai 2 giai doan
+
+Giai đoạn 1 (cố định): triển khai một lần bằng AWS CDK để dựng sẵn hạ tầng nền tảng như VPC, EKS, ECS, S3, Step Functions.
+
+Giai đoạn 2 (tạm thời theo từng lần chạy): khi upload file .jsonl lên S3, hệ thống tự kích hoạt Step Functions để cấp phát GPU phục vụ huấn luyện; khi hoàn thành sẽ tự động giải phóng tài nguyên.
+
+## Ket qua mang lai
+
+- Tự động hóa toàn bộ pipeline: từ cấp phát hạ tầng, điều phối môi trường đánh giá đến huấn luyện.
+- Theo dõi trực quan qua Step Functions và debug luồng qua SQS.
+- Tối ưu chi phí nhờ cấp phát tài nguyên theo nhu cầu thực tế, giảm thời gian GPU idle.
+
+Tóm lại, đây là một kiến trúc tham khảo đáng chú ý cho Multi-turn RL trên AWS, đặc biệt phù hợp với workload cần tài nguyên tính toán lớn và thay đổi theo từng đợt dữ liệu.
+
+## Huong dan thuc hanh
+
+1. Dùng AWS CDK triển khai hạ tầng nền (VPC, EKS, ECS, S3, Step Functions) một lần.
+2. Chuẩn bị dữ liệu huấn luyện theo định dạng .jsonl và upload vào S3 bucket đầu vào.
+3. Cấu hình trigger để Step Functions tự động chạy khi có object mới trong S3.
+4. Theo dõi từng stage qua Step Functions; kiểm tra reward flow và queue depth qua SQS metrics.
+5. Sau khi job kết thúc, xác nhận tài nguyên GPU đã được teardown để tránh phát sinh chi phí.
+
+## Link bài viết
+
+- [Xem bài Blog 3 trên AWS](https://aws.amazon.com/blogs/machine-learning/building-multi-turn-rl-infrastructure-for-ai-agents-with-amazon-sagemaker-hyperpod/)
+
+## Hình ảnh bài viết
+
+![Ảnh Blog 3](/images/3-BlogsPosted/blog3.jpg)
