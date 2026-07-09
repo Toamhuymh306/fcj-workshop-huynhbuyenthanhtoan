@@ -64,4 +64,4 @@ Multi-turn agent training is not just a model problem. It is primarily a systems
 
 ## Blog image
 
-![Blog 2 image](/images/3-BlogsPosted/blog2.jpg)
+![Blog 2 image](/fcj-workshop-huynhbuyenthanhtoan/images/3-BlogsPosted/blog2.jpg)

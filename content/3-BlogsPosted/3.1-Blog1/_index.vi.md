@@ -59,4 +59,4 @@ Nếu bạn đang tìm cách giảm tải công việc vận hành, tăng cườ
 
 ## Hình ảnh bài viết
 
-![Ảnh Blog 1](/images/3-BlogsPosted/blog1.jpg)
+![Ảnh Blog 1](/fcj-workshop-huynhbuyenthanhtoan/images/3-BlogsPosted/blog1.jpg)

@@ -57,4 +57,4 @@ EKS Auto Mode with Istio Ambient Mesh provides a modern Kubernetes platform that
 
 ## Blog image
 
-![Blog 1 image](/images/3-BlogsPosted/blog1.jpg)
+![Blog 1 image](/fcj-workshop-huynhbuyenthanhtoan/images/3-BlogsPosted/blog1.jpg)

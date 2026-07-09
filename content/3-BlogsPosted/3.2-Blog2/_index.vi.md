@@ -65,4 +65,4 @@ Khi tách bạch được completion và correctness, bạn sẽ biết mô hìn
 
 ## Hình ảnh bài viết
 
-![Ảnh Blog 2](/images/3-BlogsPosted/blog2.jpg)
+![Ảnh Blog 2](/fcj-workshop-huynhbuyenthanhtoan/images/3-BlogsPosted/blog2.jpg)

@@ -37,4 +37,4 @@ This was a deep-dive community event focusing on AWS solutions and technology tr
 
 ## Event Photo
 
-![FCAJ Community Day event photo](/images/4-EventParticipated/event1.jpg)
+![FCAJ Community Day event photo](/fcj-workshop-huynhbuyenthanhtoan/images/4-EventParticipated/event1.jpg)
