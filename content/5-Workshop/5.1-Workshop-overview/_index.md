@@ -1,18 +1,21 @@
 ---
-title : "Introduction"
-date : 2024-01-01 
-weight : 1 
-chapter : false
-pre : " <b> 5.1. </b> "
+title: "Introduction"
+date: 2026-07-10
+weight: 1
+chapter: false
+pre: " <b> 5.1. </b> "
 ---
 
-#### VPC endpoints
-+ **VPC endpoints** are virtual devices. They are horizontally scaled, redundant, and highly available VPC components. They allow communication between your compute resources and AWS services without imposing availability risks.
-+ Compute resources running in VPC can access  **Amazon S3**  using a Gateway endpoint. PrivateLink interface endpoints can be used by compute resources running in VPC or on-premises.
+#### Serverless Architecture
+
+- **Serverless architecture** allows you to build and run applications without managing server infrastructure. These services scale automatically, offer built-in redundancy, and ensure high availability.
+- The crop disease analysis platform utilizes a combination of core AWS Serverless services: **Amazon Cognito** for identity management, **API Gateway** as the communication hub, **Amazon S3** for image storage, **AWS Lambda** (via ECR containers) to execute the AI inference model, and **DynamoDB** to store the output results.
 
 #### Workshop overview
-In this workshop, you will use two VPCs. 
-+ **"VPC Cloud"** is for cloud resources such as a  **Gateway endpoint** and an EC2 instance to test with. 
-+ **"VPC On-Prem"** simulates an on-premises environment such as a factory or corporate datacenter. An EC2 instance running strongSwan VPN software has been deployed in "VPC On-prem" and automatically configured to establish a Site-to-Site VPN tunnel with AWS Transit Gateway. This VPN simulates connectivity from an on-premises location to the AWS cloud. To minimize costs, only one VPN instance is provisioned to support this workshop. When planning VPN connectivity for your production workloads, AWS recommends using multiple VPN devices for high availability.
+
+In this workshop, the deployment is divided into two primary communicating environments:
+
+- **"Client-side / Frontend"** represents the Web App (built with Vanilla HTML/JS) running on the user's browser. This application makes API calls to authenticate and push images directly to the cloud.
+- **"Cloud-side / Backend"** is the underlying AWS ecosystem. When a leaf image is successfully uploaded, S3 automatically triggers a Lambda function containing the deep learning model. Lambda processes the image, classifies the disease, and writes the results to DynamoDB for the Frontend to retrieve and display to the user.
 
 ![overview](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.1-Workshop-overview/diagram1.png)

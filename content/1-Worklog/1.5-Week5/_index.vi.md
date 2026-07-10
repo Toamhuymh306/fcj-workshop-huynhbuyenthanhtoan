@@ -1,25 +1,26 @@
 ---
-title: "Worklog Tuần 5"
-date: 2024-01-01
-weight: 1
+title: "Tuần 5: Serverless Backend"
+date: 2026-06-08
+weight: 5
 chapter: false
 pre: " <b> 1.5. </b> "
 ---
-### Mục tiêu tuần 5:
 
-* Container hóa ứng dụng AI để vượt giới hạn kích thước deploy của Lambda.
-* Làm chủ Amazon Elastic Container Registry (ECR).
+### Mục tiêu Tuần 5:
 
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
-| --- | --- | --- | --- | --- |
-| 2 | - Học Docker cơ bản và nguyên lý container hóa <br> - Cài Docker local | 18/05/2026 | 18/05/2026 | <https://000021.awsstudygroup.com/> |
-| 3 | - Viết Dockerfile từ base image public.ecr.aws/lambda/python <br> - Đóng gói PyTorch, OpenCV và model weights | 19/05/2026 | 19/05/2026 | <https://000022.awsstudygroup.com/> |
-| 4 | - Build và test Docker image local bằng AWS Lambda Runtime Interface Emulator | 20/05/2026 | 20/05/2026 | <https://000023.awsstudygroup.com/> |
-| 5 | - Tạo private repository trên Amazon ECR | 21/05/2026 | 21/05/2026 | <https://000024.awsstudygroup.com/> |
-| 6 | - Authenticate Docker CLI tới ECR và push AI container image | 22/05/2026 | 22/05/2026 | <https://000025.awsstudygroup.com/> |
+- Xây dựng luồng xử lý không máy chủ (Serverless) tự động phân tích ảnh.
+- Thiết lập cơ sở dữ liệu NoSQL lưu trữ kết quả.
 
-### Kết quả đạt được tuần 5:
+### Các công việc triển khai:
 
-* Container hóa thành công workload ML nặng.
-* Push thành công image lên Amazon ECR để sẵn sàng chạy serverless.
+| Thứ | Công việc                                                       | Ngày BĐ    | Ngày HT    | Nguồn tài liệu |
+| :-- | :-------------------------------------------------------------- | :--------- | :--------- | :------------- |
+| 2   | - Khởi tạo Lambda function từ ECR Image chứa mô hình.           | 08/06/2026 | 08/06/2026 | AWS Lambda     |
+| 3   | - Thiết lập IAM Role cấp quyền truy cập S3 và DynamoDB.         | 09/06/2026 | 09/06/2026 | AWS IAM        |
+| 4   | - Tạo bảng `kts-smartagri-dev-inference-results` trên DynamoDB. | 10/06/2026 | 10/06/2026 | AWS DynamoDB   |
+| 5   | - Cấu hình S3 Bucket (`kts-smartagri-dev-raw-images`).          | 11/06/2026 | 11/06/2026 | AWS S3         |
+| 6   | - Thiết lập Event Trigger kích hoạt Lambda khi có ảnh mới.      | 12/06/2026 | 12/06/2026 | AWS Events     |
+
+### Kết quả đạt được:
+
+- Pipeline tự động: Ảnh đưa lên S3 -> Kích hoạt Lambda -> Trả kết quả về DynamoDB hoạt động trơn tru.

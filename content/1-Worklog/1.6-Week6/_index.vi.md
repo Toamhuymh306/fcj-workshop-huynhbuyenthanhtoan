@@ -1,25 +1,27 @@
 ---
-title: "Worklog Tuần 6"
-date: 2024-01-01
-weight: 1
+title: "Tuần 6: API Gateway & Bảo mật"
+date: 2026-06-15
+weight: 6
 chapter: false
 pre: " <b> 1.6. </b> "
 ---
-### Mục tiêu tuần 6:
 
-* Deploy model AI dạng container lên AWS Lambda.
-* Tối ưu cấu hình Lambda cho tác vụ tính toán nặng.
+### Mục tiêu Tuần 6:
 
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
-| --- | --- | --- | --- | --- |
-| 2 | - Tạo Lambda function mới, chọn loại Container Image từ ECR | 25/05/2026 | 25/05/2026 | <https://000026.awsstudygroup.com/> |
-| 3 | - Cấu hình Lambda: tăng Timeout (5 phút) và Memory (3008 MB) | 26/05/2026 | 26/05/2026 | <https://000027.awsstudygroup.com/> |
-| 4 | - Cấp quyền IAM để Lambda đọc S3 Raw Images và ghi S3 Processed Images | 27/05/2026 | 27/05/2026 | <https://000028.awsstudygroup.com/> |
-| 5 | - Cập nhật logic Lambda: tải object từ S3, chạy inference, upload kết quả | 28/05/2026 | 28/05/2026 | <https://000029.awsstudygroup.com/> |
-| 6 | - Kiểm thử thủ công Inference Lambda trên AWS Console | 29/05/2026 | 29/05/2026 | <https://000030.awsstudygroup.com/> |
+- Mở cổng API giao tiếp với Web App an toàn.
+- Tích hợp xác thực để chặn người dùng trái phép.
 
-### Kết quả đạt được tuần 6:
+### Các công việc triển khai:
 
-* Chạy thành công model PyTorch hoàn toàn trong môi trường serverless.
-* Xử lý được vấn đề cold start và giới hạn bộ nhớ của Lambda.
+| Thứ | Công việc                                               | Ngày BĐ    | Ngày HT    | Nguồn tài liệu |
+| :-- | :------------------------------------------------------ | :--------- | :--------- | :------------- |
+| 2   | - Tạo REST API trên Amazon API Gateway.                 | 15/06/2026 | 15/06/2026 | API Gateway    |
+| 3   | - Code Lambda function sinh Pre-signed URL cho S3.      | 16/06/2026 | 16/06/2026 | Boto3 Docs     |
+| 4   | - Liên kết API endpoint `/presign` với Lambda function. | 17/06/2026 | 17/06/2026 | AWS API        |
+| 5   | - Cấu hình Cross-Origin Resource Sharing (CORS).        | 18/06/2026 | 18/06/2026 | Web Security   |
+| 6   | - Tích hợp Cognito Authorizer yêu cầu JWT Token.        | 19/06/2026 | 19/06/2026 | AWS Cognito    |
+
+### Kết quả đạt được:
+
+- Cơ chế Upload an toàn: Client nhận thẻ ủy quyền tạm thời (Pre-signed URL) để tải file trực tiếp lên S3.
+- Chặn đứng hoàn toàn truy cập `401 Unauthorized` từ bên ngoài.

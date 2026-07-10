@@ -1,25 +1,27 @@
 ---
-title: "Week 6 Worklog"
-date: 2024-01-01
-weight: 1
+title: "Week 6: API Gateway Security"
+date: 2026-06-15
+weight: 6
 chapter: false
 pre: " <b> 1.6. </b> "
 ---
+
 ### Week 6 Objectives:
 
-* Deploy containerized AI model to AWS Lambda.
-* Configure Lambda resources for heavy compute tasks.
+- Open a secure API gateway for Web App communication.
+- Integrate authentication to block unauthorized access.
 
-### Tasks to be carried out this week:
-| Day | Task | Start Date | Completion Date | Reference Material |
-| --- | --- | --- | --- | --- |
-| 2 | - Create Lambda function using Container Image from ECR | 05/25/2026 | 05/25/2026 | <https://000026.awsstudygroup.com/> |
-| 3 | - Configure Lambda settings: Timeout 5 minutes, Memory 3008 MB | 05/26/2026 | 05/26/2026 | <https://000027.awsstudygroup.com/> |
-| 4 | - Grant IAM permissions for reading S3 Raw images and writing processed outputs | 05/27/2026 | 05/27/2026 | <https://000028.awsstudygroup.com/> |
-| 5 | - Update Lambda logic: download object, run inference, upload result | 05/28/2026 | 05/28/2026 | <https://000029.awsstudygroup.com/> |
-| 6 | - Perform manual testing of Inference Lambda in AWS Console | 05/29/2026 | 05/29/2026 | <https://000030.awsstudygroup.com/> |
+### Tasks:
 
-### Week 6 Achievements:
+| Day | Task                                                         | Start Date | End Date   | Resources    |
+| :-- | :----------------------------------------------------------- | :--------- | :--------- | :----------- |
+| Mon | - Create a REST API on Amazon API Gateway.                   | 2026-06-15 | 2026-06-15 | API Gateway  |
+| Tue | - Code Lambda function to generate Pre-signed URLs for S3.   | 2026-06-16 | 2026-06-16 | Boto3 Docs   |
+| Wed | - Link the `/presign` API endpoint with the Lambda function. | 2026-06-17 | 2026-06-17 | AWS API      |
+| Thu | - Configure Cross-Origin Resource Sharing (CORS).            | 2026-06-18 | 2026-06-18 | Web Security |
+| Fri | - Integrate Cognito Authorizer enforcing JWT Tokens.         | 2026-06-19 | 2026-06-19 | AWS Cognito  |
 
-* Successfully ran PyTorch model fully in a serverless environment.
-* Overcame Lambda cold start and memory limitation issues.
+### Outcomes:
+
+- Secure Upload Mechanism: Clients receive temporary authorization (Pre-signed URL) to upload files directly to S3.
+- External unauthorized access successfully blocked (`401 Unauthorized`).

@@ -1,27 +1,29 @@
 ---
 title: "Workshop"
-date: 2024-01-01
+date: 2026-07-10
 weight: 5
 chapter: false
 pre: " <b> 5. </b> "
 ---
-# Secure Hybrid Access to S3 using VPC Endpoints
+
+# Deploying a Serverless AI System for Crop Disease Analysis
 
 #### Overview
 
-**AWS PrivateLink** provides private connectivity to AWS services from VPCs and your on-premises networks, without exposing your traffic to the Public Internet.
+This system applies artificial intelligence to diagnose crop diseases, utilizing a 100% Serverless architecture on AWS.
 
-In this lab, you will learn how to create, configure, and test VPC endpoints that enable your workloads to reach AWS services without traversing the Public Internet.
+In this lab, we will learn how to configure and deploy the system in practice: from user authentication and secure image upload to the cloud, to triggering AI inference, and storing the results.
 
-You will create two types of endpoints to access Amazon S3: a Gateway VPC endpoint, and an Interface VPC endpoint. These two types of VPC endpoints offer different benefits depending on if you are accessing Amazon S3 from the cloud or your on-premises location
-+ **Gateway** - Create a gateway endpoint to send traffic to Amazon S3 or DynamoDB using private IP addresses.You route traffic from your VPC to the gateway endpoint using route tables.
-+ **Interface** - Create an interface endpoint to send traffic to endpoint services that use a Network Load Balancer to distribute traffic. Traffic destined for the endpoint service is resolved using DNS.
+This architecture provides two core benefits:
 
-#### Content
+- **Security & Upload Optimization** - Uses Amazon Cognito for Tokens and API Gateway for Pre-signed URLs, allowing secure, direct image uploads to Amazon S3.
+- **Automated AI Inference** - An Event-Driven mechanism uses S3 triggers to invoke AWS Lambda, running the analysis model as soon as new data arrives.
 
-1. [Workshop overview](5.1-Workshop-overview)
-2. [Prerequiste](5.2-Prerequiste/)
-3. [Access S3 from VPC](5.3-S3-vpc/)
-4. [Access S3 from On-premises](5.4-S3-onprem/)
-5. [VPC Endpoint Policies (Bonus)](5.5-Policy/)
-6. [Clean up](5.6-Cleanup/)
+#### Contents
+
+1. [Workshop overview](5.1-Workshop-overview/)
+2. [Prerequisites](5.2-Prerequisite/)
+3. [User Authentication (Cognito)](5.3-Cognito-auth/)
+4. [Secure Image Upload (Pre-signed URL & S3)](5.4-S3-upload/)
+5. [Automated AI Inference (Lambda & ECR)](5.5-AI-inference/)
+6. [Storing Results (DynamoDB)](5.6-Dynamodb-results/)

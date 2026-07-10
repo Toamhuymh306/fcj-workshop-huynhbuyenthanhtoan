@@ -1,43 +1,41 @@
 ---
-title: "Sharing and Feedback"
-date: 2024-01-01
+title: "Feedback & Contribution"
+date: 2026-07-12
 weight: 7
 chapter: false
 pre: " <b> 7. </b> "
 ---
 
-> Here, you can freely share your personal opinions about your experience participating in the First Cloud AI Journey program. This will help the FCAJ team improve any shortcomings based on the following aspects:
+> Below is my personal feedback after completing the First Cloud AI Journey program with the "KTs Smart Agriculture" project.
 
-### Overall Evaluation
+### General Assessment
 
-**1. Working Environment**  
-The working environment is very friendly and open. FCAJ members are always willing to help whenever I encounter difficulties, even outside working hours. The workspace is tidy and comfortable, helping me focus better. However, I think it would be nice to have more social gatherings or team bonding activities to strengthen relationships.
+**1. Working Environment:**
+Very professional with a strong AWS cultural influence. Working at the Bitexco Financial Tower was highly inspiring. The open communication style allowed our KTs team to discuss complex Serverless architectures without pressure.
 
-**2. Support from Mentor / Team Admin**  
-The mentor provides very detailed guidance, explains clearly when I don’t understand, and always encourages me to ask questions. The admin team supports administrative tasks, provides necessary documents, and creates favorable conditions for me to work effectively. I especially appreciate that the mentor allows me to try and solve problems myself instead of just giving the answer.
+**2. Mentor / Team Admin Support:**
+My mentor didn't just answer technical AWS questions but guided me through System Design thinking. The Admin team was extremely efficient in providing internship resources, helping us optimize our deployment time within the 8-week period.
 
-**3. Relevance of Work to Academic Major**  
-The tasks I was assigned align well with the knowledge I learned at university, while also introducing me to new areas I had never encountered before. This allowed me to both strengthen my foundational knowledge and gain practical skills.
+**3. Alignment with Field of Study:**
+The "KTs Smart Agriculture" project allowed me to directly apply Serverless architecture to a real-world crop disease detection problem. It was the perfect blend of Artificial Intelligence and Cloud Computing - perfectly aligned with my major at HUTECH.
 
-**4. Learning & Skill Development Opportunities**  
-During the internship, I learned many new skills such as using project management tools, teamwork skills, and professional communication in a corporate environment. The mentor also shared valuable real-world experiences that helped me better plan my career path.
+**4. Opportunities for Growth:**
+I mastered containerizing AI models with Docker for Lambda deployment, and sharpened my Project Management skills as the team lead.
 
-**5. Company Culture & Team Spirit**  
-The company culture is very positive: everyone respects each other, works seriously but still keeps things enjoyable. When there are urgent projects, everyone works together and supports one another regardless of their position. This made me feel like a real part of the team, even as an intern.
+**5. Culture & Team Spirit:**
+Everyone supports each other based on expertise rather than hierarchy. This is truly commendable.
 
-**6. Internship Policies / Benefits**  
-The company provides an internship allowance and offers flexible working hours when needed. In addition, having the opportunity to join internal training sessions is a big plus.
+**6. Benefits & Policy:**
+Flexible support policies and in-depth tech training sessions are major highlights, giving me a clear roadmap for future AWS certifications.
 
----
+### Other Questions
 
-### Additional Questions
-- What did you find **most satisfying** during your internship?  
-- What do you think the company **should improve** for future interns?  
-- If recommending to a friend, would you **suggest they intern here**? Why or why not?  
+- **What I am most satisfied with:** Being empowered to execute an End-to-End project instead of just completing theoretical labs.
+- **Areas for improvement:** Adding more "Deep Dive" sessions on AWS Security specifically for large-scale AI projects.
+- **Would I recommend it:** Absolutely. This is the ideal environment for students to "step out of the textbooks" and work with real-world cloud infrastructure.
 
----
+### Proposals & Suggestions
 
-### Suggestions & Expectations
-- Do you have any suggestions to improve the internship experience?  
-- Would you like to continue this program in the future?  
-- Any other comments (free sharing):
+- **Proposal:** Establish a shared Dataset Hub for AI teams to save time on data collection.
+- **Aspiration:** I am very eager to continue with the program in advanced stages or specialized mentorship programs.
+- **Additional Feedback:** The program should organize showcase events between teams to foster cross-learning in architectural design.

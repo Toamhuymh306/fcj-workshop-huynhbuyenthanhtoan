@@ -1,19 +1,21 @@
 ---
-title : "Giới thiệu"
-date : 2024-01-01 
-weight : 1
-chapter : false
-pre : " <b> 5.1. </b> "
+title: "Giới thiệu"
+date: 2026-07-10
+weight: 1
+chapter: false
+pre: " <b> 5.1. </b> "
 ---
 
-#### Giới thiệu về VPC Endpoint
+#### Kiến trúc Serverless (Không máy chủ)
 
-+ Điểm cuối VPC (endpoint) là thiết bị ảo. Chúng là các thành phần VPC có thể mở rộng theo chiều ngang, dự phòng và có tính sẵn sàng cao. Chúng cho phép giao tiếp giữa tài nguyên điện toán của bạn và dịch vụ AWS mà không gây ra rủi ro về tính sẵn sàng.
-+ Tài nguyên điện toán đang chạy trong VPC có thể truy cập Amazon S3 bằng cách sử dụng điểm cuối Gateway. Interface Endpoint  PrivateLink có thể được sử dụng bởi tài nguyên chạy trong VPC hoặc tại TTDL.
+- **Kiến trúc Serverless** cho phép xây dựng và chạy các ứng dụng mà không cần phải quản lý cơ sở hạ tầng máy chủ. Các dịch vụ này tự động mở rộng quy mô, có tính dự phòng cao và đảm bảo tính sẵn sàng.
+- Nền tảng phân tích bệnh cây trồng sử dụng sự kết hợp của các dịch vụ Serverless cốt lõi trên AWS: **Amazon Cognito** để quản lý danh tính, **API Gateway** làm cổng giao tiếp, **Amazon S3** để lưu trữ hình ảnh, **AWS Lambda** (kết hợp ECR container) để chạy mô hình suy luận AI, và **DynamoDB** để lưu trữ kết quả đầu ra.
 
-#### Tổng quan về workshop
-Trong workshop này, bạn sẽ sử dụng hai VPC.
-+ **"VPC Cloud"** dành cho các tài nguyên cloud như Gateway endpoint và EC2 instance để kiểm tra.
-+ **"VPC On-Prem"** mô phỏng môi trường truyền thống như nhà máy hoặc trung tâm dữ liệu của công ty. Một EC2 Instance chạy phần mềm StrongSwan VPN đã được triển khai trong "VPC On-prem" và được cấu hình tự động để thiết lập đường hầm VPN Site-to-Site với AWS Transit Gateway. VPN này mô phỏng kết nối từ một vị trí tại TTDL (on-prem) với AWS cloud. Để giảm thiểu chi phí, chỉ một phiên bản VPN được cung cấp để hỗ trợ workshop này. Khi lập kế hoạch kết nối VPN cho production workloads của bạn, AWS khuyên bạn nên sử dụng nhiều thiết bị VPN để có tính sẵn sàng cao.
+#### Tổng quan workshop
+
+Trong workshop này, quá trình triển khai được chia làm 2 môi trường giao tiếp chính:
+
+- **"Client-side / Frontend"** đại diện cho ứng dụng Web App (viết bằng HTML/JS thuần) chạy trên trình duyệt của người dùng. Ứng dụng này sẽ gọi API để xác thực và đẩy ảnh trực tiếp lên đám mây.
+- **"Cloud-side / Backend"** là hệ sinh thái AWS hoạt động ngầm. Khi một hình ảnh lá cây được tải lên thành công, S3 sẽ tự động kích hoạt (trigger) hàm Lambda chứa mô hình học sâu. Lambda xử lý ảnh, phân loại lớp bệnh và ghi kết quả vào DynamoDB để Frontend lấy dữ liệu hiển thị về cho người dùng.
 
 ![overview](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.1-Workshop-overview/diagram1.png)

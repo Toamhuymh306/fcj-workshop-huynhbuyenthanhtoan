@@ -1,25 +1,26 @@
 ---
-title: "Worklog Tuần 7"
-date: 2024-01-01
-weight: 1
+title: "Tuần 7: Phát triển Web Frontend"
+date: 2026-06-22
+weight: 7
 chapter: false
 pre: " <b> 1.7. </b> "
 ---
-### Mục tiêu tuần 7:
 
-* Triển khai kiến trúc Event-driven.
-* Tách lớp lưu trữ và tính toán bằng Amazon SQS.
+### Mục tiêu Tuần 7:
 
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
-| --- | --- | --- | --- | --- |
-| 2 | - Tìm hiểu Amazon SQS (Standard vs FIFO) và message patterns | 01/06/2026 | 01/06/2026 | <https://000031.awsstudygroup.com/> |
-| 3 | - Tạo Standard SQS Queue cho Inference Pipeline | 02/06/2026 | 02/06/2026 | <https://000032.awsstudygroup.com/> |
-| 4 | - Cấu hình S3 Event Notifications gửi s3:ObjectCreated:* về SQS | 03/06/2026 | 03/06/2026 | <https://000033.awsstudygroup.com/> |
-| 5 | - Cấu hình SQS Queue làm trigger cho AI Inference Lambda | 04/06/2026 | 04/06/2026 | <https://000034.awsstudygroup.com/> |
-| 6 | - Test luồng sự kiện: Upload image -> S3 -> SQS -> Lambda trigger | 05/06/2026 | 05/06/2026 | <https://000035.awsstudygroup.com/> |
+- Xây dựng giao diện Web cho người dùng (Nông dân/Kỹ sư nông nghiệp).
+- Kết nối Frontend thuần (Vanilla JS/HTML) với AWS Backend.
 
-### Kết quả đạt được tuần 7:
+### Các công việc triển khai:
 
-* Xây dựng thành công pipeline bất đồng bộ ổn định.
-* Hệ thống xử lý tốt traffic spike nhờ cơ chế xếp hàng trước khi chạy inference.
+| Thứ | Công việc                                                      | Ngày BĐ    | Ngày HT    | Nguồn tài liệu |
+| :-- | :------------------------------------------------------------- | :--------- | :--------- | :------------- |
+| 2   | - Dựng khung sườn giao diện HTML và Style CSS.                 | 22/06/2026 | 22/06/2026 | UI/UX Design   |
+| 3   | - Xây dựng Form Đăng nhập/Đăng ký tích hợp Cognito API.        | 23/06/2026 | 23/06/2026 | AWS Auth JS    |
+| 4   | - Viết Javascript gọi API `/presign` kèm Authorization Header. | 24/06/2026 | 24/06/2026 | Fetch API      |
+| 5   | - Xử lý tính năng chọn ảnh và PUT dữ liệu lên S3.              | 25/06/2026 | 25/06/2026 | AWS S3 REST    |
+| 6   | - Thiết kế Dashboard hiển thị kết quả chẩn đoán bệnh.          | 26/06/2026 | 26/06/2026 | UI Components  |
+
+### Kết quả đạt được:
+
+- Giao diện web hoàn chỉnh, thẩm mỹ, có khả năng tương tác mượt mà với luồng xử lý AI đám mây.

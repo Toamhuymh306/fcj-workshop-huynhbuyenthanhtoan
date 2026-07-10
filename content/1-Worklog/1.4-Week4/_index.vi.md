@@ -1,25 +1,27 @@
 ---
-title: "Worklog Tuần 4"
-date: 2024-01-01
-weight: 1
+title: "Tuần 4: Đóng gói Docker & ECR"
+date: 2026-06-01
+weight: 4
 chapter: false
 pre: " <b> 1.4. </b> "
 ---
-### Mục tiêu tuần 4:
 
-* Chuẩn bị AI model cho nền tảng inference.
-* Tối ưu model Computer Vision để phù hợp triển khai serverless.
+### Mục tiêu Tuần 4:
 
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
-| --- | --- | --- | --- | --- |
-| 2 | - Rà soát các model Plant Disease CNN/YOLO hiện có <br> - Tập trung bộ dữ liệu nhận diện nhện đỏ trên lá cacao | 11/05/2026 | 11/05/2026 | <https://000016.awsstudygroup.com/> |
-| 3 | - Tinh chỉnh mã tiền xử lý ảnh bằng Python/OpenCV | 12/05/2026 | 12/05/2026 | <https://000017.awsstudygroup.com/> |
-| 4 | - Export model PyTorch sang định dạng .pt hoặc .onnx đã tối ưu | 13/05/2026 | 13/05/2026 | <https://000018.awsstudygroup.com/> |
-| 5 | - Viết script inference để load model và xử lý ảnh local | 14/05/2026 | 14/05/2026 | <https://000019.awsstudygroup.com/> |
-| 6 | - Chạy test local để đo thời gian inference và mức tiêu thụ RAM | 15/05/2026 | 15/05/2026 | <https://000020.awsstudygroup.com/> |
+- Đóng gói mô hình học máy thành container độc lập.
+- Đẩy image lên kho lưu trữ đám mây của AWS.
 
-### Kết quả đạt được tuần 4:
+### Các công việc triển khai:
 
-* Tối ưu được trọng số model và pipeline preprocessing.
-* Xác lập baseline về bộ nhớ và thời gian thực thi cho giai đoạn triển khai AWS.
+| Thứ | Công việc                                               | Ngày BĐ    | Ngày HT    | Nguồn tài liệu |
+| :-- | :------------------------------------------------------ | :--------- | :--------- | :------------- |
+| 2   | - Viết mã nguồn suy luận (Inference Script).            | 01/06/2026 | 01/06/2026 | Python Docs    |
+| 3   | - Thiết lập Dockerfile tối ưu hóa dung lượng (~2.29GB). | 02/06/2026 | 02/06/2026 | Docker Docs    |
+| 4   | - Build Docker Image và kiểm thử chạy nội bộ (Local).   | 03/06/2026 | 03/06/2026 | Docker CLI     |
+| 5   | - Khởi tạo Repository trên Amazon ECR.                  | 04/06/2026 | 04/06/2026 | AWS ECR Docs   |
+| 6   | - Tag và Push Image lên AWS ECR thành công.             | 05/06/2026 | 05/06/2026 | AWS CLI        |
+
+### Kết quả đạt được:
+
+- AI Model được container hóa, loại bỏ hoàn toàn lỗi xung đột môi trường.
+- Image sẵn sàng trên Amazon ECR để triển khai cho Lambda.

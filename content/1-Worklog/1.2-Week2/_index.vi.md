@@ -1,26 +1,27 @@
 ---
-title: "Worklog Tuần 2"
-date: 2024-01-01
-weight: 1
+title: "Tuần 2: Xử lý dữ liệu AI"
+date: 2026-05-18
+weight: 2
 chapter: false
 pre: " <b> 1.2. </b> "
 ---
-### Mục tiêu tuần 2:
 
-* Đào sâu kiến thức về Serverless compute.
-* Hiểu và triển khai AWS Lambda cùng Amazon API Gateway.
+### Mục tiêu Tuần 2:
 
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
-| --- | --- | --- | --- | --- |
-| 2 | - Tìm hiểu kiến trúc AWS Lambda và execution role <br> - Viết Lambda Hello World đầu tiên | 27/04/2026 | 27/04/2026 | <https://00006.awsstudygroup.com/> |
-| 3 | - Tìm hiểu Amazon API Gateway (REST API, HTTP API) <br> - Tạo endpoint API cơ bản | 28/04/2026 | 28/04/2026 | <https://00007.awsstudygroup.com/> |
-| 4 | - Thực hành tích hợp API Gateway với AWS Lambda (Proxy Integration) | 29/04/2026 | 29/04/2026 | <https://00008.awsstudygroup.com/> |
-| 5 | - Triển khai Cognito Authorizer trong API Gateway để bảo vệ endpoint | 30/04/2026 | 30/04/2026 | <https://00009.awsstudygroup.com/> |
-| 6 | - Kiểm thử secured API bằng Postman và JWT token | 01/05/2026 | 01/05/2026 | <https://000010.awsstudygroup.com/> |
+- Thu thập bộ dữ liệu chuẩn cho nhận diện bệnh cây trồng.
+- Làm sạch, tiền xử lý và chuẩn bị dữ liệu cho quá trình huấn luyện AI.
 
-### Kết quả đạt được tuần 2:
+### Các công việc triển khai:
 
-* Làm chủ tích hợp giữa API Gateway và AWS Lambda.
-* Bảo vệ thành công REST API bằng JWT token của Amazon Cognito.
-* Xác thực được toàn bộ luồng phân quyền API bằng Postman.
+| Thứ | Công việc                                                      | Ngày BĐ    | Ngày HT    | Nguồn tài liệu |
+| :-- | :------------------------------------------------------------- | :--------- | :--------- | :------------- |
+| 2   | - Tải bộ dữ liệu PlantVillage từ Kaggle.                       | 18/05/2026 | 18/05/2026 | Kaggle         |
+| 3   | - Phân tích cấu trúc 38 lớp bệnh trên 14 loại cây.             | 19/05/2026 | 19/05/2026 | Dataset Specs  |
+| 4   | - Tiền xử lý ảnh: Resize và Normalize bằng OpenCV.             | 20/05/2026 | 20/05/2026 | OpenCV Docs    |
+| 5   | - Tăng cường dữ liệu (Data Augmentation) để chống overfitting. | 21/05/2026 | 21/05/2026 | PyTorch Vision |
+| 6   | - Phân chia tập dữ liệu thành Train / Validation / Test.       | 22/05/2026 | 22/05/2026 | Scikit-learn   |
+
+### Kết quả đạt được:
+
+- Pipeline xử lý dữ liệu được tự động hóa hoàn toàn.
+- Tập dữ liệu sạch, sẵn sàng đưa vào mô hình học sâu.

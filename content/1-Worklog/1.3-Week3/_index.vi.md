@@ -1,25 +1,27 @@
 ---
-title: "Worklog Tuần 3"
-date: 2024-01-01
-weight: 1
+title: "Tuần 3: Huấn luyện mô hình AI"
+date: 2026-05-25
+weight: 3
 chapter: false
 pre: " <b> 1.3. </b> "
 ---
-### Mục tiêu tuần 3:
 
-* Thiết kế luồng upload file an toàn.
-* Triển khai S3 Pre-signed URL để vượt giới hạn payload của API Gateway.
+### Mục tiêu Tuần 3:
 
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
-| --- | --- | --- | --- | --- |
-| 2 | - Nghiên cứu giới hạn API Gateway (10 MB) và Lambda (6 MB payload) <br> - Tìm hiểu cơ chế S3 Pre-signed URL | 04/05/2026 | 04/05/2026 | <https://000011.awsstudygroup.com/> |
-| 3 | - Viết Lambda (Python/Boto3) tạo pre-signed URL cho put_object | 05/05/2026 | 05/05/2026 | <https://000012.awsstudygroup.com/> |
-| 4 | - Gán IAM role cho phép Lambda tạo URL với đúng S3 bucket mục tiêu | 06/05/2026 | 06/05/2026 | <https://000013.awsstudygroup.com/> |
-| 5 | - Kết nối Lambda tạo URL vào secured endpoint trên API Gateway | 07/05/2026 | 07/05/2026 | <https://000014.awsstudygroup.com/> |
-| 6 | - Test end-to-end luồng upload trực tiếp từ client lên S3 bằng URL tạm thời | 08/05/2026 | 08/05/2026 | <https://000015.awsstudygroup.com/> |
+- Thiết kế kiến trúc Mạng nơ-ron tích chập (CNN).
+- Huấn luyện mô hình và đánh giá hiệu năng nhận diện bệnh.
 
-### Kết quả đạt được tuần 3:
+### Các công việc triển khai:
 
-* Giải quyết bottleneck upload file lớn bằng kiến trúc direct-to-S3.
-* Tạo thành công URL upload tạm thời, an toàn bằng Lambda và Boto3.
+| Thứ | Công việc                                                 | Ngày BĐ    | Ngày HT    | Nguồn tài liệu    |
+| :-- | :-------------------------------------------------------- | :--------- | :--------- | :---------------- |
+| 2   | - Xây dựng kiến trúc CNN bằng framework PyTorch.          | 25/05/2026 | 25/05/2026 | PyTorch Docs      |
+| 3   | - Viết script cấu hình Loss Function và Optimizer.        | 26/05/2026 | 26/05/2026 | PyTorch Guide     |
+| 4   | - Khởi chạy vòng lặp huấn luyện (Training Loop).          | 27/05/2026 | 27/05/2026 | Local Environment |
+| 5   | - Tối ưu hóa siêu tham số (Hyperparameter tuning).        | 28/05/2026 | 28/05/2026 | AI Papers         |
+| 6   | - Trích xuất metrics: Accuracy và F1-Score trên tập Test. | 29/05/2026 | 29/05/2026 | Scikit-learn      |
+
+### Kết quả đạt được:
+
+- Mô hình PyTorch phân loại 38 lớp bệnh cây trồng hoạt động ổn định với độ chính xác cao.
+- File trọng số mô hình (`.pt`/`.pth`) đã sẵn sàng để tích hợp.

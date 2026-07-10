@@ -1,35 +1,29 @@
 ---
-title: "Nhật ký công việc"
-date: 2024-01-01
+title: "Worklog"
+date: 2026-05-11
 weight: 1
 chapter: false
 pre: " <b> 1. </b> "
 ---
 
-**Trong trang này** bạn sẽ cần giới thiệu worklog của bạn **như thế nào**? Bạn hoàn thành chương trình trong vòng **bao nhiêu tuần**? Bạn **đã làm gì** trong các tuần đó?
+**Trên trang này**, nhóm KTs tổng hợp lại nhật ký công việc (Worklog) trong suốt quá trình thực tập và triển khai dự án **KTs Smart Agriculture**. 
 
-Thông thường và cũng là tiêu chuẩn, một worklog được thực hiện trong khoảng 3 tháng (trong suốt thời gian thực tập) với nội dung các tuần như sau:
+Dự án được thực hiện với cường độ cao trong vòng **8 tuần** (từ ngày 11/05/2026 đến 12/07/2026). Hành trình này bao gồm việc xây dựng một hệ thống AI phân loại bệnh cây trồng (sử dụng PlantVillage Dataset) hoàn chỉnh: từ bước xử lý dữ liệu đầu vào, huấn luyện mô hình PyTorch, cho đến việc triển khai hạ tầng Backend Serverless 100% trên mây AWS (S3, Lambda, ECR, API Gateway, DynamoDB), tích hợp bảo mật chặt chẽ với Amazon Cognito và cuối cùng là xây dựng giao diện Web Frontend thân thiện với người dùng.
 
-**Tuần 1:** [AWS nền tảng, IAM, CLI, S3 và Cognito](1.1-week1/)
+Dưới đây là chi tiết lộ trình công việc được chia theo 8 tuần:
 
-**Tuần 2:** [Lambda và API Gateway cơ bản](1.2-week2/)
+**Tuần 1:** [Khởi tạo & AWS Cơ bản (Onboarding, IAM, S3, Cognito)](1.1-week1/)
 
-**Tuần 3:** [Thiết kế luồng upload an toàn bằng Pre-signed URL](1.3-week3/)
+**Tuần 2:** [Xử lý dữ liệu AI (PlantVillage Dataset Preparation)](1.2-week2/)
 
-**Tuần 4:** [Chuẩn bị và tối ưu AI model](1.4-week4/)
+**Tuần 3:** [Huấn luyện mô hình (CNN PyTorch Model Training)](1.3-week3/)
 
-**Tuần 5:** [Container hóa AI và làm việc với Amazon ECR](1.5-week5/)
+**Tuần 4:** [Đóng gói Docker & Amazon ECR (Model Containerization)](1.4-week4/)
 
-**Tuần 6:** [Deploy AI container lên AWS Lambda](1.6-week6/)
+**Tuần 5:** [Serverless Backend (AWS Lambda & DynamoDB)](1.5-week5/)
 
-**Tuần 7:** [Xây dựng kiến trúc Event-driven với SQS](1.7-week7/)
+**Tuần 6:** [API Gateway & Bảo mật (API Security & Presigned URLs)](1.6-week6/)
 
-**Tuần 8:** [Tích hợp DynamoDB lưu kết quả inference](1.8-week8/)
+**Tuần 7:** [Phát triển Giao diện Web (Frontend Development)](1.7-week7/)
 
-**Tuần 9:** [Tối ưu chi phí lưu trữ với S3 Lifecycle](1.9-week9/)
-
-**Tuần 10:** [Kiểm thử tích hợp end-to-end toàn hệ thống](1.10-week10/)
-
-**Tuần 11:** [Monitoring và alerting với CloudWatch và SNS](1.11-week11/)
-
-**Tuần 12:** [Hoàn thiện báo cáo, clean-up và bàn giao dự án](1.12-week12/)
+**Tuần 8:** [Hoàn thiện, Tài liệu & Demo (System E2E & Final Demo)](1.8-week8/)

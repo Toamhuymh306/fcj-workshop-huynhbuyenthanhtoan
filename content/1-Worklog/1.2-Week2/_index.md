@@ -1,26 +1,27 @@
 ---
-title: "Week 2 Worklog"
-date: 2024-01-01
-weight: 1
+title: "Week 2: AI Data Processing"
+date: 2026-05-18
+weight: 2
 chapter: false
 pre: " <b> 1.2. </b> "
 ---
+
 ### Week 2 Objectives:
 
-* Deepen understanding of serverless compute fundamentals.
-* Implement AWS Lambda and Amazon API Gateway.
+- Collect the standard dataset for crop disease detection.
+- Clean, pre-process, and prepare data for AI training.
 
-### Tasks to be carried out this week:
-| Day | Task | Start Date | Completion Date | Reference Material |
-| --- | --- | --- | --- | --- |
-| 2 | - Learn AWS Lambda architecture and execution roles <br> - Write the first Hello World Lambda function | 04/27/2026 | 04/27/2026 | <https://00006.awsstudygroup.com/> |
-| 3 | - Learn Amazon API Gateway fundamentals (REST APIs, HTTP APIs) <br> - Create a basic API endpoint | 04/28/2026 | 04/28/2026 | <https://00007.awsstudygroup.com/> |
-| 4 | - Practice integrating API Gateway with AWS Lambda (Proxy Integration) | 04/29/2026 | 04/29/2026 | <https://00008.awsstudygroup.com/> |
-| 5 | - Implement Cognito Authorizer in API Gateway to secure endpoints | 04/30/2026 | 04/30/2026 | <https://00009.awsstudygroup.com/> |
-| 6 | - Test secured APIs using Postman with JWT tokens | 05/01/2026 | 05/01/2026 | <https://000010.awsstudygroup.com/> |
+### Tasks:
 
-### Week 2 Achievements:
+| Day | Task                                                     | Start Date | End Date   | Resources      |
+| :-- | :------------------------------------------------------- | :--------- | :--------- | :------------- |
+| Mon | - Download the PlantVillage Dataset from Kaggle.         | 2026-05-18 | 2026-05-18 | Kaggle         |
+| Tue | - Analyze the 38 disease classes across 14 crops.        | 2026-05-19 | 2026-05-19 | Dataset Specs  |
+| Wed | - Image pre-processing: Resize and Normalize via OpenCV. | 2026-05-20 | 2026-05-20 | OpenCV Docs    |
+| Thu | - Data Augmentation to prevent model overfitting.        | 2026-05-21 | 2026-05-21 | PyTorch Vision |
+| Fri | - Split dataset into Train / Validation / Test sets.     | 2026-05-22 | 2026-05-22 | Scikit-learn   |
 
-* Mastered integration between API Gateway and AWS Lambda.
-* Successfully secured REST APIs using Amazon Cognito JWT tokens.
-* Validated API authorization flows using Postman.
+### Outcomes:
+
+- Fully automated data processing pipeline.
+- Clean dataset, ready to be fed into the deep learning model.

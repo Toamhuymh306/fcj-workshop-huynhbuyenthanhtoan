@@ -1,25 +1,27 @@
 ---
-title: "Week 8 Worklog"
-date: 2024-01-01
-weight: 1
+title: "Week 8: Final Review & Report"
+date: 2026-06-29
+weight: 8
 chapter: false
 pre: " <b> 1.8. </b> "
 ---
+
 ### Week 8 Objectives:
 
-* Persist AI inference results using NoSQL database.
-* Implement Amazon DynamoDB.
+- Perform End-to-End (E2E) system integration testing.
+- Draft architectural documentation, finalize the internship report, and prepare for the office Demo.
 
-### Tasks to be carried out this week:
-| Day | Task | Start Date | Completion Date | Reference Material |
-| --- | --- | --- | --- | --- |
-| 2 | - Learn DynamoDB basics (Table, Partition Key, Sort Key) | 06/08/2026 | 06/08/2026 | <https://000036.awsstudygroup.com/> |
-| 3 | - Create AI_Diagnosis_Results table with Partition Key ImageID | 06/09/2026 | 06/09/2026 | <https://000037.awsstudygroup.com/> |
-| 4 | - Add IAM policies for Inference Lambda with dynamodb:PutItem | 06/10/2026 | 06/10/2026 | <https://000038.awsstudygroup.com/> |
-| 5 | - Update Lambda Python code to parse inference results and write records to DynamoDB | 06/11/2026 | 06/11/2026 | <https://000039.awsstudygroup.com/> |
-| 6 | - Validate data persistence in DynamoDB Console after processing image | 06/12/2026 | 06/12/2026 | <https://000040.awsstudygroup.com/> |
+### Tasks:
 
-### Week 8 Achievements:
+| Day | Task                                                              | Start Date | End Date   | Resources  |
+| :-- | :---------------------------------------------------------------- | :--------- | :--------- | :--------- |
+| Mon | - Run E2E tests: Login -> Upload -> AI Processing -> Display.     | 2026-06-29 | 2026-06-30 | QA Testing |
+| Wed | - Update `config.js` and resolve final CORS issues.               | 2026-07-01 | 2026-07-02 | Dev Tools  |
+| Fri | - Draft `README.md` and `AWS_ARCHITECTURE.md` files.              | 2026-07-03 | 2026-07-06 | Markdown   |
+| Wed | - Deploy documentation to GitHub Pages as a project site.         | 2026-07-08 | 2026-07-09 | GitHub     |
+| Fri | - Finalize project, compile the internship report for submission. | 2026-07-10 | 2026-07-12 | Internal   |
 
-* Successfully integrated a highly scalable NoSQL database.
-* System now stores metadata and diagnosis output reliably.
+### Outcomes:
+
+- The KTs Smart Agriculture platform operates stably, meeting the July 12 deadline.
+- A comprehensive set of documentation is ready for presentation to the evaluation committee.
