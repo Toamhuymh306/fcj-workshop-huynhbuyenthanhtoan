@@ -1,9 +1,9 @@
 ---
 title: "Kiến trúc: Tải ảnh Serverless"
 date: 2024-01-01
-weight: 1
+weight: 4
 chapter: false
-pre: " <b> 1.0 </b> "
+pre: " <b> 5.4 </b> "
 ---
 
 #### Luồng thu thập dữ liệu an toàn
