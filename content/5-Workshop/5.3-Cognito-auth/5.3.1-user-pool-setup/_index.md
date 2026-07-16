@@ -23,7 +23,7 @@ The Cognito User Pool acts as an identity management database. It will help the 
 ![cognito](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/cognito-signin.png)
 
 - **Step 3 & Step 4:** Keep the default settings for the sign-up experience and email delivery.
-- **Step 5 (Integrate your app):** + Name your User Pool `kts-smart-agri-user-pool-prod`.
+- **Step 5 (Integrate your app):** + Name your User Pool, e.g., `kts-smart-agri-user-pool-prod`.
   - Select to add an **App client**. Name the App client `KTs-Web-Client`.
   - Ensure you select **Public client** and **Don't generate a client secret** (Since our Frontend is Vanilla JS/HTML running in the browser, it cannot securely store a secret key).
 

@@ -23,7 +23,7 @@ Cognito User Pool đóng vai trò như một cơ sở dữ liệu quản lý dan
 ![cognito](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/cognito-signin.png)
 
 - **Bước 3 & Bước 4:** Giữ nguyên các thiết lập mặc định cho trải nghiệm đăng ký (Sign-up experience) và gửi email xác nhận.
-- **Bước 5 (Integrate your app):** + Đặt tên cho User Pool là `kts-smart-agri-user-pool-prod`.
+- **Bước 5 (Integrate your app):** + Đặt tên cho User Pool, ví dụ: `kts-smart-agri-user-pool-prod`.
   - Đánh dấu chọn tạo **App client**. Đặt tên cho App client là `KTs-Web-Client`.
   - Đảm bảo chọn **Public client** và **Không tạo Client secret** (Do Frontend của chúng ta là Vanilla JS/HTML chạy trên trình duyệt, không bảo mật được secret key).
 
