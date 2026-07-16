@@ -1,6 +1,6 @@
 ---
 title: "Bản đề xuất"
-date: 2024-01-01
+date: 2026-07-08
 weight: 2
 chapter: false
 pre: " <b> 2. </b> "
@@ -27,7 +27,9 @@ Serverless AI Inference Platform được thiết kế nhằm cung cấp một h
 
 **3. Kiến trúc giải pháp**
 
-Nền tảng áp dụng kiến trúc Event-Driven Serverless, đảm bảo tính Decoupled (phân tách độc lập) giữa luồng tiếp nhận file và luồng xử lý AI. (Tham khảo sơ đồ kiến trúc _aws1.drawio_4.png_).
+Nền tảng áp dụng kiến trúc Event-Driven Serverless, đảm bảo tính Decoupled (phân tách độc lập) giữa luồng tiếp nhận file và luồng xử lý AI.
+
+![overview](/images/2-Proposal/diagram1.png)
 
 - **Dịch vụ AWS sử dụng:**
 - **Amazon Cognito:** Xác thực người dùng, cấp phát JWT token.
