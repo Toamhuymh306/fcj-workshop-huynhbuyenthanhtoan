@@ -29,27 +29,12 @@ Xóa theo thứ tự phụ thuộc để tránh lỗi resource in use.
 
 #### 3. Xóa dữ liệu
 
-```powershell
-aws s3 rm "s3://$RawBucket" --recursive --region $AwsRegion
-aws s3 rm "s3://$ProcessedBucket" --recursive --region $AwsRegion
-aws s3 rm "s3://$ArchiveBucket" --recursive --region $AwsRegion
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
 
-aws s3api delete-bucket --bucket $RawBucket --region $AwsRegion
-aws s3api delete-bucket --bucket $ProcessedBucket --region $AwsRegion
-aws s3api delete-bucket --bucket $ArchiveBucket --region $AwsRegion
+![cleanup empty buckets](/images/5-Workshop/5.8-Cleanup/cleanup-empty-buckets.png)
 
-aws dynamodb delete-table --table-name $ResultTable --region $AwsRegion
-aws sqs delete-queue --queue-url $QueueUrl --region $AwsRegion
-```
 
 #### 4. Xóa image và repository
-
-```powershell
-aws ecr delete-repository `
-  --repository-name $EcrRepository `
-  --force `
-  --region $AwsRegion
-```
 
 #### 5. Xóa Cognito và IAM
 
@@ -60,6 +45,13 @@ aws ecr delete-repository `
 
 #### 6. Xác minh chi phí
 
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![cleanup resources removed](/images/5-Workshop/5.8-Cleanup/cleanup-resources-removed.png)
+
+![cleanup cost check](/images/5-Workshop/5.8-Cleanup/cleanup-cost-check.png)
+
+
 Kiểm tra AWS Billing/Cost Explorer sau 24 giờ:
 
 - Lambda không còn invocation.
@@ -67,11 +59,3 @@ Kiểm tra AWS Billing/Cost Explorer sau 24 giờ:
 - ECR không còn image storage.
 - Rekognition không còn `DetectLabels` calls.
 - DynamoDB table và SQS queue đã bị xóa.
-
-#### Kết quả triển khai
-
-![Kết quả triển khai - cleanup empty buckets](/images/5-Workshop/5.8-Cleanup/cleanup-empty-buckets.png)
-
-![Kết quả triển khai - cleanup resources removed](/images/5-Workshop/5.8-Cleanup/cleanup-resources-removed.png)
-
-![Kết quả triển khai - cleanup cost check](/images/5-Workshop/5.8-Cleanup/cleanup-cost-check.png)

@@ -25,14 +25,16 @@ const AWS_CONFIG = {
 
 #### 2. Run the frontend locally
 
-```powershell
-cd D:\kts-smart-agri\frontend-app
-python -m http.server 8000
-```
-
 Open `http://127.0.0.1:8000`.
 
 #### 3. Register and verify the account
+
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![cognito confirm email](/images/5-Workshop/5.3-Cognito-auth/cognito-confirm-email.png)
+
+![cognito login success](/images/5-Workshop/5.3-Cognito-auth/cognito-login-success.png)
+
 
 1. Choose **Sign up**.
 2. Enter an email and a password that satisfies the password policy.
@@ -43,6 +45,11 @@ Open `http://127.0.0.1:8000`.
 The application must also support **Resend code** when a code expires or delivery is delayed.
 
 #### 4. Inspect token claims safely
+
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![cognito token claims](/images/5-Workshop/5.3-Cognito-auth/cognito-token-claims.png)
+
 
 Run this in DevTools Console:
 
@@ -65,11 +72,3 @@ The result must contain `token_use: "id"` and an issuer for the new User Pool.
 {{% notice warning %}}
 The workshop's REST API Cognito Authorizer expects the raw JWT in the `Authorization` header. Do not add the `Bearer` prefix to these configured routes.
 {{% /notice %}}
-
-#### Deployment results
-
-![Deployment result - cognito confirm email](/images/5-Workshop/5.3-Cognito-auth/cognito-confirm-email.png)
-
-![Deployment result - cognito login success](/images/5-Workshop/5.3-Cognito-auth/cognito-login-success.png)
-
-![Deployment result - cognito token claims](/images/5-Workshop/5.3-Cognito-auth/cognito-token-claims.png)

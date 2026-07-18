@@ -14,6 +14,13 @@ pre: " <b> 5.3.1. </b> "
 
 #### 2. Cấu hình đăng nhập
 
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![cognito user pool overview](/images/5-Workshop/5.3-Cognito-auth/cognito-user-pool-overview.png)
+
+![cognito signup settings](/images/5-Workshop/5.3-Cognito-auth/cognito-signup-settings.png)
+
+
 - Application type: **Single-page application (SPA)**.
 - Sign-in identifier: **Email**.
 - Required attribute: **Email**.
@@ -28,6 +35,11 @@ kts-smartagri-dev-users
 ```
 
 #### 3. Cấu hình app client
+
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![cognito app client](/images/5-Workshop/5.3-Cognito-auth/cognito-app-client.png)
+
 
 Tạo public app client:
 
@@ -50,25 +62,4 @@ Không lưu client secret vì SPA không thể bảo vệ secret.
 
 #### 4. Kiểm tra bằng AWS CLI
 
-```powershell
-aws cognito-idp describe-user-pool `
-  --user-pool-id <USER_POOL_ID> `
-  --region ap-southeast-1 `
-  --query "UserPool.{Name:Name,Status:Status,AutoVerifiedAttributes:AutoVerifiedAttributes}"
-
-aws cognito-idp describe-user-pool-client `
-  --user-pool-id <USER_POOL_ID> `
-  --client-id <APP_CLIENT_ID> `
-  --region ap-southeast-1 `
-  --query "UserPoolClient.{ClientName:ClientName,GenerateSecret:GenerateSecret,ExplicitAuthFlows:ExplicitAuthFlows}"
-```
-
 `GenerateSecret` phải là `false` và `AutoVerifiedAttributes` phải có `email`.
-
-#### Kết quả triển khai
-
-![Kết quả triển khai - cognito user pool overview](/images/5-Workshop/5.3-Cognito-auth/cognito-user-pool-overview.png)
-
-![Kết quả triển khai - cognito signup settings](/images/5-Workshop/5.3-Cognito-auth/cognito-signup-settings.png)
-
-![Kết quả triển khai - cognito app client](/images/5-Workshop/5.3-Cognito-auth/cognito-app-client.png)

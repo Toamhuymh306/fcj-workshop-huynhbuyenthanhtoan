@@ -8,24 +8,19 @@ pre: " <b> 5.4.4. </b> "
 
 #### 1. Create the inference queue
 
-```powershell
-$QueueUrl = aws sqs create-queue `
-  --queue-name $InferenceQueue `
-  --region $AwsRegion `
-  --query QueueUrl `
-  --output text
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
 
-$QueueArn = aws sqs get-queue-attributes `
-  --queue-url $QueueUrl `
-  --attribute-names QueueArn `
-  --region $AwsRegion `
-  --query Attributes.QueueArn `
-  --output text
-```
+![sqs inference queue](/images/5-Workshop/5.4-S3-upload/sqs-inference-queue.png)
+
 
 Set the visibility timeout above the Lambda timeout. For a 120-second Lambda timeout, use at least 720 seconds to accommodate event source mapping retries.
 
 #### 2. Allow S3 to send messages
+
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![sqs access policy](/images/5-Workshop/5.4-S3-upload/sqs-access-policy.png)
+
 
 The queue policy must allow `s3.amazonaws.com` to call `sqs:SendMessage`, constrained by:
 
@@ -37,6 +32,11 @@ aws:SourceAccount = <ACCOUNT_ID>
 Do not expose `SendMessage` to principal `*` without these conditions.
 
 #### 3. Create the S3 notification
+
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![s3 event notification](/images/5-Workshop/5.4-S3-upload/s3-event-notification.png)
+
 
 The raw bucket sends every `s3:ObjectCreated:*` event to the queue:
 
@@ -55,17 +55,3 @@ The raw bucket sends every `s3:ObjectCreated:*` event to the queue:
 Create the SQS-to-Lambda event source mapping only after Inference Lambda is deployed in section 5.5.
 
 #### 4. Verify
-
-```powershell
-aws s3api get-bucket-notification-configuration `
-  --bucket $RawBucket `
-  --region $AwsRegion
-```
-
-#### Deployment results
-
-![Deployment result - sqs inference queue](/images/5-Workshop/5.4-S3-upload/sqs-inference-queue.png)
-
-![Deployment result - sqs access policy](/images/5-Workshop/5.4-S3-upload/sqs-access-policy.png)
-
-![Deployment result - s3 event notification](/images/5-Workshop/5.4-S3-upload/s3-event-notification.png)

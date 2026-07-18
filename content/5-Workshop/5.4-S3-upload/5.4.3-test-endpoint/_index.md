@@ -8,6 +8,11 @@ pre: " <b> 5.4.3. </b> "
 
 #### 1. Call Presign API from the frontend
 
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![frontend upload](/images/5-Workshop/5.4-S3-upload/frontend-upload.png)
+
+
 After signing in, select a leaf image and start upload. The frontend sends:
 
 ```json
@@ -34,13 +39,10 @@ A valid response contains:
 
 #### 2. Inspect the object
 
-```powershell
-aws s3api head-object `
-  --bucket $RawBucket `
-  --key "<S3_KEY_FROM_RESPONSE>" `
-  --region $AwsRegion `
-  --query "{ContentType:ContentType,Metadata:Metadata,Encryption:ServerSideEncryption}"
-```
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![s3 raw object](/images/5-Workshop/5.4-S3-upload/s3-raw-object.png)
+
 
 Confirm that:
 
@@ -52,9 +54,3 @@ Confirm that:
 {{% notice warning %}}
 Never capture or publish a pre-signed URL. It contains a temporary signature that can upload an object until expiration.
 {{% /notice %}}
-
-#### Deployment results
-
-![Deployment result - frontend upload](/images/5-Workshop/5.4-S3-upload/frontend-upload.png)
-
-![Deployment result - s3 raw object](/images/5-Workshop/5.4-S3-upload/s3-raw-object.png)

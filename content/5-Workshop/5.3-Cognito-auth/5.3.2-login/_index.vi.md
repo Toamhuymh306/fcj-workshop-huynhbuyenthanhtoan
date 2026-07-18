@@ -25,14 +25,16 @@ const AWS_CONFIG = {
 
 #### 2. Chạy frontend local
 
-```powershell
-cd D:\kts-smart-agri\frontend-app
-python -m http.server 8000
-```
-
 Mở `http://127.0.0.1:8000`.
 
 #### 3. Đăng ký và xác minh
+
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![cognito confirm email](/images/5-Workshop/5.3-Cognito-auth/cognito-confirm-email.png)
+
+![cognito login success](/images/5-Workshop/5.3-Cognito-auth/cognito-login-success.png)
+
 
 1. Chọn **Đăng ký**.
 2. Nhập email và mật khẩu đáp ứng password policy.
@@ -43,6 +45,11 @@ Mở `http://127.0.0.1:8000`.
 Ứng dụng cũng phải hỗ trợ **Gửi lại mã** khi mã cũ hết hạn hoặc email đến chậm.
 
 #### 4. Kiểm tra token an toàn
+
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![cognito token claims](/images/5-Workshop/5.3-Cognito-auth/cognito-token-claims.png)
+
 
 Trong DevTools Console:
 
@@ -65,11 +72,3 @@ Kết quả phải có `token_use: "id"` và issuer trỏ đến User Pool vừa
 {{% notice warning %}}
 REST API Cognito Authorizer của workshop nhận JWT thô trong header `Authorization`. Không thêm tiền tố `Bearer` khi gọi các route đã cấu hình.
 {{% /notice %}}
-
-#### Kết quả triển khai
-
-![Kết quả triển khai - cognito confirm email](/images/5-Workshop/5.3-Cognito-auth/cognito-confirm-email.png)
-
-![Kết quả triển khai - cognito login success](/images/5-Workshop/5.3-Cognito-auth/cognito-login-success.png)
-
-![Kết quả triển khai - cognito token claims](/images/5-Workshop/5.3-Cognito-auth/cognito-token-claims.png)

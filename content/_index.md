@@ -22,7 +22,7 @@ The workshop is deployed in Region `ap-southeast-1`. Sample resources use the `k
 ## Workshop content
 
 1. [Architecture overview](5-Workshop/5.1-Workshop-overview/)
-2. [Prerequisites](5-Workshop/5.2-Prerequisite/)
+2. [Preparation steps](5-Workshop/5.2-Prerequisite/)
 3. [User authentication with Amazon Cognito](5-Workshop/5.3-Cognito-auth/)
 4. [Secure image upload and the S3 - SQS pipeline](5-Workshop/5.4-S3-upload/)
 5. [Package and deploy AI inference](5-Workshop/5.5-AI-inference/)

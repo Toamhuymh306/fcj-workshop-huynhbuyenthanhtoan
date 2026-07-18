@@ -29,27 +29,12 @@ Delete resources in dependency order to avoid resource-in-use errors.
 
 #### 3. Delete data
 
-```powershell
-aws s3 rm "s3://$RawBucket" --recursive --region $AwsRegion
-aws s3 rm "s3://$ProcessedBucket" --recursive --region $AwsRegion
-aws s3 rm "s3://$ArchiveBucket" --recursive --region $AwsRegion
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
 
-aws s3api delete-bucket --bucket $RawBucket --region $AwsRegion
-aws s3api delete-bucket --bucket $ProcessedBucket --region $AwsRegion
-aws s3api delete-bucket --bucket $ArchiveBucket --region $AwsRegion
+![cleanup empty buckets](/images/5-Workshop/5.8-Cleanup/cleanup-empty-buckets.png)
 
-aws dynamodb delete-table --table-name $ResultTable --region $AwsRegion
-aws sqs delete-queue --queue-url $QueueUrl --region $AwsRegion
-```
 
 #### 4. Delete images and repository
-
-```powershell
-aws ecr delete-repository `
-  --repository-name $EcrRepository `
-  --force `
-  --region $AwsRegion
-```
 
 #### 5. Delete Cognito and IAM resources
 
@@ -60,6 +45,13 @@ aws ecr delete-repository `
 
 #### 6. Verify cost removal
 
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![cleanup resources removed](/images/5-Workshop/5.8-Cleanup/cleanup-resources-removed.png)
+
+![cleanup cost check](/images/5-Workshop/5.8-Cleanup/cleanup-cost-check.png)
+
+
 Check AWS Billing/Cost Explorer after 24 hours:
 
 - Lambda has no invocations.
@@ -67,11 +59,3 @@ Check AWS Billing/Cost Explorer after 24 hours:
 - ECR has no image storage.
 - Rekognition receives no `DetectLabels` calls.
 - The DynamoDB table and SQS queue are deleted.
-
-#### Deployment results
-
-![Deployment result - cleanup empty buckets](/images/5-Workshop/5.8-Cleanup/cleanup-empty-buckets.png)
-
-![Deployment result - cleanup resources removed](/images/5-Workshop/5.8-Cleanup/cleanup-resources-removed.png)
-
-![Deployment result - cleanup cost check](/images/5-Workshop/5.8-Cleanup/cleanup-cost-check.png)

@@ -20,6 +20,13 @@ Mọi thao tác đều lấy người dùng từ claim `sub`; client không đư
 
 #### 1. Tạo GSI `user_id-index`
 
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![dynamodb table](/images/5-Workshop/5.6-Results-history/dynamodb-table.png)
+
+![dynamodb user index](/images/5-Workshop/5.6-Results-history/dynamodb-user-index.png)
+
+
 Trong DynamoDB Console:
 
 1. Mở table `kts-smartagri-dev-inference-results`.
@@ -32,13 +39,6 @@ Trong DynamoDB Console:
 Table dùng `PAY_PER_REQUEST`, vì vậy GSI không có chi phí chạy 24/24 cố định; chi phí phát sinh từ request và storage.
 
 Kiểm tra:
-
-```powershell
-aws dynamodb describe-table `
-  --table-name $ResultTable `
-  --region $AwsRegion `
-  --query "Table.{TableStatus:TableStatus,BillingMode:BillingModeSummary.BillingMode,Index:GlobalSecondaryIndexes[?IndexName=='user_id-index']|[0].{Status:IndexStatus,Key:KeySchema,Projection:Projection}}"
-```
 
 #### 2. Tạo execution role cho Results Lambda
 
@@ -53,18 +53,12 @@ Results Lambda không cần `PutItem`; chỉ Inference Lambda ghi kết quả.
 
 #### 3. Đóng gói Results Lambda
 
-```powershell
-$ResultsSource = Resolve-Path "D:\kts-smart-agri\frontend-app\backend\lambda\results_handler.py"
-$Stage = Join-Path $env:TEMP "kts-results-package"
-$Zip = Join-Path $env:TEMP "kts-results.zip"
-
-New-Item -ItemType Directory -Force -Path $Stage | Out-Null
-Copy-Item $ResultsSource (Join-Path $Stage "lambda_function.py") -Force
-Compress-Archive -Path (Join-Path $Stage "lambda_function.py") -DestinationPath $Zip -Force
-tar -tf $Zip
-```
-
 #### 4. Tạo Results Lambda
+
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![results lambda config](/images/5-Workshop/5.6-Results-history/results-lambda-config.png)
+
 
 | Thuộc tính | Giá trị |
 |---|---|
@@ -81,6 +75,11 @@ tar -tf $Zip
 
 #### 5. Tạo API Gateway routes
 
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![api results methods](/images/5-Workshop/5.6-Results-history/api-results-methods.png)
+
+
 Sử dụng Cognito Authorizer đã tạo cho tất cả method thật:
 
 | Resource | Method | Authorization | Integration |
@@ -94,6 +93,11 @@ Sử dụng Cognito Authorizer đã tạo cho tất cả method thật:
 Cho phép API Gateway invoke Lambda với source ARN giới hạn trong REST API và path `/results*`.
 
 #### 6. Cấu hình CORS và deploy
+
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![api stage deployment](/images/5-Workshop/5.6-Results-history/api-stage-deployment.png)
+
 
 `OPTIONS /results`:
 
@@ -113,6 +117,11 @@ Sau mọi thay đổi, tạo deployment mới và trỏ stage `dev` đến deplo
 
 #### 7. Kiểm tra ownership
 
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![ownership test](/images/5-Workshop/5.6-Results-history/ownership-test.png)
+
+
 Các test bắt buộc:
 
 1. User A gọi `GET /results` chỉ thấy item có `user_id=A`.
@@ -123,17 +132,3 @@ Các test bắt buộc:
 {{% notice warning %}}
 Không dùng DynamoDB `Scan` rồi lọc ở ứng dụng. Query `user_id-index` giảm chi phí và tránh đọc nhầm dữ liệu người dùng khác.
 {{% /notice %}}
-
-#### Kết quả triển khai
-
-![Kết quả triển khai - dynamodb table](/images/5-Workshop/5.6-Results-history/dynamodb-table.png)
-
-![Kết quả triển khai - dynamodb user index](/images/5-Workshop/5.6-Results-history/dynamodb-user-index.png)
-
-![Kết quả triển khai - results lambda config](/images/5-Workshop/5.6-Results-history/results-lambda-config.png)
-
-![Kết quả triển khai - api results methods](/images/5-Workshop/5.6-Results-history/api-results-methods.png)
-
-![Kết quả triển khai - api stage deployment](/images/5-Workshop/5.6-Results-history/api-stage-deployment.png)
-
-![Kết quả triển khai - ownership test](/images/5-Workshop/5.6-Results-history/ownership-test.png)

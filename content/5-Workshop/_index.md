@@ -30,7 +30,7 @@ The workshop uses Region `ap-southeast-1`. Resource names use a `dev` suffix; re
 #### Contents
 
 1. [Architecture overview](5.1-Workshop-overview/)
-2. [Prerequisites](5.2-Prerequisite/)
+2. [Preparation steps](5.2-Prerequisite/)
 3. [User authentication with Cognito](5.3-Cognito-auth/)
 4. [Secure upload and event pipeline](5.4-S3-upload/)
 5. [Deploy AI inference](5.5-AI-inference/)

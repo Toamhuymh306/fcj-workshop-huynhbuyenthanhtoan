@@ -1,5 +1,5 @@
 ---
-title: "Prerequisites"
+title: "Preparation steps"
 date: 2026-07-18
 weight: 2
 chapter: false

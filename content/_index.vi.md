@@ -22,7 +22,7 @@ Workshop được triển khai tại Region `ap-southeast-1`. Các tên tài ngu
 ## Nội dung workshop
 
 1. [Tổng quan kiến trúc](5-Workshop/5.1-Workshop-overview/)
-2. [Điều kiện tiên quyết](5-Workshop/5.2-Prerequisite/)
+2. [Các bước chuẩn bị](5-Workshop/5.2-Prerequisite/)
 3. [Xác thực người dùng với Amazon Cognito](5-Workshop/5.3-Cognito-auth/)
 4. [Tải ảnh an toàn và xây dựng pipeline S3 - SQS](5-Workshop/5.4-S3-upload/)
 5. [Đóng gói và triển khai AI inference](5-Workshop/5.5-AI-inference/)

@@ -20,6 +20,13 @@ Every operation obtains the user from the `sub` claim. The client cannot submit 
 
 #### 1. Create `user_id-index`
 
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![dynamodb table](/images/5-Workshop/5.6-Results-history/dynamodb-table.png)
+
+![dynamodb user index](/images/5-Workshop/5.6-Results-history/dynamodb-user-index.png)
+
+
 In DynamoDB Console:
 
 1. Open `kts-smartagri-dev-inference-results`.
@@ -32,13 +39,6 @@ In DynamoDB Console:
 The table uses `PAY_PER_REQUEST`, so the GSI has no fixed 24/7 provisioned-capacity charge; requests and storage incur cost.
 
 Verify:
-
-```powershell
-aws dynamodb describe-table `
-  --table-name $ResultTable `
-  --region $AwsRegion `
-  --query "Table.{TableStatus:TableStatus,BillingMode:BillingModeSummary.BillingMode,Index:GlobalSecondaryIndexes[?IndexName=='user_id-index']|[0].{Status:IndexStatus,Key:KeySchema,Projection:Projection}}"
-```
 
 #### 2. Create a Results Lambda execution role
 
@@ -53,18 +53,12 @@ Results Lambda does not need `PutItem`; only Inference Lambda writes results.
 
 #### 3. Package Results Lambda
 
-```powershell
-$ResultsSource = Resolve-Path "D:\kts-smart-agri\frontend-app\backend\lambda\results_handler.py"
-$Stage = Join-Path $env:TEMP "kts-results-package"
-$Zip = Join-Path $env:TEMP "kts-results.zip"
-
-New-Item -ItemType Directory -Force -Path $Stage | Out-Null
-Copy-Item $ResultsSource (Join-Path $Stage "lambda_function.py") -Force
-Compress-Archive -Path (Join-Path $Stage "lambda_function.py") -DestinationPath $Zip -Force
-tar -tf $Zip
-```
-
 #### 4. Create Results Lambda
+
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![results lambda config](/images/5-Workshop/5.6-Results-history/results-lambda-config.png)
+
 
 | Property | Value |
 |---|---|
@@ -81,6 +75,11 @@ tar -tf $Zip
 
 #### 5. Create API Gateway routes
 
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![api results methods](/images/5-Workshop/5.6-Results-history/api-results-methods.png)
+
+
 Use the Cognito Authorizer for every real method:
 
 | Resource | Method | Authorization | Integration |
@@ -94,6 +93,11 @@ Use the Cognito Authorizer for every real method:
 Allow API Gateway to invoke Lambda with a source ARN restricted to this REST API and `/results*` path.
 
 #### 6. Configure CORS and deploy
+
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![api stage deployment](/images/5-Workshop/5.6-Results-history/api-stage-deployment.png)
+
 
 `OPTIONS /results`:
 
@@ -113,6 +117,11 @@ After any API change, create a deployment and point stage `dev` to the new deplo
 
 #### 7. Test ownership
 
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![ownership test](/images/5-Workshop/5.6-Results-history/ownership-test.png)
+
+
 Required tests:
 
 1. User A calls `GET /results` and sees only items with `user_id=A`.
@@ -123,17 +132,3 @@ Required tests:
 {{% notice warning %}}
 Do not use DynamoDB `Scan` and filter in application code. Querying `user_id-index` reduces cost and prevents accidental cross-user reads.
 {{% /notice %}}
-
-#### Deployment results
-
-![Deployment result - dynamodb table](/images/5-Workshop/5.6-Results-history/dynamodb-table.png)
-
-![Deployment result - dynamodb user index](/images/5-Workshop/5.6-Results-history/dynamodb-user-index.png)
-
-![Deployment result - results lambda config](/images/5-Workshop/5.6-Results-history/results-lambda-config.png)
-
-![Deployment result - api results methods](/images/5-Workshop/5.6-Results-history/api-results-methods.png)
-
-![Deployment result - api stage deployment](/images/5-Workshop/5.6-Results-history/api-stage-deployment.png)
-
-![Deployment result - ownership test](/images/5-Workshop/5.6-Results-history/ownership-test.png)

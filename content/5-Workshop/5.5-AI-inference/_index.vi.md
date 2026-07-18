@@ -20,43 +20,18 @@ Mô hình nhận ảnh `224 x 224`, chuẩn hóa theo ImageNet và trả một t
 
 #### 1. Build container image
 
-```powershell
-cd D:\kts-smart-agri\ai-service
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
 
-docker build `
-  --platform linux/amd64 `
-  --provenance=false `
-  --sbom=false `
-  -f aws/lambda_inference/Dockerfile `
-  -t kts-smartagri-inference:local `
-  .
-```
+![docker build success](/images/5-Workshop/5.5-AI-inference/docker-build-success.png)
+
 
 Hai tùy chọn `--provenance=false` và `--sbom=false` tạo single-platform manifest phù hợp với Lambda container image.
 
 Kiểm tra checkpoint:
 
-```powershell
-docker run --rm `
-  --platform linux/amd64 `
-  --entrypoint /bin/sh `
-  kts-smartagri-inference:local `
-  -c "ls -lh /var/task/model"
-```
-
 Kết quả chỉ có `best_resnet_model.pth`, `class_names.json` và `model_config.json`.
 
 #### 2. Smoke test model local
-
-```powershell
-docker run --rm `
-  --platform linux/amd64 `
-  --entrypoint /var/lang/bin/python3 `
-  -e PYTHONPATH=/var/task `
-  -e MODEL_NAME=resnet `
-  kts-smartagri-inference:local `
-  -c "from runtime import load_assets; a=load_assets(); print(a.model_name, len(a.class_names))"
-```
 
 Kỳ vọng:
 
@@ -66,27 +41,10 @@ resnet 38
 
 #### 3. Push image lên ECR
 
-```powershell
-aws ecr describe-repositories `
-  --repository-names $EcrRepository `
-  --region $AwsRegion 2>$null | Out-Null
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
 
-if ($LASTEXITCODE -ne 0) {
-  aws ecr create-repository `
-    --repository-name $EcrRepository `
-    --image-scanning-configuration scanOnPush=true `
-    --region $AwsRegion | Out-Null
-}
+![ecr image](/images/5-Workshop/5.5-AI-inference/ecr-image.png)
 
-$ImageTag = "resnet-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
-$EcrUri = "$AccountId.dkr.ecr.$AwsRegion.amazonaws.com/$EcrRepository`:$ImageTag"
-
-aws ecr get-login-password --region $AwsRegion |
-  docker login --username AWS --password-stdin "$AccountId.dkr.ecr.$AwsRegion.amazonaws.com"
-
-docker tag kts-smartagri-inference:local $EcrUri
-docker push $EcrUri
-```
 
 Kiểm tra `imageManifestMediaType` phải là:
 
@@ -106,6 +64,11 @@ GSI `user_id-index` sẽ được thêm ở phần 5.6.
 
 #### 5. Cấp quyền cho Inference Lambda
 
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![lambda permissions](/images/5-Workshop/5.5-AI-inference/lambda-permissions.png)
+
+
 Execution role chỉ cần:
 
 - `s3:GetObject` trên raw bucket.
@@ -120,6 +83,13 @@ Không dùng AdministratorAccess hoặc quyền `s3:*`. Lambda lấy owner từ 
 {{% /notice %}}
 
 #### 6. Cấu hình Rekognition Image gate
+
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![rekognition diagram test](/images/5-Workshop/5.5-AI-inference/rekognition-diagram-test.png)
+
+![rekognition leaf test](/images/5-Workshop/5.5-AI-inference/rekognition-leaf-test.png)
+
 
 Trước khi tải ảnh vào PyTorch, Lambda gọi `DetectLabels` trên S3 object:
 
@@ -143,6 +113,13 @@ Thiếu một trong hai nhãn      -> status REJECTED
 
 #### 7. Tạo hoặc cập nhật Inference Lambda
 
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![lambda image config](/images/5-Workshop/5.5-AI-inference/lambda-image-config.png)
+
+![lambda environment](/images/5-Workshop/5.5-AI-inference/lambda-environment.png)
+
+
 | Thuộc tính | Giá trị |
 |---|---|
 | Function name | `kts-smartagri-dev-inference-lambda` |
@@ -156,59 +133,14 @@ Thiếu một trong hai nhãn      -> status REJECTED
 | `RESULT_TABLE` | DynamoDB table |
 | `LEAF_LABEL_MIN_CONFIDENCE` | `90` |
 
-Với function đã tồn tại:
-
-```powershell
-aws lambda update-function-code `
-  --function-name kts-smartagri-dev-inference-lambda `
-  --image-uri $EcrUri `
-  --region $AwsRegion
-
-aws lambda wait function-updated-v2 `
-  --function-name kts-smartagri-dev-inference-lambda `
-  --region $AwsRegion
-```
 
 #### 8. Kết nối SQS event source
 
-```powershell
-aws lambda create-event-source-mapping `
-  --function-name kts-smartagri-dev-inference-lambda `
-  --event-source-arn $QueueArn `
-  --batch-size 1 `
-  --region $AwsRegion
-```
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![sqs lambda trigger](/images/5-Workshop/5.5-AI-inference/sqs-lambda-trigger.png)
+
 
 Batch size `1` giúp cô lập ảnh lỗi và kiểm soát memory khi mỗi request tải model/image.
 
 #### 9. Xác minh deployment
-
-```powershell
-aws lambda get-function `
-  --function-name kts-smartagri-dev-inference-lambda `
-  --region $AwsRegion `
-  --query "{State:Configuration.State,Update:Configuration.LastUpdateStatus,Architecture:Configuration.Architectures,Image:Code.ResolvedImageUri}"
-
-aws lambda list-event-source-mappings `
-  --function-name kts-smartagri-dev-inference-lambda `
-  --region $AwsRegion `
-  --query "EventSourceMappings[].{State:State,Source:EventSourceArn,BatchSize:BatchSize}"
-```
-
-#### Kết quả triển khai
-
-![Kết quả triển khai - docker build success](/images/5-Workshop/5.5-AI-inference/docker-build-success.png)
-
-![Kết quả triển khai - ecr image](/images/5-Workshop/5.5-AI-inference/ecr-image.png)
-
-![Kết quả triển khai - lambda image config](/images/5-Workshop/5.5-AI-inference/lambda-image-config.png)
-
-![Kết quả triển khai - lambda environment](/images/5-Workshop/5.5-AI-inference/lambda-environment.png)
-
-![Kết quả triển khai - lambda permissions](/images/5-Workshop/5.5-AI-inference/lambda-permissions.png)
-
-![Kết quả triển khai - sqs lambda trigger](/images/5-Workshop/5.5-AI-inference/sqs-lambda-trigger.png)
-
-![Kết quả triển khai - rekognition diagram test](/images/5-Workshop/5.5-AI-inference/rekognition-diagram-test.png)
-
-![Kết quả triển khai - rekognition leaf test](/images/5-Workshop/5.5-AI-inference/rekognition-leaf-test.png)

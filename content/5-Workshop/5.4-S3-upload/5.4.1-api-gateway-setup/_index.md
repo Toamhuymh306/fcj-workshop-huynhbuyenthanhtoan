@@ -8,16 +8,10 @@ pre: " <b> 5.4.1. </b> "
 
 #### 1. Create three S3 buckets
 
-```powershell
-aws s3api create-bucket --bucket $RawBucket --region $AwsRegion `
-  --create-bucket-configuration LocationConstraint=$AwsRegion
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
 
-aws s3api create-bucket --bucket $ProcessedBucket --region $AwsRegion `
-  --create-bucket-configuration LocationConstraint=$AwsRegion
+![s3 three buckets](/images/5-Workshop/5.4-S3-upload/s3-three-buckets.png)
 
-aws s3api create-bucket --bucket $ArchiveBucket --region $AwsRegion `
-  --create-bucket-configuration LocationConstraint=$AwsRegion
-```
 
 Enable Block Public Access for all buckets. The application does not require public buckets or objects.
 
@@ -35,22 +29,14 @@ Do not grant `AmazonS3FullAccess`. Presign Lambda only needs to generate upload 
 
 #### 3. Package the source
 
-```powershell
-cd D:\kts-smart-agri\ai-service
-
-$PresignSource = Resolve-Path "..\frontend-app\backend\lambda\presign_handler.py"
-$Stage = Join-Path $env:TEMP "kts-presign-package"
-$Zip = Join-Path $env:TEMP "kts-presign.zip"
-
-New-Item -ItemType Directory -Force -Path $Stage | Out-Null
-Copy-Item $PresignSource (Join-Path $Stage "lambda_function.py") -Force
-Compress-Archive -Path (Join-Path $Stage "lambda_function.py") -DestinationPath $Zip -Force
-tar -tf $Zip
-```
-
 The archive must contain `lambda_function.py` at its root.
 
 #### 4. Create or update Lambda
+
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![presign lambda config](/images/5-Workshop/5.4-S3-upload/presign-lambda-config.png)
+
 
 Use these settings:
 
@@ -64,16 +50,13 @@ Use these settings:
 | `S3_BUCKET` | raw bucket |
 | `CORS_ORIGIN` | frontend origin or `*` for the lab |
 
-For an existing function:
-
-```powershell
-aws lambda update-function-code `
-  --function-name kts-smartagri-dev-presign-lambda `
-  --zip-file "fileb://$Zip" `
-  --region $AwsRegion
-```
 
 #### 5. Create the REST API route
+
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![api presign method](/images/5-Workshop/5.4-S3-upload/api-presign-method.png)
+
 
 In API Gateway:
 
@@ -84,11 +67,3 @@ In API Gateway:
 5. Integration: **Lambda proxy** to Presign Lambda.
 6. Add `OPTIONS` for preflight requests.
 7. Deploy to stage `dev`.
-
-#### Deployment results
-
-![Deployment result - s3 three buckets](/images/5-Workshop/5.4-S3-upload/s3-three-buckets.png)
-
-![Deployment result - presign lambda config](/images/5-Workshop/5.4-S3-upload/presign-lambda-config.png)
-
-![Deployment result - api presign method](/images/5-Workshop/5.4-S3-upload/api-presign-method.png)

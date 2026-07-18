@@ -8,16 +8,10 @@ pre: " <b> 5.4.1. </b> "
 
 #### 1. Tạo ba S3 bucket
 
-```powershell
-aws s3api create-bucket --bucket $RawBucket --region $AwsRegion `
-  --create-bucket-configuration LocationConstraint=$AwsRegion
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
 
-aws s3api create-bucket --bucket $ProcessedBucket --region $AwsRegion `
-  --create-bucket-configuration LocationConstraint=$AwsRegion
+![s3 three buckets](/images/5-Workshop/5.4-S3-upload/s3-three-buckets.png)
 
-aws s3api create-bucket --bucket $ArchiveBucket --region $AwsRegion `
-  --create-bucket-configuration LocationConstraint=$AwsRegion
-```
 
 Bật Block Public Access cho cả ba bucket. Ứng dụng không cần public bucket hoặc public object.
 
@@ -35,22 +29,14 @@ Không cấp `AmazonS3FullAccess`. Presign Lambda chỉ cần tạo URL cho obje
 
 #### 3. Đóng gói source code
 
-```powershell
-cd D:\kts-smart-agri\ai-service
-
-$PresignSource = Resolve-Path "..\frontend-app\backend\lambda\presign_handler.py"
-$Stage = Join-Path $env:TEMP "kts-presign-package"
-$Zip = Join-Path $env:TEMP "kts-presign.zip"
-
-New-Item -ItemType Directory -Force -Path $Stage | Out-Null
-Copy-Item $PresignSource (Join-Path $Stage "lambda_function.py") -Force
-Compress-Archive -Path (Join-Path $Stage "lambda_function.py") -DestinationPath $Zip -Force
-tar -tf $Zip
-```
-
 Zip phải chứa `lambda_function.py` ở thư mục gốc.
 
 #### 4. Tạo hoặc cập nhật Lambda
+
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![presign lambda config](/images/5-Workshop/5.4-S3-upload/presign-lambda-config.png)
+
 
 Thiết lập:
 
@@ -64,16 +50,13 @@ Thiết lập:
 | `S3_BUCKET` | raw bucket |
 | `CORS_ORIGIN` | domain frontend hoặc `*` cho lab |
 
-Với function đã tồn tại:
-
-```powershell
-aws lambda update-function-code `
-  --function-name kts-smartagri-dev-presign-lambda `
-  --zip-file "fileb://$Zip" `
-  --region $AwsRegion
-```
 
 #### 5. Tạo REST API route
+
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![api presign method](/images/5-Workshop/5.4-S3-upload/api-presign-method.png)
+
 
 Trong API Gateway:
 
@@ -84,11 +67,3 @@ Trong API Gateway:
 5. Integration: **Lambda proxy** đến Presign Lambda.
 6. Tạo method `OPTIONS` để phục vụ preflight.
 7. Deploy vào stage `dev`.
-
-#### Kết quả triển khai
-
-![Kết quả triển khai - s3 three buckets](/images/5-Workshop/5.4-S3-upload/s3-three-buckets.png)
-
-![Kết quả triển khai - presign lambda config](/images/5-Workshop/5.4-S3-upload/presign-lambda-config.png)
-
-![Kết quả triển khai - api presign method](/images/5-Workshop/5.4-S3-upload/api-presign-method.png)

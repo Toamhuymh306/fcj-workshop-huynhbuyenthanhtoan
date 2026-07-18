@@ -1,5 +1,5 @@
 ---
-title: "Điều kiện tiên quyết"
+title: "Các bước chuẩn bị"
 date: 2026-07-18
 weight: 2
 chapter: false

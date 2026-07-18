@@ -14,6 +14,13 @@ pre: " <b> 5.3.1. </b> "
 
 #### 2. Configure sign-in
 
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![cognito user pool overview](/images/5-Workshop/5.3-Cognito-auth/cognito-user-pool-overview.png)
+
+![cognito signup settings](/images/5-Workshop/5.3-Cognito-auth/cognito-signup-settings.png)
+
+
 - Application type: **Single-page application (SPA)**.
 - Sign-in identifier: **Email**.
 - Required attribute: **Email**.
@@ -28,6 +35,11 @@ kts-smartagri-dev-users
 ```
 
 #### 3. Configure the app client
+
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![cognito app client](/images/5-Workshop/5.3-Cognito-auth/cognito-app-client.png)
+
 
 Create a public app client:
 
@@ -50,25 +62,4 @@ A SPA cannot safely protect a client secret.
 
 #### 4. Verify with AWS CLI
 
-```powershell
-aws cognito-idp describe-user-pool `
-  --user-pool-id <USER_POOL_ID> `
-  --region ap-southeast-1 `
-  --query "UserPool.{Name:Name,Status:Status,AutoVerifiedAttributes:AutoVerifiedAttributes}"
-
-aws cognito-idp describe-user-pool-client `
-  --user-pool-id <USER_POOL_ID> `
-  --client-id <APP_CLIENT_ID> `
-  --region ap-southeast-1 `
-  --query "UserPoolClient.{ClientName:ClientName,GenerateSecret:GenerateSecret,ExplicitAuthFlows:ExplicitAuthFlows}"
-```
-
 `GenerateSecret` must be `false`, and `AutoVerifiedAttributes` must contain `email`.
-
-#### Deployment results
-
-![Deployment result - cognito user pool overview](/images/5-Workshop/5.3-Cognito-auth/cognito-user-pool-overview.png)
-
-![Deployment result - cognito signup settings](/images/5-Workshop/5.3-Cognito-auth/cognito-signup-settings.png)
-
-![Deployment result - cognito app client](/images/5-Workshop/5.3-Cognito-auth/cognito-app-client.png)

@@ -15,6 +15,13 @@ pre: " <b> 5.7. </b> "
 
 #### Test 1: Valid leaf image
 
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![valid leaf result](/images/5-Workshop/5.7-End-to-end/valid-leaf-result.png)
+
+![processed object](/images/5-Workshop/5.7-End-to-end/processed-object.png)
+
+
 Upload an image from the PlantVillage validation set.
 
 Expected results:
@@ -29,6 +36,11 @@ Expected results:
 
 #### Test 2: Invalid image
 
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![invalid image result](/images/5-Workshop/5.7-End-to-end/invalid-image-result.png)
+
+
 Upload a diagram, person, or animal image.
 
 Expected results:
@@ -41,16 +53,19 @@ Expected results:
 
 #### Test 3: Results API and CORS
 
-```powershell
-curl.exe -i -X OPTIONS "$ApiBaseUrl/results" `
-  -H "Origin: http://127.0.0.1:8000" `
-  -H "Access-Control-Request-Method: GET" `
-  -H "Access-Control-Request-Headers: Authorization,Content-Type"
-```
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![scan history](/images/5-Workshop/5.7-End-to-end/scan-history.png)
+
 
 Without a token, `GET /results` must return `401` with CORS headers. With a valid ID token, it returns `200` and only that user's history.
 
 #### CloudWatch Logs
+
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![cloudwatch inference log](/images/5-Workshop/5.7-End-to-end/cloudwatch-inference-log.png)
+
 
 Inspect these log groups:
 
@@ -69,24 +84,16 @@ Inference logs should include:
 
 #### Metrics to monitor
 
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![cloudwatch metrics](/images/5-Workshop/5.7-End-to-end/cloudwatch-metrics.png)
+
+
 - Lambda `Errors`, `Duration`, `Throttles`, and `ConcurrentExecutions`.
 - SQS `ApproximateNumberOfMessagesVisible` and age of oldest message.
 - API Gateway `4XXError`, `5XXError`, and `Latency`.
 - DynamoDB throttled requests.
 
-#### Deployment results
-
-![Deployment result - valid leaf result](/images/5-Workshop/5.7-End-to-end/valid-leaf-result.png)
-
-![Deployment result - invalid image result](/images/5-Workshop/5.7-End-to-end/invalid-image-result.png)
-
-![Deployment result - scan history](/images/5-Workshop/5.7-End-to-end/scan-history.png)
-
-![Deployment result - processed object](/images/5-Workshop/5.7-End-to-end/processed-object.png)
-
-![Deployment result - cloudwatch inference log](/images/5-Workshop/5.7-End-to-end/cloudwatch-inference-log.png)
-
-![Deployment result - cloudwatch metrics](/images/5-Workshop/5.7-End-to-end/cloudwatch-metrics.png)
 #### Completion criteria
 
 The workshop is complete when all three tests pass, no unexpected messages remain in the queue, and user A's records never appear in user B's session.

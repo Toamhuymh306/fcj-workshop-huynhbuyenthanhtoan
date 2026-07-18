@@ -15,6 +15,13 @@ pre: " <b> 5.7. </b> "
 
 #### Test 1: Ảnh lá hợp lệ
 
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![valid leaf result](/images/5-Workshop/5.7-End-to-end/valid-leaf-result.png)
+
+![processed object](/images/5-Workshop/5.7-End-to-end/processed-object.png)
+
+
 Tải một ảnh từ PlantVillage validation set.
 
 Kỳ vọng:
@@ -29,6 +36,11 @@ Kỳ vọng:
 
 #### Test 2: Ảnh không hợp lệ
 
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![invalid image result](/images/5-Workshop/5.7-End-to-end/invalid-image-result.png)
+
+
 Tải một sơ đồ, ảnh người hoặc ảnh động vật.
 
 Kỳ vọng:
@@ -41,16 +53,19 @@ Kỳ vọng:
 
 #### Test 3: Results API và CORS
 
-```powershell
-curl.exe -i -X OPTIONS "$ApiBaseUrl/results" `
-  -H "Origin: http://127.0.0.1:8000" `
-  -H "Access-Control-Request-Method: GET" `
-  -H "Access-Control-Request-Headers: Authorization,Content-Type"
-```
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![scan history](/images/5-Workshop/5.7-End-to-end/scan-history.png)
+
 
 Không có token, `GET /results` phải trả `401` kèm CORS headers. Có ID token hợp lệ, route trả `200` và chỉ trả lịch sử của user đó.
 
 #### CloudWatch Logs
+
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![cloudwatch inference log](/images/5-Workshop/5.7-End-to-end/cloudwatch-inference-log.png)
+
 
 Kiểm tra ba log group:
 
@@ -69,24 +84,16 @@ Inference log cần có:
 
 #### Metric cần theo dõi
 
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![cloudwatch metrics](/images/5-Workshop/5.7-End-to-end/cloudwatch-metrics.png)
+
+
 - Lambda `Errors`, `Duration`, `Throttles` và `ConcurrentExecutions`.
 - SQS `ApproximateNumberOfMessagesVisible` và age of oldest message.
 - API Gateway `4XXError`, `5XXError`, `Latency`.
 - DynamoDB throttled requests.
 
-#### Kết quả triển khai
-
-![Kết quả triển khai - valid leaf result](/images/5-Workshop/5.7-End-to-end/valid-leaf-result.png)
-
-![Kết quả triển khai - invalid image result](/images/5-Workshop/5.7-End-to-end/invalid-image-result.png)
-
-![Kết quả triển khai - scan history](/images/5-Workshop/5.7-End-to-end/scan-history.png)
-
-![Kết quả triển khai - processed object](/images/5-Workshop/5.7-End-to-end/processed-object.png)
-
-![Kết quả triển khai - cloudwatch inference log](/images/5-Workshop/5.7-End-to-end/cloudwatch-inference-log.png)
-
-![Kết quả triển khai - cloudwatch metrics](/images/5-Workshop/5.7-End-to-end/cloudwatch-metrics.png)
 #### Tiêu chí hoàn thành
 
 Workshop hoàn thành khi cả ba test đạt yêu cầu, không có message tồn đọng ngoài dự kiến và không có dữ liệu user A xuất hiện trong session user B.

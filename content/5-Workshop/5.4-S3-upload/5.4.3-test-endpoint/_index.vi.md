@@ -8,6 +8,11 @@ pre: " <b> 5.4.3. </b> "
 
 #### 1. Gọi Presign API từ frontend
 
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![frontend upload](/images/5-Workshop/5.4-S3-upload/frontend-upload.png)
+
+
 Sau khi đăng nhập, chọn một ảnh lá và bắt đầu upload. Frontend gửi:
 
 ```json
@@ -34,13 +39,10 @@ Response hợp lệ gồm:
 
 #### 2. Kiểm tra object
 
-```powershell
-aws s3api head-object `
-  --bucket $RawBucket `
-  --key "<S3_KEY_FROM_RESPONSE>" `
-  --region $AwsRegion `
-  --query "{ContentType:ContentType,Metadata:Metadata,Encryption:ServerSideEncryption}"
-```
+Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
+
+![s3 raw object](/images/5-Workshop/5.4-S3-upload/s3-raw-object.png)
+
 
 Xác nhận:
 
@@ -52,9 +54,3 @@ Xác nhận:
 {{% notice warning %}}
 Không chụp hoặc đăng pre-signed URL. URL chứa chữ ký tạm thời và có thể upload object trong thời gian còn hiệu lực.
 {{% /notice %}}
-
-#### Kết quả triển khai
-
-![Kết quả triển khai - frontend upload](/images/5-Workshop/5.4-S3-upload/frontend-upload.png)
-
-![Kết quả triển khai - s3 raw object](/images/5-Workshop/5.4-S3-upload/s3-raw-object.png)

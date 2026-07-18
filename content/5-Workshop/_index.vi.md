@@ -30,7 +30,7 @@ Workshop sử dụng Region `ap-southeast-1`. Tên tài nguyên trong hướng d
 #### Nội dung
 
 1. [Tổng quan kiến trúc](5.1-Workshop-overview/)
-2. [Điều kiện tiên quyết](5.2-Prerequisite/)
+2. [Các bước chuẩn bị](5.2-Prerequisite/)
 3. [Xác thực người dùng với Cognito](5.3-Cognito-auth/)
 4. [Tải ảnh an toàn và pipeline sự kiện](5.4-S3-upload/)
 5. [Triển khai AI inference](5.5-AI-inference/)

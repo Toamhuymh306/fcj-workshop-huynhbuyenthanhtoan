@@ -8,33 +8,21 @@ pre: " <b> 5.4.2. </b> "
 
 #### S3 CORS
 
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![s3 cors](/images/5-Workshop/5.4-S3-upload/s3-cors.png)
+
+
 Create the configuration file:
-
-```powershell
-$CorsFile = Join-Path $env:TEMP "kts-s3-cors.json"
-
-@'
-{
-  "CORSRules": [
-    {
-      "AllowedOrigins": ["http://127.0.0.1:8000"],
-      "AllowedMethods": ["PUT", "POST", "GET", "HEAD"],
-      "AllowedHeaders": ["*"],
-      "ExposeHeaders": ["ETag"]
-    }
-  ]
-}
-'@ | Set-Content -Encoding utf8 $CorsFile
-
-aws s3api put-bucket-cors `
-  --bucket $RawBucket `
-  --cors-configuration "file://$CorsFile" `
-  --region $AwsRegion
-```
 
 Replace localhost with the production CloudFront/frontend origin. Avoid `*` when it is unnecessary.
 
 #### API Gateway CORS
+
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![api presign options](/images/5-Workshop/5.4-S3-upload/api-presign-options.png)
+
 
 `OPTIONS /presign` must return:
 
@@ -48,19 +36,9 @@ Presign Lambda must also include matching CORS headers in actual responses.
 
 #### Test preflight
 
-```powershell
-curl.exe -i -X OPTIONS "$ApiBaseUrl/presign" `
-  -H "Origin: http://127.0.0.1:8000" `
-  -H "Access-Control-Request-Method: POST" `
-  -H "Access-Control-Request-Headers: Authorization,Content-Type"
-```
+Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
+
+![presign preflight](/images/5-Workshop/5.4-S3-upload/presign-preflight.png)
+
 
 Expect `HTTP/1.1 200 OK` and all three CORS headers.
-
-#### Deployment results
-
-![Deployment result - s3 cors](/images/5-Workshop/5.4-S3-upload/s3-cors.png)
-
-![Deployment result - api presign options](/images/5-Workshop/5.4-S3-upload/api-presign-options.png)
-
-![Deployment result - presign preflight](/images/5-Workshop/5.4-S3-upload/presign-preflight.png)
