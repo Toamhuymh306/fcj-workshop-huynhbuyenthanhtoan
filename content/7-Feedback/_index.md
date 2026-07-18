@@ -3,7 +3,6 @@ title: "Feedback & Contribution"
 date: 2026-07-12
 weight: 7
 chapter: false
-hidden: true
 pre: " <b> 7. </b> "
 ---
 
