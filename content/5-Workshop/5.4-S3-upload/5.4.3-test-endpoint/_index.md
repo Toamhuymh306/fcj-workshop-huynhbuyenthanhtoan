@@ -1,29 +1,60 @@
 ---
-title : "Upload Image to S3"
-date : 2024-01-01
-weight : 3
-chapter : false
-pre : " <b> 5.4.3 </b> "
+title: "Test upload"
+date: 2026-07-18
+weight: 3
+chapter: false
+pre: " <b> 5.4.3. </b> "
 ---
 
-#### Upload an Image via the Web Interface
+#### 1. Call Presign API from the frontend
 
-In this step, we will test the image upload functionality. As defined in the architecture, the frontend client will first request a Pre-signed URL via API Gateway & Lambda, and then use that URL to upload the image directly to the Amazon S3 bucket.
+After signing in, select a leaf image and start upload. The frontend sends:
 
-1. Open your web browser and navigate to your application's frontend URL (your CloudFront domain).
-2. Authenticate using your Cognito user credentials.
-3. On the upload interface, select a sample image from your local machine and click **Upload**.
-4. Wait for the success message confirming that the upload process via the Pre-signed URL is complete.
+```json
+{
+  "filename": "leaf.jpg",
+  "contentType": "image/jpeg"
+}
+```
 
-![upload-ui](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.4-S3-upload/upload-ui.png)
+A valid response contains:
 
-#### Verify the Object in the S3 Bucket
+```json
+{
+  "upload_url": "<redacted>",
+  "s3_key": "uploads/<cognito-sub>/<date>/<uuid>_leaf.jpg",
+  "image_id": "<uuid>",
+  "expiration": 900,
+  "metadata": {
+    "user-id": "<cognito-sub>",
+    "original-name": "leaf.jpg"
+  }
+}
+```
 
-Now, let's check if the image was successfully stored in the correct S3 bucket.
+#### 2. Inspect the object
 
-1. Navigate to the AWS Management Console and open the **S3 console**.
-2. In the left navigation pane, choose **Buckets**.
-3. Click on the name of your **Raw Images** bucket (the bucket designated for initial uploads).
-4. You should see the newly uploaded image file listed in the objects tab.
+```powershell
+aws s3api head-object `
+  --bucket $RawBucket `
+  --key "<S3_KEY_FROM_RESPONSE>" `
+  --region $AwsRegion `
+  --query "{ContentType:ContentType,Metadata:Metadata,Encryption:ServerSideEncryption}"
+```
 
-![check bucket](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.4-S3-upload/check-bucket.png)
+Confirm that:
+
+- `ContentType` is the real MIME type.
+- Metadata contains `user-id` and `original-name`.
+- The object uses server-side encryption.
+- The key is under the authenticated user's prefix.
+
+{{% notice warning %}}
+Never capture or publish a pre-signed URL. It contains a temporary signature that can upload an object until expiration.
+{{% /notice %}}
+
+#### Deployment results
+
+![Deployment result - frontend upload](/images/5-Workshop/5.4-S3-upload/frontend-upload.png)
+
+![Deployment result - s3 raw object](/images/5-Workshop/5.4-S3-upload/s3-raw-object.png)

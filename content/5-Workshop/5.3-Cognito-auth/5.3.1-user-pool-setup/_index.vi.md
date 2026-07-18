@@ -1,35 +1,74 @@
 ---
-title: "Cấu hình Cognito User Pool"
-date: 2026-07-10
+title: "Tạo Cognito User Pool"
+date: 2026-07-18
 weight: 1
 chapter: false
 pre: " <b> 5.3.1. </b> "
 ---
 
-1. Truy cập vào [Amazon Cognito Console](https://ap-southeast-1.console.aws.amazon.com/cognito/home?region=ap-southeast-1).
-2. Nhấp vào nút **Create user pool** (Tạo nhóm người dùng).
+#### 1. Mở Cognito
 
-{{% notice note %}}
-Cognito User Pool đóng vai trò như một cơ sở dữ liệu quản lý danh tính. Nó sẽ giúp dự án KTs Smart Agriculture quản lý việc đăng ký, đăng nhập và cấp quyền (thông qua JWT) cho người dùng một cách an toàn.
-{{% /notice %}}
+1. Mở **Amazon Cognito** trong AWS Console.
+2. Chọn Region **Asia Pacific (Singapore) - ap-southeast-1**.
+3. Chọn **Create user pool**.
 
-![cognito](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/cognito-home.png)
+#### 2. Cấu hình đăng nhập
 
-3. Trong bảng điều khiển tạo User Pool, thực hiện các cấu hình sau:
+- Application type: **Single-page application (SPA)**.
+- Sign-in identifier: **Email**.
+- Required attribute: **Email**.
+- Self-registration: **Enabled**.
+- Email verification: **Send verification code**.
+- MFA: **Optional** hoặc **Off** cho môi trường lab.
 
-- **Bước 1 (Sign-in experience):** Chọn **Email** làm phương thức đăng nhập chính.
-- **Bước 2 (Security requirements):** Thiết lập chính sách mật khẩu (Password policy). Có thể chọn _No MFA_ (Không cần xác thực 2 bước) để quá trình demo web diễn ra nhanh gọn hơn.
+Đặt tên:
 
-![cognito](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/cognito-signin.png)
+```text
+kts-smartagri-dev-users
+```
 
-- **Bước 3 & Bước 4:** Giữ nguyên các thiết lập mặc định cho trải nghiệm đăng ký (Sign-up experience) và gửi email xác nhận.
-- **Bước 5 (Integrate your app):** + Đặt tên cho User Pool, ví dụ: `kts-smart-agri-user-pool-prod`.
-  - Đánh dấu chọn tạo **App client**. Đặt tên cho App client là `KTs-Web-Client`.
-  - Đảm bảo chọn **Public client** và **Không tạo Client secret** (Do Frontend của chúng ta là Vanilla JS/HTML chạy trên trình duyệt, không bảo mật được secret key).
+#### 3. Cấu hình app client
 
-![cognito](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/cognito-app-client.png)
+Tạo public app client:
 
-- Bấm **Next** để xem lại toàn bộ cấu hình.
-- Cuối cùng, bấm **Create user pool**. Sau khi tạo thành công, hãy copy lại **User Pool ID** và **Client ID** để chuẩn bị điền vào file `config.js` ở Frontend.
+```text
+kts-smartagri-dev-web
+```
 
-![cognito](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/cognito-complete.png)
+- Không tạo client secret cho ứng dụng chạy trong trình duyệt.
+- Bật `ALLOW_USER_SRP_AUTH` và `ALLOW_REFRESH_TOKEN_AUTH`.
+- Token revocation: bật.
+
+Sau khi tạo, lưu lại:
+
+```text
+User Pool ID
+App Client ID
+```
+
+Không lưu client secret vì SPA không thể bảo vệ secret.
+
+#### 4. Kiểm tra bằng AWS CLI
+
+```powershell
+aws cognito-idp describe-user-pool `
+  --user-pool-id <USER_POOL_ID> `
+  --region ap-southeast-1 `
+  --query "UserPool.{Name:Name,Status:Status,AutoVerifiedAttributes:AutoVerifiedAttributes}"
+
+aws cognito-idp describe-user-pool-client `
+  --user-pool-id <USER_POOL_ID> `
+  --client-id <APP_CLIENT_ID> `
+  --region ap-southeast-1 `
+  --query "UserPoolClient.{ClientName:ClientName,GenerateSecret:GenerateSecret,ExplicitAuthFlows:ExplicitAuthFlows}"
+```
+
+`GenerateSecret` phải là `false` và `AutoVerifiedAttributes` phải có `email`.
+
+#### Kết quả triển khai
+
+![Kết quả triển khai - cognito user pool overview](/images/5-Workshop/5.3-Cognito-auth/cognito-user-pool-overview.png)
+
+![Kết quả triển khai - cognito signup settings](/images/5-Workshop/5.3-Cognito-auth/cognito-signup-settings.png)
+
+![Kết quả triển khai - cognito app client](/images/5-Workshop/5.3-Cognito-auth/cognito-app-client.png)

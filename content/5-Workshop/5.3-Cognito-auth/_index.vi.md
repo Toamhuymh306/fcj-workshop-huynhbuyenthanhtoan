@@ -1,20 +1,28 @@
 ---
-title: "Xác thực người dùng (Cognito)"
-date: 2026-07-10
+title: "Xác thực người dùng với Cognito"
+date: 2026-07-18
 weight: 3
 chapter: false
 pre: " <b> 5.3. </b> "
 ---
 
-#### Sử dụng Amazon Cognito User Pool
+#### Mục tiêu
 
-Trong phần này, bạn sẽ cấu hình và demo cơ chế bảo mật của nền tảng KTs Smart Agriculture sử dụng **Amazon Cognito**.
+Trong phần này, bạn tạo Amazon Cognito User Pool, bật xác minh email và kết nối frontend với app client. ID token do Cognito phát hành sẽ được API Gateway Cognito Authorizer kiểm tra trước khi cho phép gọi Presign API và Results API.
 
-Để bảo vệ các API phân tích AI và ngăn chặn việc tải ảnh rác lên hệ thống S3, ứng dụng bắt buộc người dùng (nông dân, chuyên gia nông nghiệp) phải đăng nhập. Sau khi xác thực thành công, Cognito sẽ cấp một thẻ ủy quyền (JWT Token). Web App sẽ sử dụng Token này đính kèm vào phần Header của mọi yêu cầu gửi lên máy chủ AWS.
+Luồng xác thực:
 
-![Cognito Auth Flow](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/diagram2.png)
+1. Người dùng đăng ký bằng email và mật khẩu.
+2. Cognito gửi mã xác minh đến email.
+3. Người dùng xác nhận tài khoản và đăng nhập.
+4. Frontend lưu ID token trong phiên người dùng.
+5. API Gateway xác minh issuer, audience, chữ ký và thời hạn token.
+
+{{% notice warning %}}
+Không ghi ID token vào tài liệu hoặc ảnh chụp. Token cho phép gọi API trong thời gian còn hiệu lực.
+{{% /notice %}}
 
 #### Nội dung
 
-- [Cấu hình Cognito User Pool](5.3.1-user-pool-setup/)
-- [Demo Đăng nhập & Nhận Token](5.3.2-login-demo/)
+1. [Tạo Cognito User Pool](5.3.1-user-pool-setup/)
+2. [Đăng ký, xác minh email và đăng nhập](5.3.2-login/)

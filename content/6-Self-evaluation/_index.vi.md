@@ -3,6 +3,7 @@ title: "Tự đánh giá"
 date: 2026-07-12
 weight: 6
 chapter: false
+hidden: true
 pre: " <b> 6. </b> "
 ---
 

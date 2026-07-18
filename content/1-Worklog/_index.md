@@ -3,6 +3,7 @@ title: "Worklog"
 date: 2026-05-11
 weight: 1
 chapter: false
+hidden: true
 pre: " <b> 1. </b> "
 ---
 

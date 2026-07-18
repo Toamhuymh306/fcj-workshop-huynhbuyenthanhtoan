@@ -1,21 +1,50 @@
 ---
-title: "Giới thiệu"
-date: 2026-07-10
+title: "Tổng quan kiến trúc"
+date: 2026-07-18
 weight: 1
 chapter: false
 pre: " <b> 5.1. </b> "
 ---
 
-#### Kiến trúc Serverless (Không máy chủ)
+#### Kiến trúc tổng thể
 
-- **Kiến trúc Serverless** cho phép xây dựng và chạy các ứng dụng mà không cần phải quản lý cơ sở hạ tầng máy chủ. Các dịch vụ này tự động mở rộng quy mô, có tính dự phòng cao và đảm bảo tính sẵn sàng.
-- Nền tảng phân tích bệnh cây trồng sử dụng sự kết hợp của các dịch vụ Serverless cốt lõi trên AWS: **Amazon Cognito** để quản lý danh tính, **API Gateway** làm cổng giao tiếp, **Amazon S3** để lưu trữ hình ảnh, **AWS Lambda** (kết hợp ECR container) để chạy mô hình suy luận AI, và **DynamoDB** để lưu trữ kết quả đầu ra.
+![Kiến trúc KTS Smart Agri](/images/5-Workshop/5.1-Workshop-overview/diagram1.png)
 
-#### Tổng quan workshop
+Luồng chính của hệ thống:
 
-Trong workshop này, quá trình triển khai được chia làm 2 môi trường giao tiếp chính:
+1. Người dùng đăng ký, xác minh email và nhận ID token từ Amazon Cognito.
+2. Frontend gọi `POST /presign` qua API Gateway với ID token.
+3. Presign Lambda tạo URL tải lên có thời hạn và ràng buộc metadata `user-id`.
+4. Trình duyệt tải ảnh trực tiếp lên raw S3 bucket.
+5. S3 gửi `ObjectCreated` event đến SQS; SQS kích hoạt Inference Lambda.
+6. Inference Lambda gọi Rekognition `DetectLabels` để kiểm tra `Leaf` và `Plant`.
+7. Ảnh hợp lệ được ResNet-50 xử lý; ảnh không hợp lệ nhận trạng thái `REJECTED`.
+8. Lambda lưu ảnh đã xử lý vào S3 và kết quả vào DynamoDB.
+9. Frontend gọi Results API để lấy hoặc xóa lịch sử của chính người dùng.
 
-- **"Client-side / Frontend"** đại diện cho ứng dụng Web App (viết bằng HTML/JS thuần) chạy trên trình duyệt của người dùng. Ứng dụng này sẽ gọi API để xác thực và đẩy ảnh trực tiếp lên đám mây.
-- **"Cloud-side / Backend"** là hệ sinh thái AWS hoạt động ngầm. Khi một hình ảnh lá cây được tải lên thành công, S3 sẽ tự động kích hoạt (trigger) hàm Lambda chứa mô hình học sâu. Lambda xử lý ảnh, phân loại lớp bệnh và ghi kết quả vào DynamoDB để Frontend lấy dữ liệu hiển thị về cho người dùng.
+#### Tại sao dùng kiến trúc này?
 
-![overview](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.1-Workshop-overview/diagram1.png)
+| Yêu cầu | Thiết kế |
+|---|---|
+| Không truyền file lớn qua API Gateway | Upload trực tiếp lên S3 bằng pre-signed URL |
+| Tách upload khỏi inference | S3 + SQS tạo pipeline bất đồng bộ |
+| Chạy PyTorch và checkpoint lớn | Lambda container image lưu trên ECR |
+| Chặn ảnh người, động vật, tài liệu | Rekognition Image làm validation gate |
+| Cô lập dữ liệu từng người dùng | Cognito `sub`, DynamoDB GSI và kiểm tra ownership |
+| Giảm vận hành máy chủ | Dịch vụ managed/serverless, tính phí theo sử dụng |
+
+#### Các dịch vụ AWS
+
+- **Amazon Cognito:** đăng ký, xác minh email và phát hành JWT.
+- **Amazon API Gateway:** công khai Presign API và Results API.
+- **AWS Lambda:** cấp URL, inference và quản lý lịch sử.
+- **Amazon S3:** lưu ảnh raw, processed và archive.
+- **Amazon SQS:** đệm sự kiện upload, retry và tách tải.
+- **Amazon ECR:** lưu Lambda container image.
+- **Amazon Rekognition Image:** xác nhận ảnh có lá cây.
+- **Amazon DynamoDB:** lưu kết quả và truy vấn theo `user_id`.
+- **Amazon CloudWatch:** log, metric và điều tra lỗi.
+
+{{% notice tip %}}
+Không đưa access key, secret key, JWT hoặc pre-signed URL còn hiệu lực vào ảnh chụp workshop.
+{{% /notice %}}

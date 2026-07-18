@@ -1,46 +1,75 @@
 ---
-title: "Demo Đăng nhập & Nhận Token"
-date: 2026-07-10
+title: "Đăng ký, xác minh email và đăng nhập"
+date: 2026-07-18
 weight: 2
 chapter: false
 pre: " <b> 5.3.2. </b> "
 ---
 
-#### Khởi chạy Frontend Web App
+#### 1. Cấu hình frontend
 
-1. Mở Terminal hoặc Command Prompt tại thư mục chứa source code Frontend của KTs Smart Agriculture.
-2. Chạy một local web server (Ví dụ dùng Node.js: gõ `npx http-server` hoặc dùng extension Live Server trên VS Code).
+Mở file cấu hình frontend và cập nhật Region, User Pool ID, App Client ID và API endpoint:
 
-![Khởi chạy Web](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/run-server.png)
+```javascript
+const AWS_CONFIG = {
+  region: "ap-southeast-1",
+  cognito: {
+    userPoolId: "<USER_POOL_ID>",
+    clientId: "<APP_CLIENT_ID>"
+  },
+  apiGateway: {
+    endpoint: "https://<REST_API_ID>.execute-api.ap-southeast-1.amazonaws.com/dev"
+  }
+};
+```
 
-3. Mở trình duyệt và truy cập vào địa chỉ `http://localhost:8080` (hoặc port tương ứng). Giao diện trang chủ của ứng dụng sẽ hiện ra.
+#### 2. Chạy frontend local
 
-![Giao diện Web](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/web-home.png)
+```powershell
+cd D:\kts-smart-agri\frontend-app
+python -m http.server 8000
+```
 
-#### Đăng ký và Đăng nhập (Sign up & Sign in)
+Mở `http://127.0.0.1:8000`.
 
-1. Tại giao diện web, chọn nút **Đăng ký (Sign Up)**.
-2. Nhập một địa chỉ email hợp lệ và mật khẩu theo đúng policy đã thiết lập ở bài trước. Nhấn Đăng ký.
-3. Chuyển sang form **Đăng nhập (Sign In)**, nhập lại thông tin vừa tạo và tiến hành đăng nhập vào hệ thống.
+#### 3. Đăng ký và xác minh
 
-![Đăng nhập](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/web-login.png)
+1. Chọn **Đăng ký**.
+2. Nhập email và mật khẩu đáp ứng password policy.
+3. Lấy mã xác minh trong email.
+4. Nhập mã trên form xác nhận.
+5. Đăng nhập sau khi tài khoản chuyển sang trạng thái `CONFIRMED`.
 
-#### Kiểm tra JWT Token trong trình duyệt
+Ứng dụng cũng phải hỗ trợ **Gửi lại mã** khi mã cũ hết hạn hoặc email đến chậm.
 
-Mục đích cốt lõi của bước này là xác nhận Amazon Cognito đã trả về một vé ủy quyền (Token) hợp lệ cho Frontend.
+#### 4. Kiểm tra token an toàn
 
-1. Ngay trên trình duyệt đang mở Web App, nhấn phím **F12** để mở công cụ Developer Tools.
-2. Chuyển sang tab **Console** hoặc **Application** (phần Local Storage).
-3. Bạn sẽ nhìn thấy một chuỗi ký tự mã hóa rất dài bắt đầu bằng `eyJ...`. Đây chính là **ID Token** và **Access Token** do Cognito cấp.
+Trong DevTools Console:
 
-![Token Console](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/console-token.png)
+```javascript
+(() => {
+  const token = localStorage.getItem("idToken");
+  if (!token) return { error: "idToken not found" };
+  const payload = JSON.parse(atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+  return {
+    token_use: payload.token_use,
+    issuer: payload.iss,
+    audience: payload.aud,
+    expires_at: new Date(payload.exp * 1000).toISOString()
+  };
+})()
+```
 
-{{% notice info %}}
-Token này đóng vai trò như một "tấm thẻ thông hành". Bất cứ khi nào bạn nhấn nút tải ảnh lên, đoạn mã Javascript trong file `app.js` sẽ tự động đính kèm Token này vào Header của HTTP Request để chứng minh danh tính với máy chủ AWS.
+Kết quả phải có `token_use: "id"` và issuer trỏ đến User Pool vừa tạo.
+
+{{% notice warning %}}
+REST API Cognito Authorizer của workshop nhận JWT thô trong header `Authorization`. Không thêm tiền tố `Bearer` khi gọi các route đã cấu hình.
 {{% /notice %}}
 
-#### Tổng kết phần 5.3
+#### Kết quả triển khai
 
-Chúc mừng nhóm KTs đã thiết lập và tích hợp thành công luồng xác thực người dùng. Bức tường bảo mật đầu tiên đã được dựng lên vững chắc, ngăn chặn hoàn toàn các truy cập ẩn danh.
+![Kết quả triển khai - cognito confirm email](/images/5-Workshop/5.3-Cognito-auth/cognito-confirm-email.png)
 
-Hệ thống giờ đây đã sẵn sàng cho luồng tải dữ liệu thực tế. Để chuẩn bị cho bước kiểm chứng AI quan trọng tiếp theo, hãy chuẩn bị sẵn bức ảnh chụp lá cacao bị nhện đỏ tấn công (chứ không phải bệnh nấm VSD hay thán thư) để xem hệ thống phân loại có trả về kết quả chính xác hay không.
+![Kết quả triển khai - cognito login success](/images/5-Workshop/5.3-Cognito-auth/cognito-login-success.png)
+
+![Kết quả triển khai - cognito token claims](/images/5-Workshop/5.3-Cognito-auth/cognito-token-claims.png)

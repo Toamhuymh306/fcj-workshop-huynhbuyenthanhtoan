@@ -1,62 +1,94 @@
 ---
-title: "API Gateway & Lambda Setup"
-date: 2026-07-10
+title: "Create buckets, Presign Lambda, and API"
+date: 2026-07-18
 weight: 1
 chapter: false
 pre: " <b> 5.4.1. </b> "
 ---
 
-To prepare for the secure image upload flow, the KTS Smart Agriculture system will not push image data directly through a web server. Instead, we will implement the **Pre-signed URL** mechanism (Temporary authorization link).
+#### 1. Create three S3 buckets
 
-This mechanism requires two main components:
+```powershell
+aws s3api create-bucket --bucket $RawBucket --region $AwsRegion `
+  --create-bucket-configuration LocationConstraint=$AwsRegion
 
-- **AWS Lambda Function:** Responsible for communicating with Amazon S3 to generate a time-limited `PUT` URL.
-- **Amazon API Gateway (`kts-smart-agri-api-prod`):** Acts as the communication gateway for the Frontend to invoke the Lambda function, protected by a **Cognito Authorizer** to ensure only authenticated users (with a valid JWT token) can request upload URLs.
+aws s3api create-bucket --bucket $ProcessedBucket --region $AwsRegion `
+  --create-bucket-configuration LocationConstraint=$AwsRegion
 
-![Pre-signed URL Flow](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.4-S3-upload/presign-flow.png)
+aws s3api create-bucket --bucket $ArchiveBucket --region $AwsRegion `
+  --create-bucket-configuration LocationConstraint=$AwsRegion
+```
 
-#### Step 1: Create the URL Generation Lambda Function
+Enable Block Public Access for all buckets. The application does not require public buckets or objects.
 
-1. Navigate to the [AWS Lambda Console](https://ap-southeast-1.console.aws.amazon.com/lambda/home?region=ap-southeast-1) and click **Create function**.
-2. Name the function `kts-smart-agri-presign-url-prod`, and select **Python 3.10** (or newer) as the Runtime.
-3. Ensure the Lambda's Execution Role has a Policy attached granting `s3:PutObject` permission to the `kts-smartagri-dev-raw-images` bucket.
-4. Write the Python code using the `boto3` library to generate the URL with the `generate_presigned_url` method. Click **Deploy** to save the code.
+#### 2. Create a Presign Lambda execution role
 
-![Lambda Setup](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.4-S3-upload/lambda-presign.png)
+The role needs:
 
-#### Step 2: Create a REST API
+- CloudWatch Logs write permissions.
+- `s3:PutObject` on `arn:aws:s3:::<RAW_BUCKET>/*`.
+- A trust policy for `lambda.amazonaws.com`.
 
-1. Navigate to the **Amazon API Gateway Console** and choose to build a new **REST API** named `kts-smart-agri-api-prod`.
+{{% notice warning %}}
+Do not grant `AmazonS3FullAccess`. Presign Lambda only needs to generate upload URLs for the raw bucket.
+{{% /notice %}}
 
-#### Step 3: Create a Cognito Authorizer
+#### 3. Package the source
 
-1. In the left panel of your API, click **Authorizers** → **Create authorizer**.
-2. Configure the authorizer as follows:
-   - **Name:** `CognitoAuthorizer`
-   - **Type:** Cognito
-   - **Cognito user pool:** select `kts-smart-agri-user-pool-prod`
-   - **Token source:** `Authorization`
-3. Click **Create authorizer**.
-4. To verify, click **Test authorizer** and paste a valid JWT token from Cognito — you should see a `200` response with the decoded claims.
+```powershell
+cd D:\kts-smart-agri\ai-service
 
-![Create Cognito Authorizer](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.4-S3-upload/create_cognito_authorizer_api_gateway.png)
+$PresignSource = Resolve-Path "..\frontend-app\backend\lambda\presign_handler.py"
+$Stage = Join-Path $env:TEMP "kts-presign-package"
+$Zip = Join-Path $env:TEMP "kts-presign.zip"
 
-#### Step 4: Configure Resources and Methods
+New-Item -ItemType Directory -Force -Path $Stage | Out-Null
+Copy-Item $PresignSource (Join-Path $Stage "lambda_function.py") -Force
+Compress-Archive -Path (Join-Path $Stage "lambda_function.py") -DestinationPath $Zip -Force
+tar -tf $Zip
+```
 
-1. In the API management interface, click **Create Resource** and set the path to `/images`, then create a child resource `/presign` under it (full path: `/images/presign`).
+The archive must contain `lambda_function.py` at its root.
 
-![Create Resource](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.4-S3-upload/api-resource.png)
+#### 4. Create or update Lambda
 
-2. Select the `/images/presign` resource, click **Create Method**, and choose the **POST** method.
-3. For the Integration type, select **Lambda Function** and enter the function name `kts-smart-agri-presign-url-prod` created in Step 1. Click Save.
-4. Under **Method Request**, set **Authorization** to `CognitoAuthorizer`.
+Use these settings:
 
-![Lambda Integration](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.4-S3-upload/api-integration.png)
+| Property | Value |
+|---|---|
+| Function name | `kts-smartagri-dev-presign-lambda` |
+| Runtime | Python 3.12 |
+| Handler | `lambda_function.lambda_handler` |
+| Timeout | 10 seconds |
+| Memory | 128 MB |
+| `S3_BUCKET` | raw bucket |
+| `CORS_ORIGIN` | frontend origin or `*` for the lab |
 
-#### Step 5: Deploy the API
+For an existing function:
 
-1. Click the **Deploy API** button on the toolbar.
-2. Create a new Stage named `prod` and proceed with the deployment.
-3. Once deployed, the system will provide you with an **Invoke URL**. Copy this URL as you will need it to configure the frontend application.
+```powershell
+aws lambda update-function-code `
+  --function-name kts-smartagri-dev-presign-lambda `
+  --zip-file "fileb://$Zip" `
+  --region $AwsRegion
+```
 
-![Get Invoke URL](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.4-S3-upload/api-deploy.png)
+#### 5. Create the REST API route
+
+In API Gateway:
+
+1. Create REST API `kts-smartagri-api`.
+2. Create resource `/presign`.
+3. Create method `POST`.
+4. Authorization: **Cognito User Pool Authorizer**.
+5. Integration: **Lambda proxy** to Presign Lambda.
+6. Add `OPTIONS` for preflight requests.
+7. Deploy to stage `dev`.
+
+#### Deployment results
+
+![Deployment result - s3 three buckets](/images/5-Workshop/5.4-S3-upload/s3-three-buckets.png)
+
+![Deployment result - presign lambda config](/images/5-Workshop/5.4-S3-upload/presign-lambda-config.png)
+
+![Deployment result - api presign method](/images/5-Workshop/5.4-S3-upload/api-presign-method.png)

@@ -1,94 +1,214 @@
 ---
-title: "AI Inference"
-date: 2026-07-10
+title: "Triển khai AI inference"
+date: 2026-07-18
 weight: 5
 chapter: false
-pre: " <b> 5.5 </b> "
+pre: " <b> 5.5. </b> "
 ---
 
-Trong phần này, chúng ta sẽ cấu hình **AI Inference** để phân tích hình ảnh cây trồng sau khi người dùng tải ảnh thành công lên Amazon S3. Hệ thống sử dụng **AWS Lambda (Container Image)** để chạy mô hình học sâu (Deep Learning), dự đoán bệnh trên lá cây và lưu kết quả phân tích vào Amazon DynamoDB.
+#### Mục tiêu
 
-Luồng xử lý này hoàn toàn **Serverless**, giúp hệ thống tự động mở rộng theo số lượng yêu cầu mà không cần quản lý máy chủ.
+Phần này đóng gói ResNet-50 và Python runtime thành Lambda container image, push lên Amazon ECR, cấu hình Rekognition validation gate và kết nối SQS với Inference Lambda.
 
-![AI Inference Architecture](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.5-AI-inference/ai-inference-flow.png)
+Inference image chỉ chứa một checkpoint production:
 
-#### Luồng xử lý AI
+```text
+best_resnet_model.pth
+```
 
-1. Sau khi người dùng tải ảnh lên **Amazon S3 (Raw Images Bucket)**, Frontend gửi yêu cầu phân tích đến **Amazon API Gateway**.
+Mô hình nhận ảnh `224 x 224`, chuẩn hóa theo ImageNet và trả một trong 38 lớp PlantVillage. `class_names.json` phải giữ đúng thứ tự class khi train.
 
-2. API Gateway xác thực JWT Token từ **Amazon Cognito** nhằm đảm bảo chỉ người dùng đã đăng nhập mới được phép sử dụng dịch vụ AI.
+#### 1. Build container image
 
-![API Gateway](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.5-AI-inference/api-gateway.png)
+```powershell
+cd D:\kts-smart-agri\ai-service
 
-3. API Gateway kích hoạt **Inference Lambda** được triển khai dưới dạng **Container Image** lưu trữ trên **Amazon ECR**.
+docker build `
+  --platform linux/amd64 `
+  --provenance=false `
+  --sbom=false `
+  -f aws/lambda_inference/Dockerfile `
+  -t kts-smartagri-inference:local `
+  .
+```
 
-![Lambda Container](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.5-AI-inference/lambda-container.png)
+Hai tùy chọn `--provenance=false` và `--sbom=false` tạo single-platform manifest phù hợp với Lambda container image.
 
-4. Lambda tải ảnh từ **Amazon S3**, thực hiện các bước tiền xử lý gồm:
+Kiểm tra checkpoint:
 
-- Resize ảnh về kích thước của mô hình.
-- Chuẩn hóa dữ liệu đầu vào.
-- Chuyển đổi Tensor.
-- Nạp mô hình AI.
+```powershell
+docker run --rm `
+  --platform linux/amd64 `
+  --entrypoint /bin/sh `
+  kts-smartagri-inference:local `
+  -c "ls -lh /var/task/model"
+```
 
-![Image Preprocessing](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.5-AI-inference/preprocessing.png)
+Kết quả chỉ có `best_resnet_model.pth`, `class_names.json` và `model_config.json`.
 
-5. Mô hình AI tiến hành suy luận (Inference) để dự đoán loại bệnh của cây trồng và tính toán độ tin cậy (Confidence Score).
+#### 2. Smoke test model local
 
-Ví dụ kết quả:
+```powershell
+docker run --rm `
+  --platform linux/amd64 `
+  --entrypoint /var/lang/bin/python3 `
+  -e PYTHONPATH=/var/task `
+  -e MODEL_NAME=resnet `
+  kts-smartagri-inference:local `
+  -c "from runtime import load_assets; a=load_assets(); print(a.model_name, len(a.class_names))"
+```
 
-```json
-{
-  "class": "Tomato___Early_blight",
-  "confidence": 0.9876
+Kỳ vọng:
+
+```text
+resnet 38
+```
+
+#### 3. Push image lên ECR
+
+```powershell
+aws ecr describe-repositories `
+  --repository-names $EcrRepository `
+  --region $AwsRegion 2>$null | Out-Null
+
+if ($LASTEXITCODE -ne 0) {
+  aws ecr create-repository `
+    --repository-name $EcrRepository `
+    --image-scanning-configuration scanOnPush=true `
+    --region $AwsRegion | Out-Null
 }
+
+$ImageTag = "resnet-$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+$EcrUri = "$AccountId.dkr.ecr.$AwsRegion.amazonaws.com/$EcrRepository`:$ImageTag"
+
+aws ecr get-login-password --region $AwsRegion |
+  docker login --username AWS --password-stdin "$AccountId.dkr.ecr.$AwsRegion.amazonaws.com"
+
+docker tag kts-smartagri-inference:local $EcrUri
+docker push $EcrUri
 ```
 
-![Prediction Result](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.5-AI-inference/prediction.png)
+Kiểm tra `imageManifestMediaType` phải là:
 
-6. Sau khi suy luận thành công, Lambda lưu toàn bộ kết quả vào **Amazon DynamoDB**, bao gồm:
-
-- User ID
-- Tên ảnh
-- Loại bệnh
-- Confidence
-- Thời gian phân tích
-
-![DynamoDB](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.5-AI-inference/dynamodb.png)
-
-7. Nếu Confidence thấp hơn ngưỡng cho phép hoặc phát hiện bệnh nghiêm trọng, Lambda sẽ gửi thông báo thông qua **Amazon SNS** để cảnh báo người dùng.
-
-![SNS](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.5-AI-inference/sns.png)
-
-8. Frontend nhận phản hồi từ API Gateway và hiển thị kết quả phân tích cho người dùng.
-
-Ví dụ:
-
-```
-Plant : Tomato
-
-Disease : Early Blight
-
-Confidence : 98.76%
-
-Status : Success
+```text
+application/vnd.oci.image.manifest.v1+json
 ```
 
-![Frontend Result](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.5-AI-inference/frontend-result.png)
+#### 4. Tạo DynamoDB table
 
----
+Tạo table `kts-smartagri-dev-inference-results`:
 
-#### Tổng kết
+- Partition key: `image_id` kiểu String.
+- Billing mode: **On-demand (PAY_PER_REQUEST)**.
+- Encryption: AWS owned key hoặc customer managed key theo yêu cầu.
 
-Trong phần này chúng ta đã triển khai thành công dịch vụ **AI Inference** trên nền tảng AWS Serverless.
+GSI `user_id-index` sẽ được thêm ở phần 5.6.
 
-Toàn bộ quy trình bao gồm:
+#### 5. Cấp quyền cho Inference Lambda
 
-- API Gateway tiếp nhận yêu cầu.
-- Xác thực người dùng bằng Amazon Cognito.
-- AWS Lambda (Container Image) thực hiện suy luận AI.
-- Amazon S3 lưu trữ ảnh đầu vào.
-- Amazon DynamoDB lưu lịch sử phân tích.
-- Amazon SNS gửi cảnh báo khi cần thiết.
+Execution role chỉ cần:
 
-Kiến trúc này giúp hệ thống mở rộng linh hoạt, giảm chi phí vận hành và đáp ứng tốt các yêu cầu phân tích hình ảnh cây trồng theo thời gian thực.
+- `s3:GetObject` trên raw bucket.
+- `s3:PutObject` trên processed bucket.
+- `dynamodb:PutItem` trên result table.
+- `rekognition:DetectLabels` trên `*`.
+- `sqs:ReceiveMessage`, `sqs:DeleteMessage`, `sqs:GetQueueAttributes` trên inference queue.
+- Quyền ghi CloudWatch Logs.
+
+{{% notice warning %}}
+Không dùng AdministratorAccess hoặc quyền `s3:*`. Lambda lấy owner từ metadata `user-id` đã được ký trong pre-signed URL.
+{{% /notice %}}
+
+#### 6. Cấu hình Rekognition Image gate
+
+Trước khi tải ảnh vào PyTorch, Lambda gọi `DetectLabels` trên S3 object:
+
+```python
+response = rekognition.detect_labels(
+    Image={"S3Object": {"Bucket": bucket, "Name": key}},
+    Features=["GENERAL_LABELS"],
+    MaxLabels=20,
+    MinConfidence=90,
+)
+```
+
+Quy tắc:
+
+```text
+Leaf >= 90% và Plant >= 90%  -> chạy ResNet-50
+Thiếu một trong hai nhãn      -> status REJECTED
+```
+
+Ảnh bị từ chối không tạo processed image và frontend hiển thị: **Ảnh không hợp lệ, vui lòng chọn ảnh lá cây rõ nét.**
+
+#### 7. Tạo hoặc cập nhật Inference Lambda
+
+| Thuộc tính | Giá trị |
+|---|---|
+| Function name | `kts-smartagri-dev-inference-lambda` |
+| Package type | Image |
+| Architecture | x86_64 |
+| Memory | 2048 MB |
+| Timeout | 120 giây |
+| Ephemeral storage | 512 MB |
+| `MODEL_NAME` | `resnet` |
+| `PROCESSED_BUCKET` | processed bucket |
+| `RESULT_TABLE` | DynamoDB table |
+| `LEAF_LABEL_MIN_CONFIDENCE` | `90` |
+
+Với function đã tồn tại:
+
+```powershell
+aws lambda update-function-code `
+  --function-name kts-smartagri-dev-inference-lambda `
+  --image-uri $EcrUri `
+  --region $AwsRegion
+
+aws lambda wait function-updated-v2 `
+  --function-name kts-smartagri-dev-inference-lambda `
+  --region $AwsRegion
+```
+
+#### 8. Kết nối SQS event source
+
+```powershell
+aws lambda create-event-source-mapping `
+  --function-name kts-smartagri-dev-inference-lambda `
+  --event-source-arn $QueueArn `
+  --batch-size 1 `
+  --region $AwsRegion
+```
+
+Batch size `1` giúp cô lập ảnh lỗi và kiểm soát memory khi mỗi request tải model/image.
+
+#### 9. Xác minh deployment
+
+```powershell
+aws lambda get-function `
+  --function-name kts-smartagri-dev-inference-lambda `
+  --region $AwsRegion `
+  --query "{State:Configuration.State,Update:Configuration.LastUpdateStatus,Architecture:Configuration.Architectures,Image:Code.ResolvedImageUri}"
+
+aws lambda list-event-source-mappings `
+  --function-name kts-smartagri-dev-inference-lambda `
+  --region $AwsRegion `
+  --query "EventSourceMappings[].{State:State,Source:EventSourceArn,BatchSize:BatchSize}"
+```
+
+#### Kết quả triển khai
+
+![Kết quả triển khai - docker build success](/images/5-Workshop/5.5-AI-inference/docker-build-success.png)
+
+![Kết quả triển khai - ecr image](/images/5-Workshop/5.5-AI-inference/ecr-image.png)
+
+![Kết quả triển khai - lambda image config](/images/5-Workshop/5.5-AI-inference/lambda-image-config.png)
+
+![Kết quả triển khai - lambda environment](/images/5-Workshop/5.5-AI-inference/lambda-environment.png)
+
+![Kết quả triển khai - lambda permissions](/images/5-Workshop/5.5-AI-inference/lambda-permissions.png)
+
+![Kết quả triển khai - sqs lambda trigger](/images/5-Workshop/5.5-AI-inference/sqs-lambda-trigger.png)
+
+![Kết quả triển khai - rekognition diagram test](/images/5-Workshop/5.5-AI-inference/rekognition-diagram-test.png)
+
+![Kết quả triển khai - rekognition leaf test](/images/5-Workshop/5.5-AI-inference/rekognition-leaf-test.png)

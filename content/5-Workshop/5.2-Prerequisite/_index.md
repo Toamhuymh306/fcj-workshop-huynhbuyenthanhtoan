@@ -1,46 +1,91 @@
 ---
-title : "Prerequisite"
-date : 2026-07-10
-weight : 2
-chapter : false
-pre : " <b> 5.2. </b> "
+title: "Prerequisites"
+date: 2026-07-18
+weight: 2
+chapter: false
+pre: " <b> 5.2. </b> "
 ---
 
-#### Account and Access Permissions
+#### Required tools
 
-An active AWS account with IAM user privileges sufficient to deploy SAM stacks, manage Lambda, S3, DynamoDB, Cognito, API Gateway, SQS, SNS, ECR, CloudFront, WAFv2, CloudTrail, and CloudWatch resources. To obtain security keys for workstation connection, perform the following steps:
+- An AWS account allowed to create Cognito, S3, SQS, ECR, Lambda, DynamoDB, API Gateway, Rekognition, and IAM roles.
+- AWS CLI v2 with configured credentials.
+- Docker Desktop using Linux containers on `linux/amd64`.
+- Python 3.11 or later for local tests.
+- KTS Smart Agri source code and `ai-service/best_resnet_model.pth`.
+- Hugo for local workshop preview.
 
-**Step 1 (On AWS Console):** Log in to AWS Management Console, navigate to **IAM (Identity and Access Management)** → **Users**, select your username (e.g., `kts-agri-dev`), go to the **Security credentials** tab and locate the **Access keys** section. Click **Create access key**, select the **Command Line Interface (CLI)** use case, acknowledge the terms, and confirm creation to generate an Access Key ID and Secret Access Key pair. Download the `.csv` file to store these security keys safely.
+{{% notice warning %}}
+Do not use the AWS root user. Use a dedicated IAM identity and remove temporary credentials after the workshop.
+{{% /notice %}}
 
-![create iam](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.2-Prerequisite/create_iam.png)
+#### 1. Verify AWS CLI
 
-**Step 2 (On Workstation):** Open Terminal or PowerShell on your personal computer and run `aws configure`. Enter the Access Key ID and Secret Access Key created in Step 1, set **Default region name** to `ap-southeast-1` (Singapore) and **Default output format** to `json`. This configuration is automatically saved in the user's home directory (`%USERPROFILE%\.aws\` on Windows or `~/.aws/` on Linux/macOS).
-
-Verify the configuration is correct by running:
-```bash
+```powershell
+aws --version
+aws configure list
 aws sts get-caller-identity
+aws configure get region
 ```
-The command should return your Account ID and IAM user ARN without any authentication errors.
 
----
+Expected Region:
 
-#### Local Workstation Environment
+```text
+ap-southeast-1
+```
 
-Ensure the workstation has the following tools installed before deploying:
+#### 2. Verify Docker Desktop
 
-- **AWS CLI v2** — used to interact with AWS services and deploy the WAF stack directly via CloudFormation.
-- **SAM CLI** — used to build and deploy the serverless backend (Lambda functions, API Gateway, DynamoDB, and related resources).
-- **Docker Desktop** — required for `sam build` to build the AI Inference Lambda Docker image containing PyTorch and the ResNet50 + LeNet model weights. Docker Desktop must be **running** at the time of build.
-- **Python 3.11+** — required by SAM CLI to resolve Lambda dependencies during the build phase.
-- **Node.js v20+** and **npm** — required to install dependencies and build the React frontend application.
+```powershell
+docker version
+docker info --format "OSType={{.OSType}} Architecture={{.Architecture}}"
+docker context show
+```
 
-The local environment requires a stable Internet connection to download pip packages (torch, torchvision, boto3), Docker base images from `public.ecr.aws`, and npm packages during the build phase.
+The output must include `OSType=linux`, `Architecture=x86_64`, and the `desktop-linux` context.
 
----
+#### 3. Verify model and source files
 
-#### Region Selection
+```powershell
+cd D:\kts-smart-agri\ai-service
 
-This system deploys across two AWS regions due to a CloudFront requirement:
+Test-Path .\best_resnet_model.pth
+Test-Path .\aws\lambda_inference\Dockerfile
+Test-Path .\aws\lambda_inference\runtime.py
+Test-Path ..\frontend-app\backend\lambda\presign_handler.py
+Test-Path ..\frontend-app\backend\lambda\results_handler.py
+```
 
-- **WAF WebACL** must be deployed in **us-east-1 (N. Virginia)** because CloudFront only accepts WAF WebACLs with `CLOUDFRONT` scope created in us-east-1.
-- All other backend resources (Lambda, API Gateway, DynamoDB, S3, Cognito, SQS, SNS, ECR, CloudTrail) are deployed in **ap-southeast-1 (Singapore)** to optimize connection latency for end users in the Southeast Asian market and ensure compatibility of all AWS services used in the architecture.
+Every command must return `True`.
+
+#### 4. Define workshop variables
+
+```powershell
+$AwsRegion = "ap-southeast-1"
+$AccountId = aws sts get-caller-identity --query Account --output text
+$Project = "kts-smartagri"
+$Environment = "dev"
+
+$RawBucket = "$Project-$Environment-raw-images"
+$ProcessedBucket = "$Project-$Environment-processed-images"
+$ArchiveBucket = "$Project-$Environment-archive-images"
+$ResultTable = "$Project-$Environment-inference-results"
+$InferenceQueue = "$Project-$Environment-inference-queue"
+$EcrRepository = "$Project-inference"
+```
+
+S3 bucket names are globally unique. Add your account ID or another suffix if a name is unavailable.
+
+#### 5. Verify the production checkpoint
+
+The workshop packages one checkpoint:
+
+```text
+best_resnet_model.pth
+```
+
+The image also requires `runtime.py`, `handler.py`, `class_names.json`, `model_config.json`, PyTorch, Torchvision, and Pillow. A checkpoint contains weights, not the complete inference pipeline.
+
+#### Verification complete
+
+Continue after Docker, the AWS CLI, AWS access, and the required AI files have all been verified successfully.

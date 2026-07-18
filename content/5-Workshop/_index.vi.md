@@ -1,30 +1,39 @@
 ---
 title: "Workshop"
-date: 2026-07-10
+date: 2026-07-18
 weight: 5
 chapter: false
 pre: " <b> 5. </b> "
 ---
 
-# Triển khai hệ thống AI Serverless phân tích bệnh cây trồng
+# Xây dựng hệ thống AI Serverless chẩn đoán bệnh lá cây trên AWS
 
 #### Tổng quan
 
-Hệ thống ứng dụng trí tuệ nhân tạo để chẩn đoán bệnh trên cây trồng, sử dụng kiến trúc hoàn toàn không máy chủ (Serverless) trên AWS.
+Trong workshop này, bạn sẽ triển khai **KTS Smart Agri**, một ứng dụng web serverless cho phép người dùng đăng nhập, tải ảnh lá cây và nhận kết quả chẩn đoán từ mô hình ResNet-50.
 
-Trong bài lab này, chúng ta sẽ học cách cấu hình và triển khai thực tế hệ thống: từ bước xác thực người dùng, tải ảnh an toàn lên đám mây, kích hoạt suy luận AI (Inference), cho đến việc lưu trữ và hiển thị kết quả.
+Hệ thống sử dụng Amazon Cognito để xác thực, API Gateway và Lambda để cấp pre-signed URL, Amazon S3 và SQS cho pipeline hướng sự kiện, Amazon Rekognition Image để loại ảnh không hợp lệ, Lambda container để chạy mô hình, DynamoDB để lưu lịch sử và CloudWatch để giám sát.
 
-Kiến trúc này mang đến hai lợi ích cốt lõi:
+{{% notice info %}}
+Workshop sử dụng Region `ap-southeast-1`. Tên tài nguyên trong hướng dẫn có hậu tố `dev`; hãy thay bằng tên duy nhất của bạn khi triển khai trong tài khoản khác.
+{{% /notice %}}
 
-- **Bảo mật & Tối ưu luồng tải lên** - Sử dụng Amazon Cognito cấp Token và API Gateway tạo Pre-signed URL, cho phép tải ảnh trực tiếp lên Amazon S3 một cách an toàn.
-- **Tự động hóa AI Inference** - Cơ chế hướng sự kiện (Event-Driven) dùng S3 trigger kích hoạt AWS Lambda chạy mô hình phân tích ngay khi có dữ liệu mới.
+#### Kết quả đạt được
+
+- Người dùng đăng ký và xác minh email qua Cognito.
+- Ảnh được tải trực tiếp từ trình duyệt lên S3 bằng pre-signed URL.
+- S3 gửi sự kiện qua SQS để kích hoạt inference bất đồng bộ.
+- Rekognition yêu cầu đồng thời nhãn `Leaf` và `Plant` trước khi chạy AI.
+- ResNet-50 phân loại 38 lớp bệnh/lá và ghi kết quả vào DynamoDB.
+- API lịch sử chỉ trả về và xóa dữ liệu thuộc người dùng đang đăng nhập.
 
 #### Nội dung
 
-1. [Tổng quan về workshop](5.1-Workshop-overview/)
-2. [Chuẩn bị](5.2-Prerequisite/)
-3. [Xác thực người dùng (Cognito)](5.3-Cognito-auth/)
-4. [Luồng tải ảnh an toàn (Pre-signed URL & S3)](5.4-S3-upload/)
-5. [Tự động hóa suy luận AI (Lambda & ECR)](5.5-AI-inference/)
-6. [Lưu trữ kết quả (DynamoDB)](5.6-Dynamodb-results/)
-7. [Dọn dẹp tài nguyên](5.7-Cleanup/)
+1. [Tổng quan kiến trúc](5.1-Workshop-overview/)
+2. [Điều kiện tiên quyết](5.2-Prerequisite/)
+3. [Xác thực người dùng với Cognito](5.3-Cognito-auth/)
+4. [Tải ảnh an toàn và pipeline sự kiện](5.4-S3-upload/)
+5. [Triển khai AI inference](5.5-AI-inference/)
+6. [Lịch sử kết quả và phân quyền dữ liệu](5.6-Results-history/)
+7. [Kiểm thử end-to-end và giám sát](5.7-End-to-end/)
+8. [Dọn dẹp tài nguyên](5.8-Cleanup/)

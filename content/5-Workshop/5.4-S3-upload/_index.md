@@ -1,23 +1,28 @@
 ---
-title: "Architecture: Serverless Image Upload"
-date: 2024-01-01
+title: "Secure upload and event pipeline"
+date: 2026-07-18
 weight: 4
 chapter: false
-pre: " <b> 5.4 </b> "
+pre: " <b> 5.4. </b> "
 ---
 
-#### Secure Image Ingestion Flow
+#### Objective
 
-This section breaks down the serverless architecture used to securely ingest raw images into the system, setting the stage for the downstream computer vision inference pipeline. By utilizing a Pre-signed URL approach, the architecture minimizes backend load and optimizes upload latency.
+The frontend does not send image files through Lambda or API Gateway. Presign Lambda returns a time-limited URL so the browser uploads directly to the raw S3 bucket. Signed `user-id` metadata becomes the ownership source throughout the pipeline.
 
-**Step-by-step Execution:**
+After upload, S3 sends an event to SQS. The queue absorbs bursts, retains messages during Lambda failures, and decouples upload latency from inference latency.
 
-1. **User Authentication:** The client authenticates against **Amazon Cognito** to obtain a valid JSON Web Token (JWT), ensuring only verified users can interact with the system.
-2. **Edge Routing & Protection:** The user requests an upload URL via HTTPS. This request is routed globally through **Amazon CloudFront**, which is shielded against web exploits by **AWS WAF**.
-3. **Authorization & API Management:** **Amazon API Gateway** intercepts the request and validates the provided JWT token directly with Cognito.
-4. **Pre-signed URL Generation:** Once authorized, the API Gateway triggers the `AWS Lambda Presign` function. This compute layer securely communicates with Amazon S3 to generate a temporary Pre-signed URL.
-5. **Direct S3 Upload:** The Pre-signed URL is returned to the frontend (Steps 5a & 5b). The client application then uses this URL to upload the image directly to the **Raw Images S3 Bucket** (Step 6), completely bypassing the application backend.
+#### Storage layers
 
-This decoupled ingestion mechanism ensures that raw data is safely stored and immediately ready to trigger the AI processing events.
+| Bucket | Purpose |
+|---|---|
+| `kts-smartagri-dev-raw-images` | Original user uploads |
+| `kts-smartagri-dev-processed-images` | Labeled JPEG output images |
+| `kts-smartagri-dev-archive-images` | Archive and administrative test data |
 
-![Architecture Flow](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.4-S3-upload/diagram1_2.png)
+#### Contents
+
+1. [Create buckets, Presign Lambda, and API](5.4.1-api-gateway-setup/)
+2. [Configure CORS](5.4.2-cors-config/)
+3. [Test upload](5.4.3-test-endpoint/)
+4. [Connect S3 to SQS](5.4.4-event-pipeline/)

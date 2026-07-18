@@ -1,38 +1,35 @@
 ---
-title: "Internship Report"
-date: 2024-01-01
+title: "KTS Smart Agri Workshop"
+date: 2026-07-18
 weight: 1
 chapter: false
 ---
 
-# Internship Report
+# Build a serverless AI plant disease diagnosis system on AWS
 
-### Student Information:
+KTS Smart Agri is a hands-on workshop for building a complete serverless web application. Users sign in, upload a plant leaf image to Amazon S3, and receive a disease classification from a ResNet-50 model running on AWS Lambda.
 
-&emsp; **Full Name:** Huynh Nguyen Thanh Toan
+The system uses Amazon Cognito for authentication, API Gateway and Lambda for pre-signed URLs, S3 and SQS for the asynchronous pipeline, Amazon Rekognition Image for input validation, DynamoDB for result history, and CloudWatch for monitoring.
 
-&emsp; **Phone Number:** 09656242207
+{{% notice info %}}
+The workshop is deployed in Region `ap-southeast-1`. Sample resources use the `kts-smartagri-dev` prefix.
+{{% /notice %}}
 
-&emsp; **Email:** hnttoam@gmail.com
+## Architecture
 
-&emsp; **University:** Ho Chi Minh City University of Technology (HUTECH)
+![KTS Smart Agri architecture](/images/5-Workshop/5.1-Workshop-overview/diagram1.png)
 
-&emsp; **Major:** Machine Learning and Applications
+## Workshop content
 
-&emsp; **Internship Company:** Amazon Web Services Viet Nam Company Limited
+1. [Architecture overview](5-Workshop/5.1-Workshop-overview/)
+2. [Prerequisites](5-Workshop/5.2-Prerequisite/)
+3. [User authentication with Amazon Cognito](5-Workshop/5.3-Cognito-auth/)
+4. [Secure image upload and the S3 - SQS pipeline](5-Workshop/5.4-S3-upload/)
+5. [Package and deploy AI inference](5-Workshop/5.5-AI-inference/)
+6. [Build result history and data ownership](5-Workshop/5.6-Results-history/)
+7. [End-to-end testing and monitoring](5-Workshop/5.7-End-to-end/)
+8. [Clean up resources](5-Workshop/5.8-Cleanup/)
 
-&emsp; **Internship Position:** AI Engineer
+## Outcome
 
-&emsp; **Internship Duration:** From 17/04/2026 to 12/07/2026
-
-![My portrait photo](/fcj-workshop-huynhbuyenthanhtoan/images/chandung.JPG)
-
-### Report Content
-
-1.  [Worklog](1-Worklog/)
-2.  [Proposal](2-Proposal/)
-3.  [BlogsPosted](3-BlogsPosted/)
-4.  [Events Participated](4-EventParticipated/)
-5.  [Workshop](5-Workshop/)
-6.  [Self-evaluation](6-Self-evaluation/)
-7.  [Sharing and Feedback](7-Feedback/)
+After completing the workshop, you will have an end-to-end system with user authentication, direct S3 upload, asynchronous inference, image validation, per-user result history, and APIs protected by a Cognito Authorizer.

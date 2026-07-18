@@ -1,20 +1,28 @@
 ---
-title: "User Authentication (Cognito)"
-date: 2026-07-10
+title: "User authentication with Cognito"
+date: 2026-07-18
 weight: 3
 chapter: false
 pre: " <b> 5.3. </b> "
 ---
 
-#### Using Amazon Cognito User Pool
+#### Objective
 
-In this section, you will configure and demo the security mechanism of the KTs Smart Agriculture platform using **Amazon Cognito**.
+In this section, you create an Amazon Cognito User Pool, enable email verification, and connect the frontend to a public app client. API Gateway Cognito Authorizers validate the Cognito ID token before allowing Presign API and Results API calls.
 
-To protect the AI analysis APIs and prevent spam uploads to the S3 system, the application requires users (farmers, agricultural experts) to log in. Upon successful authentication, Cognito issues an authorization pass (JWT Token). The Web App will attach this Token to the Header of every request sent to the AWS backend.
+Authentication flow:
 
-![Cognito Auth Flow](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/diagram2.png)
+1. A user registers with an email address and password.
+2. Cognito sends a verification code by email.
+3. The user confirms the account and signs in.
+4. The frontend retains the ID token for the session.
+5. API Gateway validates the token issuer, audience, signature, and expiration.
+
+{{% notice warning %}}
+Never include an ID token in documentation or screenshots. A valid token can authorize API requests until it expires.
+{{% /notice %}}
 
 #### Contents
 
-- [Cognito User Pool Setup](5.3.1-user-pool-setup/)
-- [Login Demo & Token Retrieval](5.3.2-login-demo/)
+1. [Create a Cognito User Pool](5.3.1-user-pool-setup/)
+2. [Register, verify email, and sign in](5.3.2-login/)

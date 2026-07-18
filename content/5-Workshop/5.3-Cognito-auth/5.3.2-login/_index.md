@@ -1,46 +1,75 @@
 ---
-title: "Login Demo & Token Retrieval"
-date: 2026-07-10
+title: "Register, verify email, and sign in"
+date: 2026-07-18
 weight: 2
 chapter: false
 pre: " <b> 5.3.2. </b> "
 ---
 
-#### Launch the Frontend Web App
+#### 1. Configure the frontend
 
-1. Open your Terminal or Command Prompt in the directory containing the KTs Smart Agriculture Frontend source code.
-2. Start a local web server (For example, using Node.js: type `npx http-server` or use the Live Server extension in VS Code).
+Update the frontend configuration with the Region, User Pool ID, App Client ID, and API endpoint:
 
-![Launch Web](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/run-server.png)
+```javascript
+const AWS_CONFIG = {
+  region: "ap-southeast-1",
+  cognito: {
+    userPoolId: "<USER_POOL_ID>",
+    clientId: "<APP_CLIENT_ID>"
+  },
+  apiGateway: {
+    endpoint: "https://<REST_API_ID>.execute-api.ap-southeast-1.amazonaws.com/dev"
+  }
+};
+```
 
-3. Open a browser and navigate to `http://localhost:8080` (or the corresponding port). The application's homepage will appear.
+#### 2. Run the frontend locally
 
-![Web Interface](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/web-home.png)
+```powershell
+cd D:\kts-smart-agri\frontend-app
+python -m http.server 8000
+```
 
-#### Sign Up & Sign In
+Open `http://127.0.0.1:8000`.
 
-1. On the web interface, click the **Sign Up** button.
-2. Enter a valid email address and a password that meets the policy configured in the previous section. Click Sign Up.
-3. Switch to the **Sign In** form, enter the newly created credentials, and log into the system.
+#### 3. Register and verify the account
 
-![Login](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/web-login.png)
+1. Choose **Sign up**.
+2. Enter an email and a password that satisfies the password policy.
+3. Retrieve the verification code from the email.
+4. Enter the code in the confirmation form.
+5. Sign in after the account reaches `CONFIRMED` state.
 
-#### Verify the JWT Token in the Browser
+The application must also support **Resend code** when a code expires or delivery is delayed.
 
-The core purpose of this step is to confirm that Amazon Cognito has successfully returned a valid authorization ticket (Token) to the Frontend.
+#### 4. Inspect token claims safely
 
-1. In the browser where the Web App is open, press **F12** to open the Developer Tools.
-2. Navigate to the **Console** or **Application** tab (under Local Storage).
-3. You should see a very long encrypted string starting with `eyJ...`. This is the **ID Token** and **Access Token** issued by Cognito.
+Run this in DevTools Console:
 
-![Token Console](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/console-token.png)
+```javascript
+(() => {
+  const token = localStorage.getItem("idToken");
+  if (!token) return { error: "idToken not found" };
+  const payload = JSON.parse(atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+  return {
+    token_use: payload.token_use,
+    issuer: payload.iss,
+    audience: payload.aud,
+    expires_at: new Date(payload.exp * 1000).toISOString()
+  };
+})()
+```
 
-{{% notice info %}}
-This token acts as a "boarding pass". Whenever you click the upload image button, the Javascript code in `app.js` will automatically attach this Token to the Header of the HTTP Request to prove your identity to the AWS backend.
+The result must contain `token_use: "id"` and an issuer for the new User Pool.
+
+{{% notice warning %}}
+The workshop's REST API Cognito Authorizer expects the raw JWT in the `Authorization` header. Do not add the `Bearer` prefix to these configured routes.
 {{% /notice %}}
 
-#### Section Summary
+#### Deployment results
 
-Congratulations to the KTs team on successfully setting up and integrating the user authentication flow. The first security wall has been firmly established, completely blocking anonymous access.
+![Deployment result - cognito confirm email](/images/5-Workshop/5.3-Cognito-auth/cognito-confirm-email.png)
 
-The system is now ready for the actual data upload flow. To prepare for the crucial AI verification step next, keep the image file of a cacao leaf attacked by red spiders (not VSD fungus or anthracnose) handy to see if the classification system returns an accurate diagnosis.
+![Deployment result - cognito login success](/images/5-Workshop/5.3-Cognito-auth/cognito-login-success.png)
+
+![Deployment result - cognito token claims](/images/5-Workshop/5.3-Cognito-auth/cognito-token-claims.png)

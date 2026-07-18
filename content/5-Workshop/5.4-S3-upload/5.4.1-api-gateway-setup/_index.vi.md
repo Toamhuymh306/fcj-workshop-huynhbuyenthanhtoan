@@ -1,62 +1,94 @@
 ---
-title: "Cấu hình API Gateway & Lambda"
-date: 2026-07-10
+title: "Tạo bucket, Presign Lambda và API"
+date: 2026-07-18
 weight: 1
 chapter: false
 pre: " <b> 5.4.1. </b> "
 ---
 
-Để chuẩn bị cho luồng tải ảnh an toàn, hệ thống KTS Smart Agriculture sẽ không đẩy luồng dữ liệu hình ảnh trực tiếp qua máy chủ. Thay vào đó, chúng ta sẽ xây dựng cơ chế **Pre-signed URL** (Đường dẫn ủy quyền tạm thời).
+#### 1. Tạo ba S3 bucket
 
-Cơ chế này yêu cầu hai thành phần chính:
+```powershell
+aws s3api create-bucket --bucket $RawBucket --region $AwsRegion `
+  --create-bucket-configuration LocationConstraint=$AwsRegion
 
-- **Hàm AWS Lambda:** Đảm nhiệm việc giao tiếp với Amazon S3 để tạo ra một đường dẫn `PUT` có giới hạn thời gian.
-- **Amazon API Gateway (`kts-smart-agri-api-prod`):** Đóng vai trò là cửa ngõ giao tiếp để Frontend gọi hàm Lambda trên, được bảo vệ bởi **Cognito Authorizer** để đảm bảo chỉ người dùng đã xác thực (có JWT token hợp lệ) mới có thể yêu cầu URL tải ảnh.
+aws s3api create-bucket --bucket $ProcessedBucket --region $AwsRegion `
+  --create-bucket-configuration LocationConstraint=$AwsRegion
 
-![Luồng Pre-signed URL](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.4-S3-upload/presign-flow.png)
+aws s3api create-bucket --bucket $ArchiveBucket --region $AwsRegion `
+  --create-bucket-configuration LocationConstraint=$AwsRegion
+```
 
-#### Bước 1: Tạo Lambda Function cấp URL
+Bật Block Public Access cho cả ba bucket. Ứng dụng không cần public bucket hoặc public object.
 
-1. Truy cập vào [AWS Lambda Console](https://ap-southeast-1.console.aws.amazon.com/lambda/home?region=ap-southeast-1) và chọn **Create function**.
-2. Đặt tên hàm là `kts-smart-agri-presign-url-prod`, chọn Runtime là **Python 3.10** (hoặc mới hơn).
-3. Đảm bảo Execution Role của Lambda đã được đính kèm Policy cấp quyền `s3:PutObject` vào bucket `kts-smartagri-dev-raw-images`.
-4. Viết mã nguồn Python sử dụng thư viện `boto3` để sinh URL với hàm `generate_presigned_url`. Nhấn **Deploy** để lưu mã nguồn.
+#### 2. Tạo execution role cho Presign Lambda
 
-![Cấu hình Lambda](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.4-S3-upload/lambda-presign.png)
+Role cần:
 
-#### Bước 2: Tạo REST API
+- Quyền ghi CloudWatch Logs.
+- `s3:PutObject` trên `arn:aws:s3:::<RAW_BUCKET>/*`.
+- Trust policy cho service principal `lambda.amazonaws.com`.
 
-1. Truy cập vào **Amazon API Gateway Console**, chọn tạo một **REST API** mới tên `kts-smart-agri-api-prod`.
+{{% notice warning %}}
+Không cấp `AmazonS3FullAccess`. Presign Lambda chỉ cần tạo URL cho object trong raw bucket.
+{{% /notice %}}
 
-#### Bước 3: Tạo Cognito Authorizer
+#### 3. Đóng gói source code
 
-1. Ở panel bên trái của API vừa tạo, nhấn **Authorizers** → **Create authorizer**.
-2. Cấu hình authorizer như sau:
-   - **Name:** `CognitoAuthorizer`
-   - **Type:** Cognito
-   - **Cognito user pool:** chọn `kts-smart-agri-user-pool-prod`
-   - **Token source:** `Authorization`
-3. Nhấn **Create authorizer**.
-4. Để kiểm tra, nhấn **Test authorizer** và dán một JWT token hợp lệ từ Cognito — bạn sẽ thấy phản hồi `200` kèm theo các claims đã được giải mã.
+```powershell
+cd D:\kts-smart-agri\ai-service
 
-![Tạo Cognito Authorizer](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.4-S3-upload/create_cognito_authorizer_api_gateway.png)
+$PresignSource = Resolve-Path "..\frontend-app\backend\lambda\presign_handler.py"
+$Stage = Join-Path $env:TEMP "kts-presign-package"
+$Zip = Join-Path $env:TEMP "kts-presign.zip"
 
-#### Bước 4: Cấu hình Resources và Methods
+New-Item -ItemType Directory -Force -Path $Stage | Out-Null
+Copy-Item $PresignSource (Join-Path $Stage "lambda_function.py") -Force
+Compress-Archive -Path (Join-Path $Stage "lambda_function.py") -DestinationPath $Zip -Force
+tar -tf $Zip
+```
 
-1. Tại giao diện quản lý API, nhấn **Create Resource** và đặt tên đường dẫn là `/images`, sau đó tạo thêm resource con `/presign` bên dưới (đường dẫn đầy đủ: `/images/presign`).
+Zip phải chứa `lambda_function.py` ở thư mục gốc.
 
-![Tạo Resource](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.4-S3-upload/api-resource.png)
+#### 4. Tạo hoặc cập nhật Lambda
 
-2. Chọn resource `/images/presign` vừa tạo, nhấp vào **Create Method** và chọn phương thức **POST**.
-3. Ở phần Integration type, chọn **Lambda Function** và nhập tên hàm `kts-smart-agri-presign-url-prod` vừa tạo ở Bước 1. Nhấn Save.
-4. Trong **Method Request**, đặt **Authorization** thành `CognitoAuthorizer`.
+Thiết lập:
 
-![Kết nối Lambda](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.4-S3-upload/api-integration.png)
+| Thuộc tính | Giá trị |
+|---|---|
+| Function name | `kts-smartagri-dev-presign-lambda` |
+| Runtime | Python 3.12 |
+| Handler | `lambda_function.lambda_handler` |
+| Timeout | 10 giây |
+| Memory | 128 MB |
+| `S3_BUCKET` | raw bucket |
+| `CORS_ORIGIN` | domain frontend hoặc `*` cho lab |
 
-#### Bước 5: Triển khai API (Deploy)
+Với function đã tồn tại:
 
-1. Nhấp vào nút **Deploy API** trên thanh công cụ.
-2. Tạo một Stage mới tên là `prod` và tiến hành triển khai.
-3. Sau khi triển khai xong, hệ thống sẽ cung cấp cho bạn một **Invoke URL** (Đường dẫn kích hoạt). Hãy copy đường dẫn này để chuẩn bị khai báo vào file cấu hình của ứng dụng Frontend.
+```powershell
+aws lambda update-function-code `
+  --function-name kts-smartagri-dev-presign-lambda `
+  --zip-file "fileb://$Zip" `
+  --region $AwsRegion
+```
 
-![Lấy Invoke URL](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.4-S3-upload/api-deploy.png)
+#### 5. Tạo REST API route
+
+Trong API Gateway:
+
+1. Tạo REST API `kts-smartagri-api`.
+2. Tạo resource `/presign`.
+3. Tạo method `POST`.
+4. Authorization: **Cognito User Pool Authorizer**.
+5. Integration: **Lambda proxy** đến Presign Lambda.
+6. Tạo method `OPTIONS` để phục vụ preflight.
+7. Deploy vào stage `dev`.
+
+#### Kết quả triển khai
+
+![Kết quả triển khai - s3 three buckets](/images/5-Workshop/5.4-S3-upload/s3-three-buckets.png)
+
+![Kết quả triển khai - presign lambda config](/images/5-Workshop/5.4-S3-upload/presign-lambda-config.png)
+
+![Kết quả triển khai - api presign method](/images/5-Workshop/5.4-S3-upload/api-presign-method.png)

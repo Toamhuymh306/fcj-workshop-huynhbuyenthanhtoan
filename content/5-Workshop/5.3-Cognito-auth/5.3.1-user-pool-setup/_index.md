@@ -1,35 +1,74 @@
 ---
-title: "Cognito User Pool Setup"
-date: 2026-07-10
+title: "Create a Cognito User Pool"
+date: 2026-07-18
 weight: 1
 chapter: false
 pre: " <b> 5.3.1. </b> "
 ---
 
-1. Open the [Amazon Cognito Console](https://ap-southeast-1.console.aws.amazon.com/cognito/home?region=ap-southeast-1).
-2. Click the **Create user pool** button.
+#### 1. Open Cognito
 
-{{% notice note %}}
-The Cognito User Pool acts as an identity management database. It will help the KTs Smart Agriculture project securely manage user registration, login, and authorization (via JWT).
-{{% /notice %}}
+1. Open **Amazon Cognito** in the AWS Console.
+2. Select **Asia Pacific (Singapore) - ap-southeast-1**.
+3. Choose **Create user pool**.
 
-![cognito](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/cognito-home.png)
+#### 2. Configure sign-in
 
-3. In the Create user pool console, configure the following:
+- Application type: **Single-page application (SPA)**.
+- Sign-in identifier: **Email**.
+- Required attribute: **Email**.
+- Self-registration: **Enabled**.
+- Email verification: **Send verification code**.
+- MFA: **Optional** or **Off** for the lab environment.
 
-- **Step 1 (Sign-in experience):** Select **Email** as the primary sign-in option.
-- **Step 2 (Security requirements):** Configure the password policy. You can select _No MFA_ (Multi-Factor Authentication) to make the web demo process smoother and faster.
+Pool name:
 
-![cognito](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/cognito-signin.png)
+```text
+kts-smartagri-dev-users
+```
 
-- **Step 3 & Step 4:** Keep the default settings for the sign-up experience and email delivery.
-- **Step 5 (Integrate your app):** + Name your User Pool, e.g., `kts-smart-agri-user-pool-prod`.
-  - Select to add an **App client**. Name the App client `KTs-Web-Client`.
-  - Ensure you select **Public client** and **Don't generate a client secret** (Since our Frontend is Vanilla JS/HTML running in the browser, it cannot securely store a secret key).
+#### 3. Configure the app client
 
-![cognito](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/cognito-app-client.png)
+Create a public app client:
 
-- Click **Next** to review the configuration.
-- Finally, click **Create user pool**. After successful creation, make sure to copy the **User Pool ID** and **Client ID** as we will need them for the `config.js` file in our Frontend.
+```text
+kts-smartagri-dev-web
+```
 
-![cognito](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.3-Cognito-auth/cognito-complete.png)
+- Do not generate a client secret for browser applications.
+- Enable `ALLOW_USER_SRP_AUTH` and `ALLOW_REFRESH_TOKEN_AUTH`.
+- Enable token revocation.
+
+Record the following values:
+
+```text
+User Pool ID
+App Client ID
+```
+
+A SPA cannot safely protect a client secret.
+
+#### 4. Verify with AWS CLI
+
+```powershell
+aws cognito-idp describe-user-pool `
+  --user-pool-id <USER_POOL_ID> `
+  --region ap-southeast-1 `
+  --query "UserPool.{Name:Name,Status:Status,AutoVerifiedAttributes:AutoVerifiedAttributes}"
+
+aws cognito-idp describe-user-pool-client `
+  --user-pool-id <USER_POOL_ID> `
+  --client-id <APP_CLIENT_ID> `
+  --region ap-southeast-1 `
+  --query "UserPoolClient.{ClientName:ClientName,GenerateSecret:GenerateSecret,ExplicitAuthFlows:ExplicitAuthFlows}"
+```
+
+`GenerateSecret` must be `false`, and `AutoVerifiedAttributes` must contain `email`.
+
+#### Deployment results
+
+![Deployment result - cognito user pool overview](/images/5-Workshop/5.3-Cognito-auth/cognito-user-pool-overview.png)
+
+![Deployment result - cognito signup settings](/images/5-Workshop/5.3-Cognito-auth/cognito-signup-settings.png)
+
+![Deployment result - cognito app client](/images/5-Workshop/5.3-Cognito-auth/cognito-app-client.png)

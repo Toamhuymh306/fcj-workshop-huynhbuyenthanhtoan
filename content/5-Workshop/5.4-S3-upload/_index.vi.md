@@ -1,23 +1,28 @@
 ---
-title: "Kiến trúc: Tải ảnh Serverless"
-date: 2024-01-01
+title: "Tải ảnh an toàn và pipeline sự kiện"
+date: 2026-07-18
 weight: 4
 chapter: false
-pre: " <b> 5.4 </b> "
+pre: " <b> 5.4. </b> "
 ---
 
-#### Luồng thu thập dữ liệu an toàn
+#### Mục tiêu
 
-Phần này phân tích chi tiết luồng kiến trúc serverless được thiết kế để tiếp nhận hình ảnh đầu vào một cách bảo mật. Đây là nền tảng quan trọng nhằm chuẩn bị dữ liệu thô cho các tác vụ phân tích thị giác máy tính (computer vision) ở giai đoạn sau. Việc áp dụng cơ chế Pre-signed URL giúp giảm thiểu băng thông cho hệ thống backend và tối ưu hóa thời gian tải file.
+Frontend không gửi file ảnh qua Lambda hoặc API Gateway. Thay vào đó, Presign Lambda tạo URL có thời hạn để trình duyệt upload trực tiếp lên raw S3 bucket. Metadata `user-id` được ký trong URL và trở thành nguồn xác định chủ sở hữu xuyên suốt pipeline.
 
-**Chi tiết các bước thực thi:**
+Sau khi upload, S3 gửi event đến SQS. Queue hấp thụ burst, giữ message khi Lambda lỗi và tách upload khỏi thời gian inference.
 
-1. **Xác thực danh tính:** Người dùng tiến hành đăng nhập thông qua **Amazon Cognito** để nhận JSON Web Token (JWT), đảm bảo chỉ những tài khoản hợp lệ mới có quyền truy cập.
-2. **Định tuyến & Bảo mật biên (Edge):** Client gửi yêu cầu cấp quyền tải ảnh qua giao thức HTTPS. Request này đi qua mạng lưới toàn cầu của **Amazon CloudFront** và được bảo vệ chặt chẽ bởi tường lửa **AWS WAF**.
-3. **Kiểm soát quyền truy cập:** **Amazon API Gateway** tiếp nhận request và xác minh tính hợp lệ của JWT token với Cognito.
-4. **Khởi tạo Pre-signed URL:** Sau khi xác thực thành công, API Gateway sẽ kích hoạt hàm `AWS Lambda Presign`. Function này đóng vai trò giao tiếp an toàn với Amazon S3 để tạo ra một đường dẫn tải lên (Pre-signed URL) có giới hạn thời gian.
-5. **Upload trực tiếp lên S3:** Đường dẫn này được trả về cho client ở frontend (Bước 5a & 5b). Cuối cùng, ứng dụng sẽ dùng chính URL này để đẩy ảnh trực tiếp vào **Raw Images S3 Bucket** (Bước 6) mà không cần phải trung chuyển qua server backend.
+#### Ba lớp lưu trữ
 
-Cơ chế thu thập dữ liệu tách rời (decoupled) này giúp lưu trữ an toàn các file ảnh gốc, đồng thời sẵn sàng kích hoạt các luồng sự kiện cho mô hình xử lý AI ngay sau đó.
+| Bucket | Mục đích |
+|---|---|
+| `kts-smartagri-dev-raw-images` | Ảnh gốc do người dùng tải lên |
+| `kts-smartagri-dev-processed-images` | Ảnh JPEG đã gắn nhãn dự đoán |
+| `kts-smartagri-dev-archive-images` | Dữ liệu lưu trữ hoặc kiểm thử quản trị |
 
-![Architecture Flow](/fcj-workshop-huynhbuyenthanhtoan/images/5-Workshop/5.4-S3-upload/diagram1_2.png)
+#### Nội dung
+
+1. [Tạo bucket, Presign Lambda và API](5.4.1-api-gateway-setup/)
+2. [Cấu hình CORS](5.4.2-cors-config/)
+3. [Kiểm thử upload](5.4.3-test-endpoint/)
+4. [Kết nối S3 với SQS](5.4.4-event-pipeline/)
