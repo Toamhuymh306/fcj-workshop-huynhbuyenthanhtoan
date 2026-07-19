@@ -48,4 +48,4 @@ This architecture is a strong reference pattern for Multi-turn RL workloads that
 
 ## Blog image
 
-![Blog 3 image](/fcj-workshop-huynhbuyenthanhtoan/images/3-BlogsPosted/blog3.jpg)
+![Blog 3 image](/images/3-BlogsPosted/blog3.jpg)

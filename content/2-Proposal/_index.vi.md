@@ -29,7 +29,7 @@ Serverless AI Inference Platform được thiết kế nhằm cung cấp một h
 
 Nền tảng áp dụng kiến trúc Event-Driven Serverless, đảm bảo tính Decoupled (phân tách độc lập) giữa luồng tiếp nhận file và luồng xử lý AI.
 
-![overview](/fcj-workshop-huynhbuyenthanhtoan/images/2-Proposal/diagram1.png)
+![overview](/images/2-Proposal/diagram1.png)
 
 - **Dịch vụ AWS sử dụng:**
 - **Amazon Cognito:** Xác thực người dùng, cấp phát JWT token.

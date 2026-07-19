@@ -37,4 +37,4 @@ Sự kiện cộng đồng chia sẻ chuyên sâu về các giải pháp và xu 
 
 ## Hinh anh su kien
 
-![Ảnh sự kiện FCAJ Community Day](/fcj-workshop-huynhbuyenthanhtoan/images/4-EventParticipated/event1.jpg)
+![Ảnh sự kiện FCAJ Community Day](/images/4-EventParticipated/event1.jpg)

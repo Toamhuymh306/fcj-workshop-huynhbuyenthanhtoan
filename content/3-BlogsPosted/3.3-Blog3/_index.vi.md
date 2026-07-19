@@ -50,4 +50,4 @@ Tóm lại, đây là một kiến trúc tham khảo đáng chú ý cho Multi-tu
 
 ## Hình ảnh bài viết
 
-![Ảnh Blog 3](/fcj-workshop-huynhbuyenthanhtoan/images/3-BlogsPosted/blog3.jpg)
+![Ảnh Blog 3](/images/3-BlogsPosted/blog3.jpg)

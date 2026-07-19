@@ -29,7 +29,7 @@ The Serverless AI Inference Platform is designed to provide a robust, auto-scala
 
 The platform applies an Event-Driven Serverless architecture, ensuring Decoupled independence between the file ingestion flow and the AI processing flow.
 
-![overview](/fcj-workshop-huynhbuyenthanhtoan/images/2-Proposal/diagram1.png)
+![overview](/images/2-Proposal/diagram1.png)
 
 - **AWS services used:**
   - **Amazon Cognito:** User authentication, JWT token issuance.
