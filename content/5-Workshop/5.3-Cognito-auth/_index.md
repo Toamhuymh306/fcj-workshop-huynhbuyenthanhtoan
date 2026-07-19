@@ -10,6 +10,8 @@ pre: " <b> 5.3. </b> "
 
 In this section, you create an Amazon Cognito User Pool, enable email verification, and connect the frontend to a public app client. API Gateway Cognito Authorizers validate the Cognito ID token before allowing Presign API and Results API calls.
 
+![Cognito Auth Flow](/images/5-Workshop/5.3-Cognito-auth/diagram2.png)
+
 Authentication flow:
 
 1. A user registers with an email address and password.

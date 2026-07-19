@@ -20,6 +20,8 @@ Sau khi upload, S3 gửi event đến SQS. Queue hấp thụ burst, giữ messag
 | `kts-smartagri-dev-processed-images` | Ảnh JPEG đã gắn nhãn dự đoán |
 | `kts-smartagri-dev-archive-images` | Dữ liệu lưu trữ hoặc kiểm thử quản trị |
 
+![Architecture Flow](/images/5-Workshop/5.4-S3-upload/diagram3.png)
+
 #### Nội dung
 
 1. [Tạo bucket, Presign Lambda và API](5.4.1-api-gateway-setup/)

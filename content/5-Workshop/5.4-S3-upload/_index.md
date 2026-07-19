@@ -20,6 +20,8 @@ After upload, S3 sends an event to SQS. The queue absorbs bursts, retains messag
 | `kts-smartagri-dev-processed-images` | Labeled JPEG output images |
 | `kts-smartagri-dev-archive-images` | Archive and administrative test data |
 
+![Architecture Flow](/images/5-Workshop/5.4-S3-upload/diagram3.png)
+
 #### Contents
 
 1. [Create buckets, Presign Lambda, and API](5.4.1-api-gateway-setup/)
