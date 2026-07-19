@@ -44,7 +44,7 @@ This architecture is a strong reference pattern for Multi-turn RL workloads that
 
 ## Article link
 
-- [Read Blog 3 on AWS](https://aws.amazon.com/blogs/machine-learning/building-multi-turn-rl-infrastructure-for-ai-agents-with-amazon-sagemaker-hyperpod/)
+- [Read Blog 3 on AWS](https://aws.amazon.com/blogs/machine-learning/deploying-multi-turn-rl-infrastructure-for-amazon-nova-on-amazon-sagemaker-hyperpod/)
 
 ## Blog image
 
