@@ -18,6 +18,8 @@ best_resnet_model.pth
 
 The model accepts `224 x 224` images, applies ImageNet normalization, and outputs one of 38 PlantVillage classes. `class_names.json` must preserve the class order used during training.
 
+![Architecture Flow](/images/5-Workshop/5.5-AI-inference/diagram4.png)
+
 #### 1. Build the container image
 
 Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.

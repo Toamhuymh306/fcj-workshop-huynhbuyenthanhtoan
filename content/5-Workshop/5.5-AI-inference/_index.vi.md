@@ -18,6 +18,8 @@ best_resnet_model.pth
 
 Mô hình nhận ảnh `224 x 224`, chuẩn hóa theo ImageNet và trả một trong 38 lớp PlantVillage. `class_names.json` phải giữ đúng thứ tự class khi train.
 
+![Architecture Flow](/images/5-Workshop/5.5-AI-inference/diagram4.png)
+
 #### 1. Build container image
 
 Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
