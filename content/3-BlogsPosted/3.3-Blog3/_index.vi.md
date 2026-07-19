@@ -46,7 +46,7 @@ Tóm lại, đây là một kiến trúc tham khảo đáng chú ý cho Multi-tu
 
 ## Link bài viết
 
-- [Read Blog 3 on AWS](https://aws.amazon.com/blogs/machine-learning/deploying-multi-turn-rl-infrastructure-for-amazon-nova-on-amazon-sagemaker-hyperpod/)
+- [Xem bài Blog 3 trên AWS](https://aws.amazon.com/blogs/machine-learning/deploying-multi-turn-rl-infrastructure-for-amazon-nova-on-amazon-sagemaker-hyperpod/)
 
 ## Hình ảnh bài viết
 
