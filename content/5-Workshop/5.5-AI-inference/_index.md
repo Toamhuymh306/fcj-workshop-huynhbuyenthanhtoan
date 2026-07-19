@@ -10,6 +10,8 @@ pre: " <b> 5.5. </b> "
 
 This section packages ResNet-50 and its Python runtime as a Lambda container image, pushes it to Amazon ECR, configures the Rekognition validation gate, and connects SQS to Inference Lambda.
 
+![Architecture Flow](/images/5-Workshop/5.5-AI-inference/diagram4.png)
+
 The inference image contains one production checkpoint:
 
 ```text
@@ -17,8 +19,6 @@ best_resnet_model.pth
 ```
 
 The model accepts `224 x 224` images, applies ImageNet normalization, and outputs one of 38 PlantVillage classes. `class_names.json` must preserve the class order used during training.
-
-![Architecture Flow](/images/5-Workshop/5.5-AI-inference/diagram4.png)
 
 #### 1. Build the container image
 

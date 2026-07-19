@@ -10,6 +10,8 @@ pre: " <b> 5.4. </b> "
 
 Frontend không gửi file ảnh qua Lambda hoặc API Gateway. Thay vào đó, Presign Lambda tạo URL có thời hạn để trình duyệt upload trực tiếp lên raw S3 bucket. Metadata `user-id` được ký trong URL và trở thành nguồn xác định chủ sở hữu xuyên suốt pipeline.
 
+![Architecture Flow](/images/5-Workshop/5.4-S3-upload/diagram3.png)
+
 Sau khi upload, S3 gửi event đến SQS. Queue hấp thụ burst, giữ message khi Lambda lỗi và tách upload khỏi thời gian inference.
 
 #### Ba lớp lưu trữ
@@ -19,8 +21,6 @@ Sau khi upload, S3 gửi event đến SQS. Queue hấp thụ burst, giữ messag
 | `kts-smartagri-dev-raw-images` | Ảnh gốc do người dùng tải lên |
 | `kts-smartagri-dev-processed-images` | Ảnh JPEG đã gắn nhãn dự đoán |
 | `kts-smartagri-dev-archive-images` | Dữ liệu lưu trữ hoặc kiểm thử quản trị |
-
-![Architecture Flow](/images/5-Workshop/5.4-S3-upload/diagram3.png)
 
 #### Nội dung
 

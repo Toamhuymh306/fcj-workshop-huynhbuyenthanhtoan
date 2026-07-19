@@ -10,6 +10,8 @@ pre: " <b> 5.5. </b> "
 
 Phần này đóng gói ResNet-50 và Python runtime thành Lambda container image, push lên Amazon ECR, cấu hình Rekognition validation gate và kết nối SQS với Inference Lambda.
 
+![Architecture Flow](/images/5-Workshop/5.5-AI-inference/diagram4.png)
+
 Inference image chỉ chứa một checkpoint production:
 
 ```text
@@ -17,8 +19,6 @@ best_resnet_model.pth
 ```
 
 Mô hình nhận ảnh `224 x 224`, chuẩn hóa theo ImageNet và trả một trong 38 lớp PlantVillage. `class_names.json` phải giữ đúng thứ tự class khi train.
-
-![Architecture Flow](/images/5-Workshop/5.5-AI-inference/diagram4.png)
 
 #### 1. Build container image
 

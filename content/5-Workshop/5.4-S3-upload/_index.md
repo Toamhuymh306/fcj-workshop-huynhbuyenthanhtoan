@@ -10,6 +10,8 @@ pre: " <b> 5.4. </b> "
 
 The frontend does not send image files through Lambda or API Gateway. Presign Lambda returns a time-limited URL so the browser uploads directly to the raw S3 bucket. Signed `user-id` metadata becomes the ownership source throughout the pipeline.
 
+![Architecture Flow](/images/5-Workshop/5.4-S3-upload/diagram3.png)
+
 After upload, S3 sends an event to SQS. The queue absorbs bursts, retains messages during Lambda failures, and decouples upload latency from inference latency.
 
 #### Storage layers
@@ -19,8 +21,6 @@ After upload, S3 sends an event to SQS. The queue absorbs bursts, retains messag
 | `kts-smartagri-dev-raw-images` | Original user uploads |
 | `kts-smartagri-dev-processed-images` | Labeled JPEG output images |
 | `kts-smartagri-dev-archive-images` | Archive and administrative test data |
-
-![Architecture Flow](/images/5-Workshop/5.4-S3-upload/diagram3.png)
 
 #### Contents
 
