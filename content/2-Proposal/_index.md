@@ -12,10 +12,6 @@ pre: " <b> 2. </b> "
 
 **Source code:** [github.com/Toamhuymh306/kts-smart-agri](https://github.com/Toamhuymh306/kts-smart-agri)
 
-{{% notice info %}}
-This is the team's shared proposal. It defines the common problem, scope, architecture, delivery plan, and acceptance criteria for the project. Each student's actual assignments, completed work, and individual outcomes are documented separately in their personal Worklog; therefore, this Proposal does not assign tasks to a specific member.
-{{% /notice %}}
-
 ## 1. Executive summary
 
 KTs Smart Agriculture is a web application that helps identify crop diseases from leaf images. Users register and verify their email through Amazon Cognito, upload images directly to Amazon S3 through pre-signed URLs, and an S3 → SQS → Lambda container pipeline validates each image and runs a ResNet-50 model trained on PlantVillage. User-scoped results are stored in Amazon DynamoDB, and annotated images are stored in a processed bucket for display in the frontend.
@@ -160,7 +156,6 @@ S3 Glacier Flexible Retrieval and Deep Archive are suitable only for data that d
 
 ## 9. References
 
-- [KTs Smart Agriculture source code](https://github.com/Toamhuymh306/kts-smart-agri)
 - [AWS Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html)
 - [API Gateway quotas](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-quotas.html)
 - [Using AWS Lambda with Amazon SQS](https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html)

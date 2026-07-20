@@ -12,10 +12,6 @@ pre: " <b> 2. </b> "
 
 **Mã nguồn:** [github.com/Toamhuymh306/kts-smart-agri](https://github.com/Toamhuymh306/kts-smart-agri)
 
-{{% notice info %}}
-Đây là đề xuất dùng chung của nhóm, trình bày bài toán, phạm vi, kiến trúc, kế hoạch và tiêu chí nghiệm thu thống nhất của đồ án. Phân công thực tế, công việc đã thực hiện và kết quả theo từng sinh viên được ghi riêng trong Worklog cá nhân; vì vậy Proposal không gán nhiệm vụ cho một thành viên cụ thể.
-{{% /notice %}}
-
 ## 1. Tóm tắt đề xuất
 
 KTs Smart Agriculture là ứng dụng web hỗ trợ nhận diện bệnh cây trồng từ ảnh lá. Người dùng đăng ký và xác minh email bằng Amazon Cognito, tải ảnh trực tiếp lên Amazon S3 qua pre-signed URL, sau đó pipeline S3 → SQS → Lambda container thực hiện kiểm tra ảnh và suy luận bằng mô hình ResNet-50 đã huấn luyện trên PlantVillage. Kết quả được lưu theo từng người dùng trong Amazon DynamoDB; ảnh có chú thích được lưu trong processed bucket để hiển thị trên giao diện.
@@ -160,7 +156,6 @@ S3 Glacier Flexible Retrieval và Deep Archive chỉ dùng cho dữ liệu khôn
 
 ## 9. Tài liệu tham khảo
 
-- [Source code KTs Smart Agriculture](https://github.com/Toamhuymh306/kts-smart-agri)
 - [AWS Lambda quotas](https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-limits.html)
 - [API Gateway quotas](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-quotas.html)
 - [Using AWS Lambda with Amazon SQS](https://docs.aws.amazon.com/lambda/latest/dg/with-sqs.html)
