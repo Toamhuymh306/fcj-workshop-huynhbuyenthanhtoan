@@ -13,6 +13,12 @@ pre: " <b> 5.7. </b> "
 3. Open DevTools Network to observe `/presign`, the S3 upload, and `/results`.
 4. Do not expose JWTs or pre-signed URLs in screenshots.
 
+#### System demo video
+
+The video below demonstrates the KTs Smart Agriculture website flow, including sign-in, leaf-image upload, prediction results, and scan history.
+
+{{< youtube PSYT_v13Lr4 >}}
+
 #### Test 1: Valid leaf image
 
 Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.

@@ -13,6 +13,12 @@ pre: " <b> 5.7. </b> "
 3. Mở DevTools Network để quan sát `/presign`, upload S3 và `/results`.
 4. Không hiển thị JWT hoặc pre-signed URL khi chụp màn hình.
 
+#### Video demo hệ thống
+
+Video dưới đây minh họa luồng sử dụng website KTs Smart Agriculture từ đăng nhập, tải ảnh lá cây, nhận kết quả dự đoán đến xem lịch sử quét.
+
+{{< youtube PSYT_v13Lr4 >}}
+
 #### Test 1: Ảnh lá hợp lệ
 
 Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
