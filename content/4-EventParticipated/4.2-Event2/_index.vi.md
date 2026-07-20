@@ -1,240 +1,128 @@
 ---
 title: "Event 2"
-date: 2024-01-01
+date: 2026-06-06
 weight: 1
 chapter: false
 pre: " <b> 4.2. </b> "
 ---
 
-# First Cloud Journey (FCAJ) Technical Meetup
+{{% notice warning %}}
+**Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn, kể cả cảnh báo này.
+{{% /notice %}}
 
-- **Tên sự kiện:** First Cloud Journey (FCAJ) Technical Meetup
-- **Thời gian:** 09:00 AM - 12:00 PM, Thứ Bảy, ngày 06/06/2026
-- **Địa điểm:** Bitexco Financial Tower, TP. Hồ Chí Minh
+# Bài thu hoạch FCAJ Technical Meetup
 
-## 1. Tổng quan
+### Thông tin sự kiện
 
-### 1.1 Giới thiệu
+- **Tên sự kiện:** First Cloud AI Journey (FCAJ) Technical Meetup
+- **Thời gian:** 09:00 - 12:00, Thứ Bảy, ngày 06/06/2026
+- **Địa điểm:** Bitexco Financial Tower, Thành phố Hồ Chí Minh
+- **Hình thức tham gia:** Trực tiếp
+- **Vai trò:** Người tham dự
 
-Bản thu hoạch này tập trung vào giao điểm giữa công nghệ đám mây, an ninh mạng và phát triển ứng dụng hiện đại. Nội dung bao phủ từ phòng thủ ứng dụng với AWS WAF, phát hiện tấn công bằng học máy, cho tới hệ thống thời gian thực với WebSocket, GraphRAG, Docker và kỹ năng nghề nghiệp trong IT.
+### Mục đích của sự kiện
 
-Mục tiêu của báo cáo là chuyển hóa kiến thức từ các phiên chia sẻ kỹ thuật thành góc nhìn triển khai thực tế: khi nào dùng dịch vụ nào, cách kết hợp các thành phần AWS để tạo ra hệ thống an toàn, linh hoạt và có khả năng vận hành ở quy mô lớn.
+- Chia sẻ kiến thức thực tế về Cloud, an ninh mạng, AI/ML và phát triển ứng dụng hiện đại.
+- Giới thiệu cách kết hợp AWS WAF với ML-NIDS để nâng cao khả năng phát hiện tấn công.
+- Minh họa kiến trúc serverless WebSocket cho game multiplayer và GraphRAG trên AWS.
+- Cung cấp kiến thức nền tảng về Docker, lộ trình nghề nghiệp IT và kỹ năng làm việc nhóm.
+- Giúp người tham dự kết nối kiến thức kỹ thuật với bài toán triển khai thực tế.
 
-### 1.2 Cấu trúc báo cáo
+### Danh sách chủ đề và người trình bày
 
-```mermaid
-graph TD
-    A["Cloud Security & ML NIDS"] --> B["WebSockets for Multiplayer Games"]
-    B --> C["GraphRAG for Knowledge Applications"]
-    C --> D["Containerization with Docker"]
-    D --> E["Career Growth in IT"]
-    E --> F["Teamwork Efficiency"]
-```
+- **Lê Hoàng Gia Đại** - AWS WAF và Machine Learning NIDS
+- **Nguyễn Quốc Bảo** - Kết nối Godot với AWS WebSocket
+- **Việt Phát** - GraphRAG với Amazon Bedrock và Amazon Neptune
+- **Bảo** - Containerization với Docker
+- **Huy Phước** - Xây dựng hiệu quả làm việc nhóm
+- **Vĩnh Trần** - Hành trình từ IT Helpdesk đến Senior System Administrator
 
-## 2. Tăng cường phát hiện tấn công với AWS WAF và ML-NIDS
+### Nội dung nổi bật
 
-### 2.1 AWS WAF: Lớp phòng thủ đầu tiên
+#### Tăng cường phát hiện tấn công với AWS WAF và ML-NIDS
 
-AWS WAF (Web Application Firewall) là lớp phòng thủ đầu tiên giúp bảo vệ website, API và ứng dụng khỏi các mối đe dọa phổ biến như SQL injection, cross-site scripting (XSS) và lưu lượng bot độc hại. Dịch vụ này tích hợp tốt với CloudFront, Application Load Balancer và API Gateway.
+AWS WAF là lớp bảo vệ đầu tiên cho website, API Gateway, Application Load Balancer và CloudFront trước SQL injection, XSS, bot độc hại, brute-force và scraping. Tuy nhiên, rule tĩnh chủ yếu nhận diện mẫu tấn công đã biết nên khó phát hiện zero-day hoặc hành vi bất thường mới.
 
-Ngoài ra, AWS WAF cho phép thiết lập rule để cho phép, chặn hoặc đếm request; đồng thời hỗ trợ rate limiting để giảm nguy cơ brute-force và scraping. Kết hợp với hệ sinh thái logging/monitoring, WAF giúp đội vận hành có cái nhìn rõ ràng hơn về bề mặt tấn công.
+Machine Learning NIDS bổ sung khả năng học từ lưu lượng mạng và phát hiện bất thường. Quy trình được trình bày gồm:
 
-### 2.2 Hạn chế của WAF truyền thống
+- Thu thập và làm sạch bộ dữ liệu CSE-CIC-IDS2018.
+- Xử lý missing value, giá trị không hợp lệ và loại bỏ đặc trưng không cần thiết.
+- Cân bằng dữ liệu để cải thiện khả năng nhận diện các lớp tấn công thiểu số.
+- Huấn luyện và đánh giá mô hình bằng precision, recall, F1-score và confusion matrix.
+- Triển khai kiến trúc với VPC, EC2, ALB, AWS WAF, S3, Kinesis Data Firehose và Lambda.
+- Tích hợp Security Hub, GuardDuty, CloudWatch và SNS để giám sát, tổng hợp cảnh báo và phản ứng sự cố.
 
-WAF truyền thống dựa trên các rule định nghĩa sẵn, vì vậy rất hiệu quả với mẫu tấn công đã biết. Tuy nhiên, phương pháp này khó bao phủ các hình thức tấn công mới như zero-day, spoofing lai tạp hoặc những hành vi bất thường chưa từng xuất hiện trong bộ chữ ký.
+Bài học quan trọng là WAF dựa trên chữ ký và ML phát hiện bất thường nên được dùng bổ trợ lẫn nhau. Chất lượng dữ liệu, giám sát thời gian thực và cập nhật mô hình liên tục quyết định hiệu quả của hệ thống.
 
-Điều đó cho thấy nhu cầu bổ sung một lớp phòng thủ thích ứng hơn, có khả năng học từ dữ liệu và phát hiện sai lệch hành vi theo thời gian thực.
+#### Kết nối Godot với AWS WebSocket cho game multiplayer
 
-### 2.3 NIDS là gì
+API Gateway WebSocket duy trì kết nối hai chiều giữa Godot client và backend. Route key như `$request.body.action` định tuyến message đến Lambda; DynamoDB lưu `connectionId`, trạng thái ghép trận, đối thủ, lựa chọn và thời điểm tạo phiên.
 
-NIDS (Network Intrusion Detection System) là hệ thống giám sát lưu lượng mạng nhằm phát hiện truy cập trái phép và dấu hiệu tấn công. Các chức năng cốt lõi gồm:
+- Godot sử dụng `WebSocketPeer`, `connect_to_url()` và cơ chế polling để quản lý kết nối.
+- Message được tuần tự hóa thành JSON và gửi bằng `send_text()`.
+- Lambda xử lý tìm đối thủ, ghép trận, ghi lựa chọn, tính kết quả và gửi Win/Lose/Draw cho hai client.
+- Các trạng thái `waiting_for_opponent`, `match_found`, `result` và `opponent_disconnected` giúp client cập nhật giao diện.
+- Cần xử lý stale connection, TTL, truy vấn DynamoDB hiệu quả và tính stateless của Lambda.
 
-- Giám sát traffic liên tục.
-- Phân tích hành vi theo signature hoặc anomaly.
-- Cảnh báo thời gian thực.
-- Ghi log để điều tra hậu sự cố.
+Việc chọn API Gateway WebSocket + Lambda hay dịch vụ game server chuyên dụng phụ thuộc vào tần suất đồng bộ, mô hình game state, matchmaking và quy mô người chơi.
 
-NIDS cũng có thể tích hợp với firewall và SIEM để tăng mức độ quan sát và phản ứng sự cố.
+#### Xây dựng GraphRAG với Amazon Bedrock và Amazon Neptune
 
-### 2.4 Machine Learning cho phát hiện nâng cao
+RAG đưa tri thức bên ngoài vào prompt tại thời điểm truy vấn để câu trả lời bám sát dữ liệu chuyên ngành. GraphRAG mở rộng phương pháp này bằng cách biểu diễn thực thể và quan hệ dưới dạng graph, nhờ đó hỗ trợ multi-hop reasoning.
 
-Machine Learning giúp NIDS vượt qua giới hạn của mô hình rule-based bằng cách học từ dữ liệu mạng thực tế. Khi được huấn luyện tốt, ML-NIDS có thể phát hiện các mẫu tấn công mới, xử lý khối lượng log lớn và liên tục thích nghi với chiến thuật tấn công thay đổi.
+- **Hướng managed:** Amazon Bedrock Knowledge Bases hỗ trợ chunking, trích xuất thực thể và embedding; Neptune Analytics lưu trữ, xây dựng và phân tích quan hệ graph.
+- **Hướng custom:** LlamaIndex kiểm soát pipeline tạo knowledge graph; Amazon Neptune lưu graph và hỗ trợ truy vấn bằng Cypher.
 
-Đây là hướng phòng thủ chủ động, bổ trợ cho lớp phòng thủ phản ứng nhanh của AWS WAF.
+Hướng managed giảm công vận hành, còn hướng custom phù hợp khi cần kiểm soát sâu cách xử lý dữ liệu, ontology và truy vấn.
 
-### 2.5 Quy trình xây dựng ML-NIDS
+#### Containerization với Docker
 
-Quy trình triển khai ML-NIDS gồm các bước chính:
+Khác với máy ảo phải đóng gói cả hệ điều hành, container chia sẻ kernel của host nên nhẹ, khởi động nhanh và tiêu thụ ít tài nguyên hơn. Docker hiện thực hóa nguyên tắc **build once, run anywhere** bằng cách đóng gói ứng dụng và dependency thành image.
 
-- Chọn dataset phù hợp và có nhãn rõ ràng.
-- Tiền xử lý, làm sạch và chuẩn hóa dữ liệu.
-- Huấn luyện mô hình với tập train/validation.
-- Đánh giá theo nhiều chỉ số (precision, recall, F1, confusion matrix).
-- Tối ưu mô hình theo vòng lặp.
+- Dockerfile mô tả từng layer của image.
+- Layer cache giúp tăng tốc quá trình build.
+- Container tạo môi trường nhất quán giữa development, testing và production.
+- Docker phù hợp cho CI/CD, microservices, cloud-native application và hiện đại hóa hệ thống legacy.
 
-Trong báo cáo, bộ dữ liệu CSE-CIC-IDS2018 được xem là nguồn tham chiếu quan trọng vì có đa dạng loại tấn công và mức độ đại diện tốt.
+#### Từ IT Helpdesk đến Senior System Administrator
 
-### 2.6 Tiền xử lý dữ liệu
+Lộ trình nghề nghiệp bắt đầu từ khả năng xử lý sự cố, giao tiếp với người dùng và hiểu cách hệ thống vận hành. Để chuyển sang System Administrator cần học sâu Linux, networking, security patching, monitoring và capacity planning; đồng thời chủ động xây dựng lab thực hành.
 
-Tiền xử lý dữ liệu là giai đoạn quyết định chất lượng mô hình. Các bước trọng tâm bao gồm:
+Khi tiếp tục sang Cloud và DevOps, tư duy chuyển từ thao tác thủ công sang elastic scaling, managed services, Infrastructure as Code, version control, automation và CI/CD. Kinh nghiệm thực tế, khả năng phân tích sự cố và portfolio dự án có giá trị lớn trong phỏng vấn.
 
-- Hợp nhất dữ liệu từ nhiều nguồn/bảng.
-- Xử lý missing values, invalid rows và nhiễu.
-- Cân bằng lớp để giảm thiên lệch về lớp thiểu số.
-- Loại bỏ cột không hữu ích hoặc gây rò rỉ thông tin.
-- Thực hiện data validation trước khi train.
+#### Nghệ thuật làm việc nhóm hiệu quả
 
-### 2.7 Kiến trúc hệ thống và triển khai AWS
+Trello, ClickUp, Google Workspace, Slack và Discord giúp quản lý công việc và giao tiếp, nhưng công cụ không thay thế được trách nhiệm cá nhân. Nhóm hiệu quả cần mục tiêu chung, phân công rõ ràng, cập nhật tiến độ minh bạch và hỗ trợ nhau khi gặp trở ngại.
 
-Kiến trúc triển khai trên AWS gồm nhiều lớp:
+### Những gì học được
 
-- **Mạng & compute:** VPC, EC2, ALB.
-- **Lọc và bảo vệ đầu vào:** AWS WAF.
-- **Lưu trữ dữ liệu:** Amazon S3.
-- **Streaming và xử lý gần thời gian thực:** Kinesis Data Firehose, AWS Lambda.
-- **Giám sát và bảo mật hợp nhất:** Security Hub, GuardDuty, CloudWatch, SNS.
+#### Kiến thức kỹ thuật
 
-Mô hình này giúp tách rõ các chức năng: thu thập - lọc - phân tích - cảnh báo, từ đó dễ mở rộng và vận hành.
+- Hiểu mô hình phòng thủ nhiều lớp khi kết hợp AWS WAF, ML-NIDS, logging và cảnh báo.
+- Nắm được luồng serverless WebSocket từ Godot đến API Gateway, Lambda và DynamoDB.
+- Phân biệt RAG với GraphRAG và hai hướng triển khai managed/custom trên AWS.
+- Hiểu image, container, Dockerfile, layer cache và vai trò của Docker trong CI/CD.
 
-### 2.8 Công cụ phát triển
+#### Tư duy nghề nghiệp và làm việc nhóm
 
-Môi trường phát triển tiêu biểu:
+- Nền tảng Linux, networking và troubleshooting rất quan trọng trước khi đi sâu vào Cloud/DevOps.
+- Học tập hiệu quả cần tập trung vào năng lực cốt lõi và xây dựng dự án thực tế.
+- Tài liệu hóa, tự động hóa và không thử nghiệm trực tiếp trên production là thói quen quan trọng.
+- Giao tiếp rõ ràng và trách nhiệm với phần việc quyết định hiệu quả của nhóm.
 
-- VS Code cho backend/frontend và quản lý mã nguồn.
-- Jupyter Notebook cho phân tích dữ liệu, thử nghiệm và huấn luyện.
-- Python cùng các thư viện scikit-learn, pandas, NumPy.
-- GitHub cho version control và cộng tác.
-- AWS cho hạ tầng triển khai, giám sát và bảo mật.
+### Ứng dụng vào đồ án KTS Smart Agri
 
-### 2.9 Kết quả và hướng cải tiến
+- Dùng AWS WAF trước CloudFront/API Gateway để lọc các request phổ biến có dấu hiệu tấn công.
+- Kết hợp CloudWatch Logs, metrics, alarms và SNS để theo dõi pipeline inference.
+- Áp dụng tư duy phát hiện bất thường cho việc giám sát upload hoặc tần suất gọi API.
+- Tiếp tục đóng gói Lambda AI bằng Docker image để đảm bảo môi trường inference nhất quán.
+- Tổ chức dữ liệu chẩn đoán theo người dùng; trong tương lai có thể nghiên cứu GraphRAG cho tri thức bệnh cây và quan hệ triệu chứng.
+- Quản lý công việc nhóm bằng backlog, người phụ trách, thời hạn và cập nhật tiến độ thường xuyên.
 
-Kết quả đạt được gồm tối ưu hiệu năng mô hình, cải thiện phát hiện lớp tấn công thiểu số và chuẩn hóa kiến trúc cloud. Đây là nền tảng tốt để mở rộng sang các kịch bản thực tế có lưu lượng lớn.
+### Trải nghiệm tại sự kiện
 
-Trong tương lai, hướng nâng cấp gồm tích hợp luồng dữ liệu thời gian thực, bổ sung GenAI (Amazon Bedrock) để hỗ trợ phân tích ngữ cảnh sự cố, và tự động hóa hành động ứng phó.
+Sự kiện tạo ra một hành trình kiến thức liền mạch từ bảo vệ hệ thống, xây dựng ứng dụng realtime và khai thác dữ liệu bằng AI đến đóng gói phần mềm và phát triển nghề nghiệp. Tôi đặc biệt ấn tượng với việc kết hợp AWS WAF và ML-NIDS: một lớp xử lý mối đe dọa đã biết, lớp còn lại tìm kiếm hành vi bất thường.
 
-### 2.10 Bài học rút ra
+Phiên GraphRAG mở ra hướng phát triển mới cho KTS Smart Agri, trong khi Docker và WebSocket cung cấp các kỹ thuật có thể áp dụng ngay vào triển khai. Hai phiên về nghề nghiệp và teamwork nhắc tôi rằng sản phẩm tốt không chỉ đến từ công nghệ mà còn từ kỷ luật, giao tiếp và khả năng phối hợp.
 
-Các bài học cốt lõi:
-
-- Chất lượng dữ liệu quyết định chất lượng mô hình.
-- Bảo mật dựa trên chữ ký là chưa đủ trong môi trường tấn công biến đổi nhanh.
-- ML-NIDS bổ trợ hiệu quả cho AWS WAF.
-- Giám sát thời gian thực giúp tăng khả năng phát hiện sớm.
-- Triển khai cloud-native giúp mở rộng tốt và dễ quản trị.
-
-## 3. Kết nối Godot với AWS WebSockets cho game multiplayer
-
-### 3.1 Nền tảng networking multiplayer
-
-Multiplayer networking yêu cầu đồng bộ trạng thái giữa nhiều người chơi trong cùng một không gian trò chơi. Điều này thường cần một backend có khả năng quản lý kết nối, đồng bộ trạng thái và xử lý xung đột theo thời gian thực.
-
-### 3.2 Chọn kiến trúc cloud
-
-AWS cung cấp nền tảng phù hợp cho game backend nhờ khả năng mở rộng linh hoạt, độ sẵn sàng cao và hệ sinh thái dịch vụ event-driven. Việc thiết kế đúng kiến trúc cloud giúp hệ thống chịu tải tốt hơn khi số lượng người chơi tăng.
-
-### 3.3 API Gateway route key và DynamoDB schema
-
-Với API Gateway WebSocket, route key như `$request.body.action` cho phép định tuyến message theo nội dung request. DynamoDB được dùng để lưu trạng thái kết nối và trận đấu, ví dụ:
-
-- `connectionId`
-- `status` (waiting, matched)
-- `opponentId`
-- `choice`
-- `createdAt`
-
-### 3.4 Lambda xử lý game state
-
-Lambda xử lý các sự kiện từ client để matchmaking, cập nhật trạng thái và tính kết quả thắng/thua/hòa. Luồng cơ bản gồm:
-
-- Tìm người chơi đang chờ.
-- Ghép cặp và gửi thông báo match found.
-- Ghi lựa chọn của từng người chơi.
-- So sánh kết quả và trả phản hồi cho cả hai bên.
-
-### 3.5 Godot client thiết lập kết nối
-
-Phía Godot, `WebSocketPeer` và `connect_to_url()` được dùng để mở kết nối đến backend. Sau khi kết nối, vòng lặp game poll liên tục để nhận sự kiện mới và cập nhật UI theo trạng thái phiên chơi.
-
-### 3.6 Godot client gửi/nhận message
-
-Message được gửi dưới dạng JSON. Client xử lý các trạng thái như `waiting_for_opponent`, `match_found`, `waiting_for_opponent_choice`, `result` (Win/Lose/Draw) để điều khiển trải nghiệm người chơi.
-
-Trong trường hợp `opponent_disconnected`, hệ thống có thể tự động xử lý kết quả cho người chơi còn lại.
-
-### 3.7 Thách thức thực tế
-
-Một số thách thức thực tế bao gồm stale connection gây lỗi matchmaking, chi phí scan bảng DynamoDB khi dữ liệu tăng nhanh, và giới hạn stateless của Lambda buộc trạng thái game phải được lưu ngoài một cách nhất quán.
-
-### 3.8 Hướng mở rộng: GameLift hay WebSocket + Lambda
-
-WebSocket + Lambda phù hợp cho bài toán thời gian thực và triển khai nhanh theo mô hình serverless. Trong khi đó, GameLift mạnh về quản lý session và matchmaking chuyên dụng cho game quy mô lớn.
-
-Việc lựa chọn phụ thuộc vào loại game, tần suất cập nhật trạng thái và chiến lược vận hành dài hạn.
-
-## 4. Xây dựng GraphRAG với Amazon Bedrock và Neptune
-
-### 4.1 RAG là gì
-
-RAG (Retrieval-Augmented Generation) bổ sung ngữ cảnh ngoài vào prompt ở runtime để mô hình trả lời đúng trọng tâm hơn và giảm hallucination. Đây là hướng tiếp cận hiệu quả khi cần truy vấn tri thức chuyên miền hoặc dữ liệu cập nhật liên tục.
-
-### 4.2 GraphRAG là gì
-
-GraphRAG mở rộng RAG bằng cách biểu diễn tri thức dạng đồ thị, lưu rõ quan hệ giữa thực thể và tài liệu. Cách này hỗ trợ suy luận nhiều bước (multi-hop reasoning), đặc biệt hữu ích với câu hỏi phức tạp có chuỗi phụ thuộc dài.
-
-### 4.3 Hướng managed với Bedrock và Neptune Analytics
-
-Ở hướng fully-managed, Amazon Bedrock Knowledge Bases hỗ trợ pipeline chunking, trích xuất thực thể và tạo embedding. Amazon Neptune Analytics xử lý lưu trữ dữ liệu đồ thị và phân tích quan hệ, giúp giảm đáng kể công vận hành.
-
-### 4.4 Hướng custom với LlamaIndex và Neptune
-
-Ở hướng custom, có thể dùng LlamaIndex để tự kiểm soát pipeline xử lý dữ liệu và dựng knowledge graph. Amazon Neptune lưu graph và hỗ trợ truy vấn Cypher để thực hiện các truy vấn quan hệ linh hoạt theo yêu cầu nghiệp vụ.
-
-## 5. Containerization với Docker
-
-### 5.1 Virtualization vs Containerization
-
-Virtualization chạy nhiều hệ điều hành đầy đủ trên cùng phần cứng nên tốn tài nguyên hơn. Containerization đóng gói ứng dụng cùng dependency trong đơn vị nhẹ, chia sẻ kernel host nên khởi động nhanh và tiết kiệm tài nguyên hơn VM.
-
-### 5.2 Lợi ích container
-
-- Dễ di chuyển giữa các môi trường.
-- Chạy nhất quán nhờ đóng gói dependency.
-- Tối ưu tài nguyên.
-
-### 5.3 Docker là gì
-
-Docker hiện thực hóa mô hình build once, run anywhere cho ứng dụng hiện đại.
-
-### 5.4 Docker Image và Dockerfile
-
-Dockerfile định nghĩa các layer image; cơ chế cache giúp tăng tốc quá trình build.
-
-### 5.5 Use cases
-
-CI/CD, microservices, dev/test parity, cloud-native apps, và hiện đại hóa hệ thống legacy.
-
-## 6. Career Growth và Teamwork trong IT
-
-### 6.1 Từ IT Helpdesk đến Senior SysAdmin
-
-Lộ trình từ IT Helpdesk lên Senior System Administrator đòi hỏi năng lực troubleshooting dưới áp lực, giao tiếp tốt với người dùng và tư duy hệ thống bền vững. Điểm bứt phá thường đến từ việc tự học Linux, networking và thực hành lab liên tục.
-
-### 6.2 Công việc SysAdmin
-
-Công việc SysAdmin không chỉ xoay quanh server mà còn gồm quản trị mạng, vá bảo mật, theo dõi năng lực hệ thống và lập kế hoạch tài nguyên. Tự động hóa tác vụ lặp lại và tài liệu hóa cấu hình là hai thói quen then chốt.
-
-### 6.3 Chuyển dịch sang Cloud và DevOps
-
-Khi chuyển sang Cloud và DevOps, tư duy cần dịch chuyển từ vận hành thủ công sang IaC, automation, CI/CD và cộng tác chặt giữa đội phát triển - vận hành để tăng tốc phát hành nhưng vẫn giữ ổn định.
-
-### 6.4 Chuẩn bị phỏng vấn
-
-Trong hành trình phỏng vấn, dự án thực tế và khả năng xử lý sự cố thường tạo lợi thế lớn hơn việc chỉ học lý thuyết. Việc nghiên cứu bối cảnh doanh nghiệp trước phỏng vấn giúp trả lời sát nhu cầu thực hơn.
-
-### 6.5 Bài học nghề nghiệp
-
-Bài học nghề nghiệp quan trọng là học sâu một số năng lực cốt lõi trước, làm dự án thực chiến, dám hỏi và dám sai để tăng tốc phát triển. Một portfolio tốt thường thuyết phục hơn danh sách chứng chỉ.
-
-### 6.6 Nghệ thuật teamwork
-
-Teamwork hiệu quả là nền tảng để dự án đi xa. Các công cụ như Trello, ClickUp, Google Workspace, Slack và Discord giúp nhóm phối hợp mạch lạc hơn, nhưng yếu tố quyết định vẫn là tinh thần trách nhiệm và giao tiếp rõ ràng.
+> Tổng thể, Event 2 giúp tôi kết nối kiến thức Cloud, Security, AI, Backend và DevOps thành một góc nhìn hệ thống. Bài học lớn nhất là mỗi công nghệ chỉ phát huy hiệu quả khi được đặt đúng vị trí trong kiến trúc và được vận hành bởi một đội ngũ có quy trình rõ ràng.
