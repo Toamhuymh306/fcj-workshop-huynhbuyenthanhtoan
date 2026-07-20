@@ -1,6 +1,6 @@
 ---
 title: "Week 2: AI Data Processing"
-date: 2026-05-18
+date: 2026-04-24
 weight: 2
 chapter: false
 pre: " <b> 1.2. </b> "
@@ -15,11 +15,11 @@ pre: " <b> 1.2. </b> "
 
 | Day | Task                                                     | Start Date | End Date   | Resources      |
 | :-- | :------------------------------------------------------- | :--------- | :--------- | :------------- |
-| Mon | - Download the PlantVillage Dataset from Kaggle.         | 2026-05-18 | 2026-05-18 | Kaggle         |
-| Tue | - Analyze the 38 disease classes across 14 crops.        | 2026-05-19 | 2026-05-19 | Dataset Specs  |
-| Wed | - Image pre-processing: Resize and Normalize via OpenCV. | 2026-05-20 | 2026-05-20 | OpenCV Docs    |
-| Thu | - Data Augmentation to prevent model overfitting.        | 2026-05-21 | 2026-05-21 | PyTorch Vision |
-| Fri | - Split dataset into Train / Validation / Test sets.     | 2026-05-22 | 2026-05-22 | Scikit-learn   |
+| Fri | - Download the PlantVillage Dataset from Kaggle.         | 2026-04-24 | 2026-04-24 | Kaggle         |
+| Mon | - Analyze the 38 disease classes across 14 crops.        | 2026-04-27 | 2026-04-27 | Dataset Specs  |
+| Tue | - Image pre-processing: resize and normalize.            | 2026-04-28 | 2026-04-28 | OpenCV Docs    |
+| Wed | - Apply data augmentation to reduce overfitting.         | 2026-04-29 | 2026-04-29 | PyTorch Vision |
+| Thu | - Split data into training, validation, and test sets.   | 2026-04-30 | 2026-04-30 | Scikit-learn   |
 
 ### Outcomes:
 

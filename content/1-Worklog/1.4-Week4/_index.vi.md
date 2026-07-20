@@ -1,6 +1,6 @@
 ---
 title: "Tuần 4: Đóng gói Docker & ECR"
-date: 2026-06-01
+date: 2026-05-08
 weight: 4
 chapter: false
 pre: " <b> 1.4. </b> "
@@ -15,11 +15,11 @@ pre: " <b> 1.4. </b> "
 
 | Thứ | Công việc                                               | Ngày BĐ    | Ngày HT    | Nguồn tài liệu |
 | :-- | :------------------------------------------------------ | :--------- | :--------- | :------------- |
-| 2   | - Viết mã nguồn suy luận (Inference Script).            | 01/06/2026 | 01/06/2026 | Python Docs    |
-| 3   | - Thiết lập Dockerfile tối ưu hóa dung lượng (~2.29GB). | 02/06/2026 | 02/06/2026 | Docker Docs    |
-| 4   | - Build Docker Image và kiểm thử chạy nội bộ (Local).   | 03/06/2026 | 03/06/2026 | Docker CLI     |
-| 5   | - Khởi tạo Repository trên Amazon ECR.                  | 04/06/2026 | 04/06/2026 | AWS ECR Docs   |
-| 6   | - Tag và Push Image lên AWS ECR thành công.             | 05/06/2026 | 05/06/2026 | AWS CLI        |
+| 6   | - Viết mã nguồn suy luận (Inference Script).            | 08/05/2026 | 08/05/2026 | Python Docs    |
+| 2   | - Thiết lập Dockerfile cho Lambda container image.      | 11/05/2026 | 11/05/2026 | Docker Docs    |
+| 3   | - Build Docker image và kiểm thử chạy nội bộ.           | 12/05/2026 | 12/05/2026 | Docker CLI     |
+| 4   | - Khởi tạo repository trên Amazon ECR.                  | 13/05/2026 | 13/05/2026 | AWS ECR Docs   |
+| 5   | - Tag, push image và kiểm tra OCI image manifest.       | 14/05/2026 | 14/05/2026 | AWS CLI        |
 
 ### Kết quả đạt được:
 

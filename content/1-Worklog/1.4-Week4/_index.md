@@ -1,6 +1,6 @@
 ---
 title: "Week 4: Docker & Amazon ECR"
-date: 2026-06-01
+date: 2026-05-08
 weight: 4
 chapter: false
 pre: " <b> 1.4. </b> "
@@ -15,11 +15,11 @@ pre: " <b> 1.4. </b> "
 
 | Day | Task                                              | Start Date | End Date   | Resources    |
 | :-- | :------------------------------------------------ | :--------- | :--------- | :----------- |
-| Mon | - Write the Inference Script.                     | 2026-06-01 | 2026-06-01 | Python Docs  |
-| Tue | - Create an optimized Dockerfile (~2.29GB).       | 2026-06-02 | 2026-06-02 | Docker Docs  |
-| Wed | - Build Docker Image and run local tests.         | 2026-06-03 | 2026-06-03 | Docker CLI   |
-| Thu | - Initialize a Repository on Amazon ECR.          | 2026-06-04 | 2026-06-04 | AWS ECR Docs |
-| Fri | - Tag and Push the Image to AWS ECR successfully. | 2026-06-05 | 2026-06-05 | AWS CLI      |
+| Fri | - Write the inference runtime.                         | 2026-05-08 | 2026-05-08 | Python Docs  |
+| Mon | - Create the Dockerfile for a Lambda container image.  | 2026-05-11 | 2026-05-11 | Docker Docs  |
+| Tue | - Build the image and run local smoke tests.           | 2026-05-12 | 2026-05-12 | Docker CLI   |
+| Wed | - Create the Amazon ECR repository.                    | 2026-05-13 | 2026-05-13 | AWS ECR Docs |
+| Thu | - Tag/push the image and inspect its OCI manifest.     | 2026-05-14 | 2026-05-14 | AWS CLI      |
 
 ### Outcomes:
 

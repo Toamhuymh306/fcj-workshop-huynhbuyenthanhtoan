@@ -1,6 +1,6 @@
 ---
 title: "Tuần 3: Huấn luyện mô hình AI"
-date: 2026-05-25
+date: 2026-05-01
 weight: 3
 chapter: false
 pre: " <b> 1.3. </b> "
@@ -15,11 +15,11 @@ pre: " <b> 1.3. </b> "
 
 | Thứ | Công việc                                                 | Ngày BĐ    | Ngày HT    | Nguồn tài liệu    |
 | :-- | :-------------------------------------------------------- | :--------- | :--------- | :---------------- |
-| 2   | - Xây dựng kiến trúc CNN bằng framework PyTorch.          | 25/05/2026 | 25/05/2026 | PyTorch Docs      |
-| 3   | - Viết script cấu hình Loss Function và Optimizer.        | 26/05/2026 | 26/05/2026 | PyTorch Guide     |
-| 4   | - Khởi chạy vòng lặp huấn luyện (Training Loop).          | 27/05/2026 | 27/05/2026 | Local Environment |
-| 5   | - Tối ưu hóa siêu tham số (Hyperparameter tuning).        | 28/05/2026 | 28/05/2026 | AI Papers         |
-| 6   | - Trích xuất metrics: Accuracy và F1-Score trên tập Test. | 29/05/2026 | 29/05/2026 | Scikit-learn      |
+| 6   | - Xây dựng và kiểm tra kiến trúc LeNet bằng PyTorch.       | 01/05/2026 | 01/05/2026 | PyTorch Docs      |
+| 2   | - Chuẩn bị ResNet-50, loss function và optimizer.          | 04/05/2026 | 04/05/2026 | PyTorch Guide     |
+| 3   | - Huấn luyện LeNet và ResNet trên cùng tập dữ liệu.        | 05/05/2026 | 05/05/2026 | Local/Kaggle      |
+| 4   | - Tinh chỉnh siêu tham số và theo dõi overfitting.         | 06/05/2026 | 06/05/2026 | AI Papers         |
+| 5   | - So sánh Accuracy, F1-score, kích thước và inference time. | 07/05/2026 | 07/05/2026 | Scikit-learn      |
 
 ### Kết quả đạt được:
 

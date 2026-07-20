@@ -1,6 +1,6 @@
 ---
 title: "Week 5: Serverless Backend"
-date: 2026-06-08
+date: 2026-05-15
 weight: 5
 chapter: false
 pre: " <b> 1.5. </b> "
@@ -15,12 +15,12 @@ pre: " <b> 1.5. </b> "
 
 | Day | Task                                                              | Start Date | End Date   | Resources    |
 | :-- | :---------------------------------------------------------------- | :--------- | :--------- | :----------- |
-| Mon | - Initialize Lambda function from the ECR model Image.            | 2026-06-08 | 2026-06-08 | AWS Lambda   |
-| Tue | - Set up IAM Role granting S3 and DynamoDB access.                | 2026-06-09 | 2026-06-09 | AWS IAM      |
-| Wed | - Create `kts-smartagri-dev-inference-results` table in DynamoDB. | 2026-06-10 | 2026-06-10 | AWS DynamoDB |
-| Thu | - Configure the `kts-smartagri-dev-raw-images` S3 Bucket.         | 2026-06-11 | 2026-06-11 | AWS S3       |
-| Fri | - Set up Event Triggers to invoke Lambda upon new image uploads.  | 2026-06-12 | 2026-06-12 | AWS Events   |
+| Fri | - Design the Lambda functions and serverless backend flow.        | 2026-05-15 | 2026-05-15 | AWS Lambda     |
+| Mon | - Create least-privilege IAM roles for S3 and DynamoDB.           | 2026-05-18 | 2026-05-18 | AWS IAM        |
+| Tue | - Create `kts-smartagri-dev-inference-results` in DynamoDB.       | 2026-05-19 | 2026-05-19 | AWS DynamoDB   |
+| Wed | - Create raw/processed S3 buckets, CORS, and lifecycle rules.     | 2026-05-20 | 2026-05-20 | AWS S3         |
+| Thu | - Implement and test the presign/results Lambda handlers.        | 2026-05-21 | 2026-05-21 | Boto3/Unittest |
 
 ### Outcomes:
 
-- Automated pipeline established: S3 upload -> Lambda invocation -> DynamoDB storage works flawlessly.
+- The basic backend issues pre-signed URLs and stores/queries DynamoDB results; the event pipeline is completed in week 9.

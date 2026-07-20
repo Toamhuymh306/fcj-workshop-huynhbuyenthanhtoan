@@ -146,3 +146,109 @@ Complete this step in the AWS Management Console. Verify the resource name, Regi
 Batch size `1` isolates failed images and controls memory while each invocation processes model/image data.
 
 #### 9. Verify deployment
+
+Set the values for the development environment:
+
+```bash
+AWS_REGION=ap-southeast-1
+FUNCTION_NAME=kts-smartagri-dev-inference-lambda
+RAW_BUCKET=<RAW_BUCKET>
+PROCESSED_BUCKET=<PROCESSED_BUCKET>
+QUEUE_ARN=<QUEUE_ARN>
+RESULT_TABLE=kts-smartagri-dev-inference-results
+```
+
+**Step 1 — Verify the Lambda configuration**
+
+```bash
+aws lambda get-function-configuration \
+  --function-name "$FUNCTION_NAME" \
+  --region "$AWS_REGION" \
+  --query '{State:State,LastUpdateStatus:LastUpdateStatus,PackageType:PackageType,Architectures:Architectures,MemorySize:MemorySize,Timeout:Timeout,Environment:Environment.Variables}'
+```
+
+Pass criteria: `State` is `Active`, `LastUpdateStatus` is `Successful`, package type is `Image`, architecture is `x86_64`, timeout is `120`, and `MODEL_NAME`, `PROCESSED_BUCKET`, `RESULT_TABLE`, and `LEAF_LABEL_MIN_CONFIDENCE` contain the expected values.
+
+**Step 2 — Verify the SQS event source mapping**
+
+```bash
+aws lambda list-event-source-mappings \
+  --function-name "$FUNCTION_NAME" \
+  --event-source-arn "$QUEUE_ARN" \
+  --region "$AWS_REGION" \
+  --query 'EventSourceMappings[].{State:State,BatchSize:BatchSize,LastProcessingResult:LastProcessingResult}'
+```
+
+The required mapping must exist with `State` set to `Enabled` and `BatchSize` set to `1`.
+
+**Step 3 — Run an end-to-end test with a valid leaf image**
+
+Replace `<COGNITO_SUB>` with the development user's Cognito `sub`. The UUID prefix becomes the `image_id`, making the result deterministic to query:
+
+```bash
+VALID_ID=11111111-1111-4111-8111-111111111111
+
+aws s3 cp ./valid-leaf.jpg \
+  "s3://$RAW_BUCKET/uploads/${VALID_ID}_leaf.jpg" \
+  --metadata user-id=<COGNITO_SUB> \
+  --content-type image/jpeg \
+  --region "$AWS_REGION"
+
+sleep 10
+
+aws dynamodb get-item \
+  --table-name "$RESULT_TABLE" \
+  --key "{\"image_id\":{\"S\":\"$VALID_ID\"}}" \
+  --consistent-read \
+  --region "$AWS_REGION"
+```
+
+After processing, the item must include `status = COMPLETED`, `user_id`, `prediction`, `confidence`, `processedImageKey`, and `modelName = resnet`. Verify the processed image:
+
+```bash
+aws s3api head-object \
+  --bucket "$PROCESSED_BUCKET" \
+  --key "processed/<COGNITO_SUB>/${VALID_ID}.jpg" \
+  --region "$AWS_REGION"
+```
+
+**Step 4 — Test the Rekognition gate with a non-leaf image**
+
+```bash
+INVALID_ID=22222222-2222-4222-8222-222222222222
+
+aws s3 cp ./non-leaf.jpg \
+  "s3://$RAW_BUCKET/uploads/${INVALID_ID}_non-leaf.jpg" \
+  --metadata user-id=<COGNITO_SUB> \
+  --content-type image/jpeg \
+  --region "$AWS_REGION"
+
+sleep 10
+
+aws dynamodb get-item \
+  --table-name "$RESULT_TABLE" \
+  --key "{\"image_id\":{\"S\":\"$INVALID_ID\"}}" \
+  --consistent-read \
+  --region "$AWS_REGION"
+```
+
+The item must contain `status = REJECTED` and `rejectionReason = NOT_A_LEAF_IMAGE`; the processed bucket must not contain an image for `INVALID_ID`.
+
+**Step 5 — Inspect logs and queue state**
+
+```bash
+aws logs tail "/aws/lambda/$FUNCTION_NAME" \
+  --since 15m \
+  --region "$AWS_REGION"
+
+aws sqs get-queue-attributes \
+  --queue-url <QUEUE_URL> \
+  --attribute-names ApproximateNumberOfMessages ApproximateNumberOfMessagesNotVisible \
+  --region "$AWS_REGION"
+```
+
+Logs must not contain checkpoint-loading failures, missing `user-id` metadata, missing environment variables, or timeouts. After stable processing, both message counts should return to `0` (SQS counts are approximate and can update with a delay).
+
+{{% notice success %}}
+The deployment passes when valid and invalid images both traverse S3 → SQS → Lambda → DynamoDB, only the valid image creates a processed object, and CloudWatch Logs show no remaining Lambda errors.
+{{% /notice %}}

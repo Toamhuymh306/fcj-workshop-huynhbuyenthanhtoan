@@ -1,6 +1,6 @@
 ---
-title: "Tuần 8: Kiểm thử & Báo cáo"
-date: 2026-06-29
+title: "Tuần 8: MVP End-to-End"
+date: 2026-06-05
 weight: 8
 chapter: false
 pre: " <b> 1.8. </b> "
@@ -8,20 +8,20 @@ pre: " <b> 1.8. </b> "
 
 ### Mục tiêu Tuần 8:
 
-- Kiểm thử tích hợp toàn bộ hệ thống (End-to-End).
-- Soạn thảo tài liệu kiến trúc, đóng gói báo cáo gửi về khoa CNTT và chuẩn bị Demo tại văn phòng.
+- Hoàn thiện phiên bản MVP có thể chạy xuyên suốt từ đăng nhập đến xem kết quả.
+- Phát hiện lỗi tích hợp sớm trước khi hoàn thiện pipeline sự kiện và bảo mật.
 
 ### Các công việc triển khai:
 
 | Thứ | Công việc                                                         | Ngày BĐ    | Ngày HT    | Nguồn tài liệu |
 | :-- | :---------------------------------------------------------------- | :--------- | :--------- | :------------- |
-| 2   | - Run test E2E: Đăng nhập -> Tải ảnh -> AI Xử lý -> Hiển thị.     | 29/06/2026 | 30/06/2026 | QA Testing     |
-| 4   | - Cập nhật file `config.js` và xử lý triệt để lỗi CORS cuối cùng. | 01/07/2026 | 02/07/2026 | Dev Tools      |
-| 6   | - Soạn thảo file `README.md`, `AWS_ARCHITECTURE.md`.              | 03/07/2026 | 06/07/2026 | Markdown       |
-| 4   | - Đẩy tài liệu lên GitHub Pages tạo trang giới thiệu dự án.       | 08/07/2026 | 09/07/2026 | GitHub         |
-| 6   | - Chốt sổ đồ án, tổng hợp báo cáo thực tập để nghiệm thu.         | 10/07/2026 | 12/07/2026 | Internal       |
+| 6   | - Kiểm tra đăng nhập, JWT và API Gateway Authorizer.              | 05/06/2026 | 05/06/2026 | QA Testing     |
+| 2   | - Kiểm tra pre-signed URL và upload ảnh trực tiếp lên S3.         | 08/06/2026 | 08/06/2026 | AWS S3         |
+| 3   | - Chạy smoke test container và gọi Lambda inference.              | 09/06/2026 | 09/06/2026 | AWS Lambda     |
+| 4   | - Kiểm tra lưu/đọc kết quả trong DynamoDB.                        | 10/06/2026 | 10/06/2026 | AWS DynamoDB   |
+| 5   | - Ghi nhận lỗi MVP, cập nhật README và kế hoạch hardening.        | 11/06/2026 | 11/06/2026 | GitHub         |
 
 ### Kết quả đạt được:
 
-- Nền tảng KTs Smart Agriculture hoạt động ổn định, đạt đúng deadline 12/07.
-- Bộ tài liệu chuẩn chỉnh, sẵn sàng trình bày trước hội đồng đánh giá.
+- MVP thực hiện được luồng đăng nhập → upload → inference → lưu/hiển thị kết quả.
+- Danh sách lỗi và hạng mục hardening cho tuần 9–11 được xác định rõ.

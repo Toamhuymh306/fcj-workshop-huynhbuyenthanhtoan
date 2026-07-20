@@ -1,6 +1,6 @@
 ---
 title: "Tuần 2: Xử lý dữ liệu AI"
-date: 2026-05-18
+date: 2026-04-24
 weight: 2
 chapter: false
 pre: " <b> 1.2. </b> "
@@ -15,11 +15,11 @@ pre: " <b> 1.2. </b> "
 
 | Thứ | Công việc                                                      | Ngày BĐ    | Ngày HT    | Nguồn tài liệu |
 | :-- | :------------------------------------------------------------- | :--------- | :--------- | :------------- |
-| 2   | - Tải bộ dữ liệu PlantVillage từ Kaggle.                       | 18/05/2026 | 18/05/2026 | Kaggle         |
-| 3   | - Phân tích cấu trúc 38 lớp bệnh trên 14 loại cây.             | 19/05/2026 | 19/05/2026 | Dataset Specs  |
-| 4   | - Tiền xử lý ảnh: Resize và Normalize bằng OpenCV.             | 20/05/2026 | 20/05/2026 | OpenCV Docs    |
-| 5   | - Tăng cường dữ liệu (Data Augmentation) để chống overfitting. | 21/05/2026 | 21/05/2026 | PyTorch Vision |
-| 6   | - Phân chia tập dữ liệu thành Train / Validation / Test.       | 22/05/2026 | 22/05/2026 | Scikit-learn   |
+| 6   | - Tải bộ dữ liệu PlantVillage từ Kaggle.                       | 24/04/2026 | 24/04/2026 | Kaggle         |
+| 2   | - Phân tích cấu trúc 38 lớp bệnh trên 14 loại cây.             | 27/04/2026 | 27/04/2026 | Dataset Specs  |
+| 3   | - Tiền xử lý ảnh: Resize và Normalize bằng OpenCV.             | 28/04/2026 | 28/04/2026 | OpenCV Docs    |
+| 4   | - Tăng cường dữ liệu (Data Augmentation) để chống overfitting. | 29/04/2026 | 29/04/2026 | PyTorch Vision |
+| 5   | - Phân chia tập dữ liệu thành Train / Validation / Test.       | 30/04/2026 | 30/04/2026 | Scikit-learn   |
 
 ### Kết quả đạt được:
 

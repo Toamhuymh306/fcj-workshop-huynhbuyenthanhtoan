@@ -1,6 +1,6 @@
 ---
 title: "Tuần 7: Phát triển Web Frontend"
-date: 2026-06-22
+date: 2026-05-29
 weight: 7
 chapter: false
 pre: " <b> 1.7. </b> "
@@ -15,11 +15,11 @@ pre: " <b> 1.7. </b> "
 
 | Thứ | Công việc                                                      | Ngày BĐ    | Ngày HT    | Nguồn tài liệu |
 | :-- | :------------------------------------------------------------- | :--------- | :--------- | :------------- |
-| 2   | - Dựng khung sườn giao diện HTML và Style CSS.                 | 22/06/2026 | 22/06/2026 | UI/UX Design   |
-| 3   | - Xây dựng Form Đăng nhập/Đăng ký tích hợp Cognito API.        | 23/06/2026 | 23/06/2026 | AWS Auth JS    |
-| 4   | - Viết Javascript gọi API `/presign` kèm Authorization Header. | 24/06/2026 | 24/06/2026 | Fetch API      |
-| 5   | - Xử lý tính năng chọn ảnh và PUT dữ liệu lên S3.              | 25/06/2026 | 25/06/2026 | AWS S3 REST    |
-| 6   | - Thiết kế Dashboard hiển thị kết quả chẩn đoán bệnh.          | 26/06/2026 | 26/06/2026 | UI Components  |
+| 6   | - Dựng khung giao diện HTML và CSS responsive.                 | 29/05/2026 | 29/05/2026 | UI/UX Design   |
+| 2   | - Xây dựng đăng ký, xác minh email và đăng nhập Cognito.       | 01/06/2026 | 01/06/2026 | AWS Auth JS    |
+| 3   | - Gọi API `/presign` kèm Authorization header.                 | 02/06/2026 | 02/06/2026 | Fetch API      |
+| 4   | - Chọn ảnh và PUT trực tiếp lên S3 bằng pre-signed URL.        | 03/06/2026 | 03/06/2026 | AWS S3 REST    |
+| 5   | - Hiển thị trạng thái xử lý, kết quả và lịch sử người dùng.    | 04/06/2026 | 04/06/2026 | UI Components  |
 
 ### Kết quả đạt được:
 

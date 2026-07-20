@@ -55,3 +55,70 @@ Raw bucket gửi mọi sự kiện `s3:ObjectCreated:*` đến queue:
 Chỉ cấu hình event source mapping từ SQS đến Lambda sau khi Inference Lambda được tạo ở phần 5.5.
 
 #### 4. Xác minh
+
+Đặt các giá trị sau theo tài nguyên của bạn:
+
+```bash
+RAW_BUCKET=<RAW_BUCKET>
+QUEUE_URL=<QUEUE_URL>
+AWS_REGION=ap-southeast-1
+```
+
+**Bước 1 — Kiểm tra notification của bucket**
+
+```bash
+aws s3api get-bucket-notification-configuration \
+  --bucket "$RAW_BUCKET" \
+  --region "$AWS_REGION"
+```
+
+Kết quả phải có một phần tử `QueueConfigurations` với:
+
+- `QueueArn` đúng ARN của inference queue.
+- `Events` chứa `s3:ObjectCreated:*`.
+- Nếu có filter, prefix phải khớp thư mục upload thực tế, ví dụ `uploads/`.
+
+**Bước 2 — Kiểm tra queue policy và visibility timeout**
+
+```bash
+aws sqs get-queue-attributes \
+  --queue-url "$QUEUE_URL" \
+  --attribute-names QueueArn Policy VisibilityTimeout \
+  --region "$AWS_REGION"
+```
+
+Xác nhận `VisibilityTimeout` tối thiểu `720`, policy cho phép `s3.amazonaws.com` gọi `sqs:SendMessage`, và có cả `aws:SourceArn` lẫn `aws:SourceAccount`.
+
+**Bước 3 — Gửi một sự kiện thử từ S3**
+
+Sử dụng một ảnh lá nhỏ và một Cognito `sub` dùng cho môi trường dev:
+
+```bash
+aws s3 cp ./verification-leaf.jpg \
+  "s3://$RAW_BUCKET/uploads/verification-leaf.jpg" \
+  --metadata user-id=<COGNITO_SUB> \
+  --content-type image/jpeg \
+  --region "$AWS_REGION"
+
+sleep 5
+
+aws sqs get-queue-attributes \
+  --queue-url "$QUEUE_URL" \
+  --attribute-names ApproximateNumberOfMessages ApproximateNumberOfMessagesNotVisible \
+  --region "$AWS_REGION"
+```
+
+Vì Lambda chưa được nối ở bước này, `ApproximateNumberOfMessages` phải tăng lên sau vài giây. Không dùng nút **Poll for messages** liên tục vì message nhận được sẽ tạm thời bị ẩn theo visibility timeout.
+
+{{% notice tip %}}
+Sau khi xác minh, xóa object thử khỏi raw bucket. Chỉ purge queue nếu đây là queue dev riêng và không có message hợp lệ khác đang chờ xử lý.
+{{% /notice %}}
+
+**Tiêu chí hoàn thành 5.4.4**
+
+- S3 notification trỏ đúng inference queue.
+- Queue policy chỉ cho phép raw bucket của đúng AWS account gửi message.
+- Upload object mới làm số message trong queue tăng.
+- Chưa tạo SQS event source mapping; thao tác đó được thực hiện sau khi Lambda ở phần 5.5 sẵn sàng.
+
+Nếu số message không tăng, kiểm tra Region của bucket/queue, ARN trong notification, queue policy và prefix/suffix filter trước khi tiếp tục.

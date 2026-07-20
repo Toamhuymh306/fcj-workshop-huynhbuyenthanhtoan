@@ -1,6 +1,6 @@
 ---
 title: "Week 6: API Gateway Security"
-date: 2026-06-15
+date: 2026-05-22
 weight: 6
 chapter: false
 pre: " <b> 1.6. </b> "
@@ -15,13 +15,13 @@ pre: " <b> 1.6. </b> "
 
 | Day | Task                                                         | Start Date | End Date   | Resources    |
 | :-- | :----------------------------------------------------------- | :--------- | :--------- | :----------- |
-| Mon | - Create a REST API on Amazon API Gateway.                   | 2026-06-15 | 2026-06-15 | API Gateway  |
-| Tue | - Code Lambda function to generate Pre-signed URLs for S3.   | 2026-06-16 | 2026-06-16 | Boto3 Docs   |
-| Wed | - Link the `/presign` API endpoint with the Lambda function. | 2026-06-17 | 2026-06-17 | AWS API      |
-| Thu | - Configure Cross-Origin Resource Sharing (CORS).            | 2026-06-18 | 2026-06-18 | Web Security |
-| Fri | - Integrate Cognito Authorizer enforcing JWT Tokens.         | 2026-06-19 | 2026-06-19 | AWS Cognito  |
+| Fri | - Create a REST API in Amazon API Gateway.                    | 2026-05-22 | 2026-05-22 | API Gateway  |
+| Mon | - Complete the Lambda function that issues pre-signed URLs.  | 2026-05-25 | 2026-05-25 | Boto3 Docs   |
+| Tue | - Connect the `/presign` and `/results` endpoints.           | 2026-05-26 | 2026-05-26 | AWS API      |
+| Wed | - Configure CORS and verify preflight requests.              | 2026-05-27 | 2026-05-27 | Web Security |
+| Thu | - Integrate a Cognito Authorizer and verify JWT claims.      | 2026-05-28 | 2026-05-28 | AWS Cognito  |
 
 ### Outcomes:
 
 - Secure Upload Mechanism: Clients receive temporary authorization (Pre-signed URL) to upload files directly to S3.
-- External unauthorized access successfully blocked (`401 Unauthorized`).
+- Requests with missing or invalid tokens are rejected with `401 Unauthorized`.

@@ -1,6 +1,6 @@
 ---
 title: "Week 7: Frontend Web Development"
-date: 2026-06-22
+date: 2026-05-29
 weight: 7
 chapter: false
 pre: " <b> 1.7. </b> "
@@ -15,11 +15,11 @@ pre: " <b> 1.7. </b> "
 
 | Day | Task                                                        | Start Date | End Date   | Resources     |
 | :-- | :---------------------------------------------------------- | :--------- | :--------- | :------------ |
-| Mon | - Construct the HTML UI skeleton and CSS Styling.           | 2026-06-22 | 2026-06-22 | UI/UX Design  |
-| Tue | - Build Login/Signup Forms integrated with Cognito API.     | 2026-06-23 | 2026-06-23 | AWS Auth JS   |
-| Wed | - Write Javascript to call `/presign` API with Auth Header. | 2026-06-24 | 2026-06-24 | Fetch API     |
-| Thu | - Implement image selection and PUT data to S3 feature.     | 2026-06-25 | 2026-06-25 | AWS S3 REST   |
-| Fri | - Design the Diagnostic Results Dashboard.                  | 2026-06-26 | 2026-06-26 | UI Components |
+| Fri | - Build the responsive HTML/CSS interface.                  | 2026-05-29 | 2026-05-29 | UI/UX Design  |
+| Mon | - Implement Cognito signup, email verification, and login. | 2026-06-01 | 2026-06-01 | AWS Auth JS   |
+| Tue | - Call `/presign` with the Authorization header.           | 2026-06-02 | 2026-06-02 | Fetch API     |
+| Wed | - Upload selected images directly through pre-signed URLs. | 2026-06-03 | 2026-06-03 | AWS S3 REST   |
+| Thu | - Display processing state, results, and user history.     | 2026-06-04 | 2026-06-04 | UI Components |
 
 ### Outcomes:
 

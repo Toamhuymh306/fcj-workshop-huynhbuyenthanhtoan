@@ -1,6 +1,6 @@
 ---
 title: "Week 3: AI Model Training"
-date: 2026-05-25
+date: 2026-05-01
 weight: 3
 chapter: false
 pre: " <b> 1.3. </b> "
@@ -15,11 +15,11 @@ pre: " <b> 1.3. </b> "
 
 | Day | Task                                                  | Start Date | End Date   | Resources         |
 | :-- | :---------------------------------------------------- | :--------- | :--------- | :---------------- |
-| Mon | - Build the CNN architecture using PyTorch.           | 2026-05-25 | 2026-05-25 | PyTorch Docs      |
-| Tue | - Write scripts for Loss Function and Optimizer.      | 2026-05-26 | 2026-05-26 | PyTorch Guide     |
-| Wed | - Execute the Training Loop.                          | 2026-05-27 | 2026-05-27 | Local Environment |
-| Thu | - Perform hyperparameter tuning.                      | 2026-05-28 | 2026-05-28 | AI Papers         |
-| Fri | - Extract metrics: Accuracy and F1-Score on Test set. | 2026-05-29 | 2026-05-29 | Scikit-learn      |
+| Fri | - Build and validate the LeNet architecture in PyTorch.        | 2026-05-01 | 2026-05-01 | PyTorch Docs  |
+| Mon | - Prepare ResNet-50, the loss function, and optimizer.         | 2026-05-04 | 2026-05-04 | PyTorch Guide |
+| Tue | - Train LeNet and ResNet on the same dataset split.            | 2026-05-05 | 2026-05-05 | Local/Kaggle  |
+| Wed | - Tune hyperparameters and monitor overfitting.                 | 2026-05-06 | 2026-05-06 | AI Papers     |
+| Thu | - Compare accuracy, F1, model size, and inference performance. | 2026-05-07 | 2026-05-07 | Scikit-learn  |
 
 ### Outcomes:
 

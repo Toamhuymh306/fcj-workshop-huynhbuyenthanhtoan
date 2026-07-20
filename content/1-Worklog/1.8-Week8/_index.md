@@ -1,6 +1,6 @@
 ---
-title: "Week 8: Final Review & Report"
-date: 2026-06-29
+title: "Week 8: End-to-End MVP"
+date: 2026-06-05
 weight: 8
 chapter: false
 pre: " <b> 1.8. </b> "
@@ -8,20 +8,20 @@ pre: " <b> 1.8. </b> "
 
 ### Week 8 Objectives:
 
-- Perform End-to-End (E2E) system integration testing.
-- Draft architectural documentation, finalize the internship report, and prepare for the office Demo.
+- Complete an MVP that runs from authentication through result display.
+- Identify integration issues before event-pipeline and security hardening.
 
 ### Tasks:
 
 | Day | Task                                                              | Start Date | End Date   | Resources  |
 | :-- | :---------------------------------------------------------------- | :--------- | :--------- | :--------- |
-| Mon | - Run E2E tests: Login -> Upload -> AI Processing -> Display.     | 2026-06-29 | 2026-06-30 | QA Testing |
-| Wed | - Update `config.js` and resolve final CORS issues.               | 2026-07-01 | 2026-07-02 | Dev Tools  |
-| Fri | - Draft `README.md` and `AWS_ARCHITECTURE.md` files.              | 2026-07-03 | 2026-07-06 | Markdown   |
-| Wed | - Deploy documentation to GitHub Pages as a project site.         | 2026-07-08 | 2026-07-09 | GitHub     |
-| Fri | - Finalize project, compile the internship report for submission. | 2026-07-10 | 2026-07-12 | Internal   |
+| Fri | - Verify login, JWT handling, and the API Gateway Authorizer.  | 2026-06-05 | 2026-06-05 | QA Testing   |
+| Mon | - Verify pre-signed URLs and direct S3 image uploads.          | 2026-06-08 | 2026-06-08 | AWS S3       |
+| Tue | - Run the container smoke test and invoke inference Lambda.    | 2026-06-09 | 2026-06-09 | AWS Lambda   |
+| Wed | - Verify DynamoDB result writes and reads.                     | 2026-06-10 | 2026-06-10 | AWS DynamoDB |
+| Thu | - Record MVP defects and update the hardening backlog.         | 2026-06-11 | 2026-06-11 | GitHub       |
 
 ### Outcomes:
 
-- The KTs Smart Agriculture platform operates stably, meeting the July 12 deadline.
-- A comprehensive set of documentation is ready for presentation to the evaluation committee.
+- The MVP completes login → upload → inference → result storage/display.
+- Defects and hardening work for weeks 9–11 are explicitly tracked.

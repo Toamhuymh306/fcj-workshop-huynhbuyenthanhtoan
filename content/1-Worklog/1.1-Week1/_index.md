@@ -1,6 +1,6 @@
 ---
 title: "Week 1: AWS Fundamentals"
-date: 2026-05-11
+date: 2026-04-17
 weight: 1
 chapter: false
 pre: " <b> 1.1. </b> "
@@ -16,11 +16,11 @@ pre: " <b> 1.1. </b> "
 
 | Day | Task                                                  | Start Date | End Date   | Resources        |
 | :-- | :---------------------------------------------------- | :--------- | :--------- | :--------------- |
-| Mon | - KTs team meeting, task distribution.                | 2026-05-11 | 2026-05-11 | Internal         |
-| Tue | - Learn AWS IAM, create Users and assign Policies.    | 2026-05-12 | 2026-05-12 | AWS IAM Docs     |
-| Wed | - Set up AWS CLI, configure Access/Secret Keys.       | 2026-05-13 | 2026-05-13 | AWS CLI Docs     |
-| Thu | - Initialize the first Amazon S3 Bucket for images.   | 2026-05-14 | 2026-05-14 | AWS S3 Docs      |
-| Fri | - Set up Amazon Cognito User Pool for authentication. | 2026-05-15 | 2026-05-15 | AWS Cognito Docs |
+| Fri | - Attend kickoff, align the KTs team, and assign tasks. | 2026-04-17 | 2026-04-17 | Internal         |
+| Mon | - Learn AWS IAM and create least-privilege users/roles. | 2026-04-20 | 2026-04-20 | AWS IAM Docs     |
+| Tue | - Configure AWS CLI and enable MFA.                    | 2026-04-21 | 2026-04-21 | AWS CLI Docs     |
+| Wed | - Configure AWS Budget and cost alerts.                | 2026-04-22 | 2026-04-22 | AWS Budgets Docs |
+| Thu | - Review S3, Cognito, and the project architecture.     | 2026-04-23 | 2026-04-23 | AWS Docs         |
 
 ### Outcomes:
 
