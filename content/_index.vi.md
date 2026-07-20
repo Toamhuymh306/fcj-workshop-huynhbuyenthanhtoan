@@ -25,7 +25,7 @@ chapter: false
 
 &emsp; **Thời gian thực tập:** Từ ngày 17/04/2026 đến ngày 30/07/2026
 
-![Ảnh chân dung của tôi](/fcj-workshop-huynhbuyenthanhtoan/images/chandung.JPG)
+![Ảnh chân dung của tôi](/images/chandung.JPG)
 
 ### Nội dung báo cáo
 
