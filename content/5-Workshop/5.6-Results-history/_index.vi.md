@@ -128,7 +128,3 @@ Các test bắt buộc:
 2. User B gọi `GET /results` không thấy item của A.
 3. User B xóa scan của A nhận `403` và item vẫn còn.
 4. User A xóa scan của A nhận `200`; DynamoDB item, raw object và processed object đều bị xóa.
-
-{{% notice warning %}}
-Không dùng DynamoDB `Scan` rồi lọc ở ứng dụng. Query `user_id-index` giảm chi phí và tránh đọc nhầm dữ liệu người dùng khác.
-{{% /notice %}}

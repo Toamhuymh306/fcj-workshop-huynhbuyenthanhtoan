@@ -50,7 +50,3 @@ Xác nhận:
 - Metadata có `user-id` và `original-name`.
 - Object được mã hóa server-side.
 - Key nằm dưới prefix của chính người dùng.
-
-{{% notice warning %}}
-Không chụp hoặc đăng pre-signed URL. URL chứa chữ ký tạm thời và có thể upload object trong thời gian còn hiệu lực.
-{{% /notice %}}

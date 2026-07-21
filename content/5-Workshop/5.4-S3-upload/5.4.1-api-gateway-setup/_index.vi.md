@@ -23,10 +23,6 @@ Role cần:
 - `s3:PutObject` trên `arn:aws:s3:::<RAW_BUCKET>/*`.
 - Trust policy cho service principal `lambda.amazonaws.com`.
 
-{{% notice warning %}}
-Không cấp `AmazonS3FullAccess`. Presign Lambda chỉ cần tạo URL cho object trong raw bucket.
-{{% /notice %}}
-
 #### 3. Đóng gói source code
 
 Zip phải chứa `lambda_function.py` ở thư mục gốc.

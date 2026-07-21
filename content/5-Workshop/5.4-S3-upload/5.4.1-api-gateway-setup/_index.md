@@ -23,10 +23,6 @@ The role needs:
 - `s3:PutObject` on `arn:aws:s3:::<RAW_BUCKET>/*`.
 - A trust policy for `lambda.amazonaws.com`.
 
-{{% notice warning %}}
-Do not grant `AmazonS3FullAccess`. Presign Lambda only needs to generate upload URLs for the raw bucket.
-{{% /notice %}}
-
 #### 3. Package the source
 
 The archive must contain `lambda_function.py` at its root.

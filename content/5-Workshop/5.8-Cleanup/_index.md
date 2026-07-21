@@ -8,10 +8,6 @@ pre: " <b> 5.8. </b> "
 
 #### Before deletion
 
-{{% notice danger %}}
-Do not perform this section in an environment serving users. Back up any images and results that must be retained before deleting buckets or the DynamoDB table.
-{{% /notice %}}
-
 Delete resources in dependency order to avoid resource-in-use errors.
 
 #### 1. Stop the pipeline

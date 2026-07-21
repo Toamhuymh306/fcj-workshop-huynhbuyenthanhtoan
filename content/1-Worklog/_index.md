@@ -14,10 +14,6 @@ pre: " <b> 1. </b> "
 
 The project detects crop diseases from PlantVillage images. Amazon Cognito authenticates users; API Gateway and Lambda issue pre-signed URLs; the browser uploads images directly to Amazon S3; S3 sends events through Amazon SQS to a Lambda container running the PyTorch/ResNet model. DynamoDB stores user-scoped results and history, while CloudWatch provides monitoring and troubleshooting.
 
-{{% notice info %}}
-A week is marked complete only when supporting evidence exists, such as a commit/branch, AWS configuration screenshot, test log, model result, or reviewed document.
-{{% /notice %}}
-
 ### 12-week roadmap
 
 **Week 1 (Apr 17–23):** [Program kickoff, IAM, AWS CLI, and Budget](1.1-week1/)

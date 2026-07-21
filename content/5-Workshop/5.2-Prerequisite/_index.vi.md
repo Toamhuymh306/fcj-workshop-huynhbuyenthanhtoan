@@ -15,10 +15,6 @@ pre: " <b> 5.2. </b> "
 - Source code KTS Smart Agri và checkpoint `ai-service/best_resnet_model.pth`.
 - Hugo để xem workshop local.
 
-{{% notice warning %}}
-Không sử dụng AWS root user cho workshop. Dùng IAM user/role riêng và xóa credential tạm sau khi hoàn thành.
-{{% /notice %}}
-
 #### 1. Kiểm tra AWS CLI
 
 ```powershell

@@ -128,7 +128,3 @@ Required tests:
 2. User B calls `GET /results` and cannot see A's items.
 3. User B deletes A's scan, receives `403`, and the item remains.
 4. User A deletes A's scan, receives `200`, and the DynamoDB item, raw object, and processed object are deleted.
-
-{{% notice warning %}}
-Do not use DynamoDB `Scan` and filter in application code. Querying `user_id-index` reduces cost and prevents accidental cross-user reads.
-{{% /notice %}}

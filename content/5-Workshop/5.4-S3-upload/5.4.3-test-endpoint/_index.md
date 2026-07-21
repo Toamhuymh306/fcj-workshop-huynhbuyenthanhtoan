@@ -50,7 +50,3 @@ Confirm that:
 - Metadata contains `user-id` and `original-name`.
 - The object uses server-side encryption.
 - The key is under the authenticated user's prefix.
-
-{{% notice warning %}}
-Never capture or publish a pre-signed URL. It contains a temporary signature that can upload an object until expiration.
-{{% /notice %}}

@@ -6,10 +6,6 @@ chapter: false
 pre: " <b> 4.2. </b> "
 ---
 
-{{% notice warning %}}
-**Note:** The information below is provided for reference only. Please **do not copy it verbatim** into your report, including this warning.
-{{% /notice %}}
-
 # FCAJ Technical Meetup Reflection Report
 
 ### Event information

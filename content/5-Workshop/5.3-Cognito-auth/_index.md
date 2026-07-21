@@ -20,10 +20,6 @@ Authentication flow:
 4. The frontend retains the ID token for the session.
 5. API Gateway validates the token issuer, audience, signature, and expiration.
 
-{{% notice warning %}}
-Never include an ID token in documentation or screenshots. A valid token can authorize API requests until it expires.
-{{% /notice %}}
-
 #### Contents
 
 1. [Create a Cognito User Pool](5.3.1-user-pool-setup/)

@@ -43,10 +43,6 @@ Giải pháp sử dụng kiến trúc serverless, hướng sự kiện nhằm gi
 - Validation gate: chỉ chạy classifier khi Amazon Rekognition phát hiện cả `Leaf` và `Plant` đạt ngưỡng cấu hình.
 - Output: cây trồng, bệnh, confidence, top-k, thời gian xử lý và ảnh đã chú thích.
 
-{{% notice warning %}}
-PlantVillage chủ yếu gồm ảnh lá trong điều kiện tương đối sạch. Độ chính xác trên tập test không bảo đảm hiệu quả tương đương với ảnh ngoài đồng ruộng có nền phức tạp, thiếu sáng hoặc nhiều lá chồng lấp.
-{{% /notice %}}
-
 ## 3. Kiến trúc giải pháp
 
 ![Kiến trúc KTs Smart Agriculture](/images/2-Proposal/diagram1.png)

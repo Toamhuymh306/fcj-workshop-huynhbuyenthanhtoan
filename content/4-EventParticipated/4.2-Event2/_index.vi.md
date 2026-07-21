@@ -6,10 +6,6 @@ chapter: false
 pre: " <b> 4.2. </b> "
 ---
 
-{{% notice warning %}}
-**Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn, kể cả cảnh báo này.
-{{% /notice %}}
-
 # Bài thu hoạch FCAJ Technical Meetup
 
 ### Thông tin sự kiện

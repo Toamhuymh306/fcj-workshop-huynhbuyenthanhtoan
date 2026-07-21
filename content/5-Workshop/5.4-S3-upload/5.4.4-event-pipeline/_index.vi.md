@@ -110,10 +110,6 @@ aws sqs get-queue-attributes \
 
 Vì Lambda chưa được nối ở bước này, `ApproximateNumberOfMessages` phải tăng lên sau vài giây. Không dùng nút **Poll for messages** liên tục vì message nhận được sẽ tạm thời bị ẩn theo visibility timeout.
 
-{{% notice tip %}}
-Sau khi xác minh, xóa object thử khỏi raw bucket. Chỉ purge queue nếu đây là queue dev riêng và không có message hợp lệ khác đang chờ xử lý.
-{{% /notice %}}
-
 **Tiêu chí hoàn thành 5.4.4**
 
 - S3 notification trỏ đúng inference queue.

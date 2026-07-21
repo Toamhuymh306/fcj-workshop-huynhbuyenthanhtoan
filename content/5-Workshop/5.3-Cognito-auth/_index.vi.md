@@ -20,10 +20,6 @@ Luồng xác thực:
 4. Frontend lưu ID token trong phiên người dùng.
 5. API Gateway xác minh issuer, audience, chữ ký và thời hạn token.
 
-{{% notice warning %}}
-Không ghi ID token vào tài liệu hoặc ảnh chụp. Token cho phép gọi API trong thời gian còn hiệu lực.
-{{% /notice %}}
-
 #### Nội dung
 
 1. [Tạo Cognito User Pool](5.3.1-user-pool-setup/)

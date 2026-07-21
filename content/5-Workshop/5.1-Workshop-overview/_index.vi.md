@@ -44,7 +44,3 @@ Luồng chính của hệ thống:
 - **Amazon Rekognition Image:** xác nhận ảnh có lá cây.
 - **Amazon DynamoDB:** lưu kết quả và truy vấn theo `user_id`.
 - **Amazon CloudWatch:** log, metric và điều tra lỗi.
-
-{{% notice tip %}}
-Không đưa access key, secret key, JWT hoặc pre-signed URL còn hiệu lực vào ảnh chụp workshop.
-{{% /notice %}}

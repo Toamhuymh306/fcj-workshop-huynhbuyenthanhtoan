@@ -8,10 +8,6 @@ pre: " <b> 5.8. </b> "
 
 #### Trước khi xóa
 
-{{% notice danger %}}
-Không thực hiện phần này trên môi trường đang phục vụ người dùng. Sao lưu ảnh và kết quả cần giữ trước khi xóa bucket hoặc DynamoDB table.
-{{% /notice %}}
-
 Xóa theo thứ tự phụ thuộc để tránh lỗi resource in use.
 
 #### 1. Tắt pipeline

@@ -15,10 +15,6 @@ pre: " <b> 5.2. </b> "
 - KTS Smart Agri source code and `ai-service/best_resnet_model.pth`.
 - Hugo for local workshop preview.
 
-{{% notice warning %}}
-Do not use the AWS root user. Use a dedicated IAM identity and remove temporary credentials after the workshop.
-{{% /notice %}}
-
 #### 1. Verify AWS CLI
 
 ```powershell

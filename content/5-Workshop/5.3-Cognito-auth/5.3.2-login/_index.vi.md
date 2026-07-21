@@ -68,7 +68,3 @@ Trong DevTools Console:
 ```
 
 Kết quả phải có `token_use: "id"` và issuer trỏ đến User Pool vừa tạo.
-
-{{% notice warning %}}
-REST API Cognito Authorizer của workshop nhận JWT thô trong header `Authorization`. Không thêm tiền tố `Bearer` khi gọi các route đã cấu hình.
-{{% /notice %}}

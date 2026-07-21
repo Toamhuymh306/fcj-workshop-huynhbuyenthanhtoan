@@ -68,7 +68,3 @@ Run this in DevTools Console:
 ```
 
 The result must contain `token_use: "id"` and an issuer for the new User Pool.
-
-{{% notice warning %}}
-The workshop's REST API Cognito Authorizer expects the raw JWT in the `Authorization` header. Do not add the `Bearer` prefix to these configured routes.
-{{% /notice %}}

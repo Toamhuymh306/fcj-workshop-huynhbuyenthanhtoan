@@ -80,10 +80,6 @@ Execution role chỉ cần:
 - `sqs:ReceiveMessage`, `sqs:DeleteMessage`, `sqs:GetQueueAttributes` trên inference queue.
 - Quyền ghi CloudWatch Logs.
 
-{{% notice warning %}}
-Không dùng AdministratorAccess hoặc quyền `s3:*`. Lambda lấy owner từ metadata `user-id` đã được ký trong pre-signed URL.
-{{% /notice %}}
-
 #### 6. Cấu hình Rekognition Image gate
 
 Thực hiện bước này trên AWS Management Console, kiểm tra kỹ tên tài nguyên, Region và các giá trị cấu hình trước khi lưu. Sau khi hoàn tất, đối chiếu màn hình với hình bên dưới để chắc chắn tài nguyên đã được tạo đúng và đang ở trạng thái sẵn sàng.
@@ -248,7 +244,3 @@ aws sqs get-queue-attributes \
 ```
 
 Log không được có lỗi load checkpoint, thiếu `user-id`, thiếu biến môi trường hoặc timeout. Sau khi xử lý ổn định, số message visible/not-visible phải trở về `0` (các số liệu SQS là gần đúng và có thể cập nhật chậm).
-
-{{% notice success %}}
-Deployment đạt yêu cầu khi cả ảnh lá hợp lệ và ảnh không hợp lệ đi hết luồng S3 → SQS → Lambda → DynamoDB, chỉ ảnh hợp lệ tạo processed image, và Lambda không còn lỗi trong CloudWatch Logs.
-{{% /notice %}}

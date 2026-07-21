@@ -110,10 +110,6 @@ aws sqs get-queue-attributes \
 
 Because Lambda is not connected yet, `ApproximateNumberOfMessages` should increase after a few seconds. Avoid repeatedly selecting **Poll for messages**, because a received message becomes temporarily hidden for the visibility-timeout period.
 
-{{% notice tip %}}
-Delete the test object from the raw bucket after verification. Purge the queue only when it is a dedicated development queue with no valid messages waiting for processing.
-{{% /notice %}}
-
 **5.4.4 completion criteria**
 
 - The S3 notification points to the correct inference queue.

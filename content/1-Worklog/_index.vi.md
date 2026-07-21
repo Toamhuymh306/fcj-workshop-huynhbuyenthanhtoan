@@ -14,10 +14,6 @@ pre: " <b> 1. </b> "
 
 Đồ án xây dựng hệ thống nhận diện bệnh cây trồng từ ảnh PlantVillage. Frontend xác thực người dùng bằng Amazon Cognito, nhận pre-signed URL qua API Gateway và Lambda, tải ảnh trực tiếp lên Amazon S3, sau đó S3 gửi sự kiện qua Amazon SQS đến Lambda container chạy mô hình PyTorch/ResNet. Kết quả và lịch sử theo người dùng được lưu trong DynamoDB; CloudWatch hỗ trợ giám sát và xử lý sự cố.
 
-{{% notice info %}}
-Mỗi tuần chỉ được đánh dấu hoàn thành khi có minh chứng tương ứng: commit/branch, ảnh cấu hình AWS, log kiểm thử, kết quả mô hình hoặc tài liệu đã được review.
-{{% /notice %}}
-
 ### Lộ trình 12 tuần
 
 **Tuần 1 (17/04–23/04):** [Khởi động chương trình, IAM, AWS CLI và Budget](1.1-week1/)

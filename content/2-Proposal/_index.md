@@ -43,10 +43,6 @@ The solution uses a serverless, event-driven architecture to avoid fixed-server 
 - Validation gate: the classifier runs only when Amazon Rekognition detects both `Leaf` and `Plant` above the configured threshold.
 - Output: crop, disease, confidence, top-k results, processing time, and an annotated image.
 
-{{% notice warning %}}
-PlantVillage primarily contains leaf images captured under relatively clean conditions. Test-set accuracy does not guarantee equivalent performance on field images with complex backgrounds, poor lighting, or overlapping leaves.
-{{% /notice %}}
-
 ## 3. Solution architecture
 
 ![KTs Smart Agriculture architecture](/images/2-Proposal/diagram1.png)

@@ -44,7 +44,3 @@ The main flow is:
 - **Amazon Rekognition Image:** leaf-image validation.
 - **Amazon DynamoDB:** result storage and `user_id` queries.
 - **Amazon CloudWatch:** logs, metrics, and troubleshooting.
-
-{{% notice tip %}}
-Never include access keys, secret keys, JWTs, or unexpired pre-signed URLs in workshop screenshots.
-{{% /notice %}}

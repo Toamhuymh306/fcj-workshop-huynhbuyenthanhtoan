@@ -14,10 +14,6 @@ In this workshop, you will deploy **KTS Smart Agri**, a serverless web applicati
 
 The system uses Amazon Cognito for authentication, API Gateway and Lambda for pre-signed URLs, Amazon S3 and SQS for an event-driven pipeline, Amazon Rekognition Image to reject invalid uploads, a Lambda container for model inference, DynamoDB for scan history, and CloudWatch for observability.
 
-{{% notice info %}}
-The workshop uses Region `ap-southeast-1`. Resource names use a `dev` suffix; replace them with globally unique names when deploying in another account.
-{{% /notice %}}
-
 #### Outcomes
 
 - Users register and verify their email through Cognito.

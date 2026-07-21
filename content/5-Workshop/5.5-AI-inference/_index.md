@@ -80,10 +80,6 @@ The execution role requires only:
 - `sqs:ReceiveMessage`, `sqs:DeleteMessage`, and `sqs:GetQueueAttributes` on the inference queue.
 - CloudWatch Logs write permissions.
 
-{{% notice warning %}}
-Do not use AdministratorAccess or `s3:*`. Lambda obtains the owner from signed `user-id` object metadata.
-{{% /notice %}}
-
 #### 6. Configure the Rekognition Image gate
 
 Complete this step in the AWS Management Console. Verify the resource name, Region, and configuration values before saving, then compare the result with the screenshots below to confirm that the resource is ready.
@@ -248,7 +244,3 @@ aws sqs get-queue-attributes \
 ```
 
 Logs must not contain checkpoint-loading failures, missing `user-id` metadata, missing environment variables, or timeouts. After stable processing, both message counts should return to `0` (SQS counts are approximate and can update with a delay).
-
-{{% notice success %}}
-The deployment passes when valid and invalid images both traverse S3 → SQS → Lambda → DynamoDB, only the valid image creates a processed object, and CloudWatch Logs show no remaining Lambda errors.
-{{% /notice %}}
